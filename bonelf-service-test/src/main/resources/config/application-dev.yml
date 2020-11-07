@@ -1,0 +1,14 @@
+spring:
+#  datasource:
+#    url: ??
+#    username: ??
+#    password: ??
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+
+#websocket
+ws:
+  port: 8026
+  host: 0.0.0.0

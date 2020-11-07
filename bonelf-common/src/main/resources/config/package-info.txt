@@ -1,0 +1,4 @@
+common：spring公用基本配置
+third：第三方配置
+
+若这里直接新建application.yml，会直接使用项目中的application.yml而不是使用项目的application.yml配置覆盖common中的配置

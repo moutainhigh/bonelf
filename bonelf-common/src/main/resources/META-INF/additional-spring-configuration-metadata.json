@@ -1,0 +1,84 @@
+{
+  "properties": [
+    {
+      "name": "wechat.mini-appid",
+      "type": "java.lang.String",
+      "description": "Description"
+    },
+    {
+      "name": "ws.port",
+      "type": "java.lang.Integer",
+      "description": "Description for ws.port."
+    },
+    {
+      "name": "ws.host",
+      "type": "java.lang.String",
+      "description": "Description for ws.host."
+    },
+    {
+      "name": "ws.context-path",
+      "type": "java.lang.String",
+      "description": "Description for wss.context-path."
+    },
+    {
+      "name": "swagger.enable",
+      "type": "java.lang.Boolean",
+      "description": "Description for swagger.enable."
+    },
+    {
+      "name": "wechat.secret",
+      "type": "java.lang.String",
+      "description": "Description for wechat.secret."
+    },
+    {
+      "name": "wechat.mch-id",
+      "type": "java.lang.String",
+      "description": "Description for wechat.mch-id."
+    },
+    {
+      "name": "wechat.mch-key",
+      "type": "java.lang.String",
+      "description": "Description for wechat.mch-key."
+    },
+    {
+      "name": "wechat.mini.appid",
+      "type": "java.lang.String",
+      "description": "Description for wechat.mini.appid."
+    },
+    {
+      "name": "wechat.app.appid",
+      "type": "java.lang.String",
+      "description": "Description for wechat.app.appid."
+    },
+    {
+      "name": "wechat.mp.appid",
+      "type": "java.lang.String",
+      "description": "Description for wechat.mp.appid."
+    },
+    {
+      "name": "ali.oss.access-key-id",
+      "type": "java.lang.String",
+      "description": "Description for ali.oss.access-key-id."
+    },
+    {
+      "name": "ali.oss.access-secret",
+      "type": "java.lang.String",
+      "description": "Description for ali.oss.access-secret."
+    },
+    {
+      "name": "ali.oss.bucket-name",
+      "type": "java.lang.String",
+      "description": "Description for ali.oss.bucket-name."
+    },
+    {
+      "name": "ali.oss.bucket-url",
+      "type": "java.lang.String",
+      "description": "Description for ali.oss.bucket-url."
+    },
+    {
+      "name": "ali.oss.endpoint",
+      "type": "java.lang.String",
+      "description": "Description for ali.oss.endpoint."
+    }
+  ]
+}

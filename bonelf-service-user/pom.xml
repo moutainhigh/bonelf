@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>bonelf</artifactId>
+        <groupId>com.bonelf</groupId>
+        <version>1.0.0</version>
+        <!-- lookup parent from repository -->
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>bonelf-service-user</artifactId>
+    <description>用户模块</description>
+
+    <properties>
+        <cas.version>6.3.0-RC3</cas.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.bonelf</groupId>
+            <artifactId>bonelf-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!--开启cas server的rest支持-->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-rest</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+    </dependencies>
+
+
+</project>

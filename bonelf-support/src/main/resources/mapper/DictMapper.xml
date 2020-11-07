@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bonelf.support.mapper.DictMapper">
+  <resultMap id="BaseResultMap" type="com.bonelf.support.domain.entity.Dict">
+    <!--@Table sys_dict-->
+    <id column="dict_id" jdbcType="VARCHAR" property="dictId" />
+    <result column="dict_name" jdbcType="VARCHAR" property="dictName" />
+    <result column="dict_code" jdbcType="VARCHAR" property="dictCode" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    dict_id, dict_name, dict_code, description, create_time, update_time
+  </sql>
+    <select id="selectDictTest" resultType="java.lang.String">
+      SELECT di.item_text
+      FROM sys_dict d
+      LEFT JOIN sys_dict_item di ON d.dict_id = di.dict_id
+      WHERE d.dict_code=#{code,jdbcType=VARCHAR} AND di.item_value=#{value,jdbcType=VARCHAR}
+      ORDER BY di.update_time DESC
+      LIMIT 1
+    </select>
+</mapper>

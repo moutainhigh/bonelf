@@ -1,0 +1,36 @@
+server:
+  port: 8800
+
+spring:
+  profiles:
+    active: test
+    include:
+      - common
+
+  ## quartz定时任务,采用数据库方式
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: embedded
+    #设置自动启动，默认为 true
+    auto-startup: true
+    #启动时更新己存在的Job
+    overwrite-existing-jobs: true
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instance-name: MyScheduler
+            instance-id: AUTO
+          job-store:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driver-delegate-class: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            table-prefix: QRTZ_
+            is-clustered: true
+            misfire-threshold: 60000
+            cluster-checkin-interval: 10000
+          thread-pool:
+            class: org.quartz.simpl.SimpleThreadPool
+            thread-count: 10
+            thread-priority: 5
+            threads-inherit-context-class-loader-of-initializing-thread: true

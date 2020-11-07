@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bonelf.support.mapper.DictItemMapper">
+  <resultMap id="BaseResultMap" type="com.bonelf.support.domain.entity.DictItem">
+    <!--@Table sys_dict_item-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="dict_id" jdbcType="VARCHAR" property="dictId" />
+    <result column="item_text" jdbcType="VARCHAR" property="itemText" />
+    <result column="item_value" jdbcType="VARCHAR" property="itemValue" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    <result column="item_status" jdbcType="INTEGER" property="itemStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, dict_id, item_text, item_value, description, sort_order, item_status, create_time, 
+    update_time
+  </sql>
+</mapper>

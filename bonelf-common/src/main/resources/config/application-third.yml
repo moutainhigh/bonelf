@@ -1,0 +1,26 @@
+# third party 第三方配置
+wechat:
+  # 秘钥
+  secret: ??
+  # 商户号
+  mch-id: ??
+  # 商户秘钥
+  mch-key: ??
+  # ============微信小程序============
+  mini:
+    appid: ??
+    # ============移动应用============
+  app:
+    appid: ??
+    # ============公众号============
+  mp:
+    appid: ??
+
+ali:
+  # ============OSS对象存储============
+  oss:
+    access-key-id: ??
+    access-secret: ??
+    bucket-name: ??
+    bucket-url: ??
+    endpoint: ??

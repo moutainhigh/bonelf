@@ -1,0 +1,3 @@
+server:
+  tomcat:
+    basedir: /home/temp

@@ -1,0 +1,15 @@
+${AnsiColor.GREEN}    ,---,. ${AnsiColor.RED}                                  ,--,
+${AnsiColor.GREEN}  ,'  .'  \${AnsiColor.RED}                                ,--.'|     .--.,
+${AnsiColor.GREEN},---.' .' |${AnsiColor.RED}   ,---.        ,---,           |  | :   ,--.'  \
+${AnsiColor.GREEN}|   |  |: |${AnsiColor.RED}  '   ,'\   ,-+-. /  |          :  : '   |  | /\/
+${AnsiColor.GREEN}:   :  :  /${AnsiColor.RED} /   /   | ,--.'|'   |   ,---.  |  ' |   :  : :
+${AnsiColor.GREEN}:   |    ; ${AnsiColor.RED}.   ; ,. :|   |  ,"' |  /     \ '  | |   :  | |-,
+${AnsiColor.GREEN}|   :     \${AnsiColor.RED}'   | |: :|   | /  | | /    /  ||  | :   |  : :/|
+${AnsiColor.GREEN}|   |   . |${AnsiColor.RED}'   | .; :|   | |  | |.    ' / |'  : |__ |  |  .'
+${AnsiColor.GREEN}'   :  '; |${AnsiColor.RED}|   :    ||   | |  |/ '   ;   /||  | '.'|'  : '
+${AnsiColor.GREEN}|   |  | ; ${AnsiColor.RED} \   \  / |   | |--'  '   |  / |;  :    ;|  | |
+${AnsiColor.GREEN}|   :   /  ${AnsiColor.RED}  `----'  |   |/      |   :    ||  ,   / |  : \
+${AnsiColor.GREEN}|   | ,'   ${AnsiColor.RED}          '---'        \   \  /  ---`-'  |  |,'
+${AnsiColor.GREEN}`----'     ${AnsiColor.RED}                        `----'           `--'
+${AnsiColor.BRIGHT_BLUE}:: bonelf  :: Running Spring Boot ${spring-boot.version} ::
+:: https://www.bonelf.com ::${AnsiColor.DEFAULT}
