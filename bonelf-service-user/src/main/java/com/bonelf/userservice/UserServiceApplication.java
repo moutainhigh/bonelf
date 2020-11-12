@@ -19,10 +19,10 @@ import java.net.UnknownHostException;
  */
 @Slf4j
 @SpringBootApplication(scanBasePackages = {"com.bonelf.common", "com.bonelf.userservice"}, exclude = DruidDataSourceAutoConfigure.class)
-public class TestServiceApplication {
+public class UserServiceApplication {
 
 	public static void main(String[] args) throws UnknownHostException {
-		ConfigurableApplicationContext application = SpringApplication.run(TestServiceApplication.class, args);
+		ConfigurableApplicationContext application = SpringApplication.run(UserServiceApplication.class, args);
 		Environment env = application.getEnvironment();
 		//String ip = InetAddress.getLocalHost().getHostAddress();
 		String ip = IpUtil.getWlanV4Ip();
