@@ -42,10 +42,14 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String token = this.getToken(request);
-
+		if (token == null) {
+			//没有token就不用走是否刷新，也不用管是否过滤，这些Shiro都做了
+			return true;
+		}
+		// TODO 引入Shiro
 		// 从登录数据获得id和subject，不再解析token，因为解析token耗时挺长，可以试试大概2-3秒，整个接口最好只解析一次
 		CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
-		if (token == null || loginUser == null) {
+		if (loginUser == null) {
 			//没有token就不用走是否刷新，也不用管是否过滤，这些Shiro都做了
 			return true;
 		}

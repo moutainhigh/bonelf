@@ -18,6 +18,7 @@
         <shiro.version>1.6.0</shiro.version>
         <shiro-redis.version>3.3.1</shiro-redis.version>
         <commons-lang.version>2.6</commons-lang.version>
+        <cas-support.version>2.1.0-GA</cas-support.version>
     </properties>
 
     <dependencies>
@@ -120,7 +121,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <!--CAS自动配置-->
+        <!--<dependency>-->
+        <!--    <groupId>net.unicon.cas</groupId>-->
+        <!--    <artifactId>cas-client-autoconfig-support</artifactId>-->
+        <!--    <version>${cas-support.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>

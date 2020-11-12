@@ -3,6 +3,9 @@ package com.bonelf.common.util.redis;
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Point;
+import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -22,8 +25,11 @@ import java.util.concurrent.TimeUnit;
  * {@link this#sGet(String)} Set 唯一性
  * {@link this#lGet(String, long, long)}  List 存储列表数据并管理 (建议保存索引值方便操作)
  * {@link this#zAdd(String, String, double)}   zSet 按照点击量排序等使用的缓存技术
+ * {@link this#gAdd(String, String, long, long)}   GEO 经纬度计算、按经纬度排序分页
  *
- * redis还有其他应用 如发布订阅：见test模块websocket RedisSubscriptionConfig；锁：RedisLock
+ * redis还有其他应用 如
+ * 发布订阅：见test模块websocket RedisSubscriptionConfig；(opsForCluster)
+ * 锁：RedisLock
  *
  * @author bonelf
  **/
@@ -658,5 +664,40 @@ public class RedisUtil {
 	 */
 	public Set<Object> zSortRange(String key, long min, long max) {
 		return redisTemplate.opsForZSet().rangeByScore(key, min, max);
+	}
+
+
+	/*===============================GEO=================================*/
+
+	/**
+	 * 位置添加
+	 * @param key
+	 * @param name 名称
+	 * @param lng
+	 * @param lat
+	 * @return
+	 */
+	public Long gAdd(String key, String name, long lng, long lat) {
+		return redisTemplate.opsForGeo().add(key, new Point(lng, lat), name);
+	}
+	/**
+	 * 位置添加
+	 * @param key
+	 * @param name 名称
+	 * @return
+	 */
+	public Long gDel(String key, String... name) {
+		return redisTemplate.opsForGeo().remove(key, name);
+	}
+
+	/**
+	 * 计算距离
+	 * @param key
+	 * @param name1
+	 * @param name2
+	 * @return
+	 */
+	public Distance gDistance(String key, String name1, String name2) {
+		return redisTemplate.opsForGeo().distance(key, name1, name2, RedisGeoCommands.DistanceUnit.METERS);
 	}
 }

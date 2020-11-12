@@ -24,11 +24,11 @@ public class ApiShiroRealm extends AbstractShiroRealm {
 
 	@Override
 	protected Map<String, Set<String>> getUserRolesAndPermission(Long userId) {
-		return userFeignClient.getApiUserRolesAndPermission(userId);
+		return userFeignClient.getApiUserRolesAndPermission(userId).getResult();
 	}
 
 	@Override
 	protected CommonUser getCommonUser(Long userId) {
-		return userFeignClient.getApiUserById(userId);
+		return userFeignClient.getApiUserById(userId).getResult();
 	}
 }

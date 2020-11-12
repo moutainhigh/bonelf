@@ -94,6 +94,8 @@ public class ShiroConfig {
 				filterChainDefinitionMap.put(ctxPath + noAuthUrl, "anon");
 			}
 		}
+		filterChainDefinitionMap.put("/favicon.ico", "anon");
+		filterChainDefinitionMap.put(ctxPath + "/error", "anon");
 		filterChainDefinitionMap.put(ctxPath + "/sys/error/**", "anon");
 		filterChainDefinitionMap.put(ctxPath + "/gateway/debug/**", "anon");
 		filterChainDefinitionMap.put(ctxPath + "/testservice/**", "anon");

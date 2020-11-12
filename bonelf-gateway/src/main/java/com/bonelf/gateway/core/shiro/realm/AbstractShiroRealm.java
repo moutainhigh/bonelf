@@ -177,12 +177,12 @@ public abstract class AbstractShiroRealm extends AuthorizingRealm {
 	 *
 	 * 新的刷新token方式见{link BaseApiController#getClaims}
 	 *
-	 * 多端登录时 每个设备的token都是独立的 单点登录使用CAS处理
+	 * 多端登录时 每个设备的token都是独立的
 	 * @param token Shiro JWTToken中的credentials 这个token解析时如果过期一个刷新周期了会引起ExpiredJwtException，所以不可解析
 	 * 获取用户id，
 	 * 问题：
 	 * 1这个机制导致不能简单使用redis缓存用户id和token关系做单点登录（不然就是再缓存一个关系或者把允许过期时间拉到Long.maxValue
-	 * 这样不太好），本项目使用的CAS做单点登录。
+	 * 这样不太好）。
 	 * 2重新登录旧的token就一直在缓存中等待超时删除
 	 * 3单点登录要实现必须加一个再加个id和用户端存的token对应关系
 	 * @return jwtTokenRefresh

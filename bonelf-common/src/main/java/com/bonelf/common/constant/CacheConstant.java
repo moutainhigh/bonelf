@@ -26,14 +26,12 @@ public interface CacheConstant {
 	 * redis 用户当前生效的Token + token（用户使用的Token）
 	 * 使用gateway的token静态常量
 	 */
-	@Deprecated
-	String API_USER_TOKEN_KEY = BonlfConstant.PROJECT_NAME + ":api:userToken:%s";
+	String API_USER_TOKEN_PREFIX = com.bonelf.gateway.core.constant.CacheConstant.API_USER_TOKEN_PREFIX;
 	/**
 	 * 同上
 	 * 使用gateway的token静态常量
 	 */
-	@Deprecated
-	String SYS_USER_TOKEN_KEY = BonlfConstant.PROJECT_NAME + ":sys:userToken:%s";
+	String SYS_USER_TOKEN_PREFIX = com.bonelf.gateway.core.constant.CacheConstant.SYS_USER_TOKEN_PREFIX;
 
 	/**
 	 * socket session hash 存储在线状态
@@ -57,8 +55,23 @@ public interface CacheConstant {
 
 	/*===========================common===========================*/
 
+	/*===========================用户===========================*/
+	/**
+	 * 验证码过期时间
+	 */
+	long VERIFY_CODE_EXPIRED_SECOND = 5 * 60L;
+
+	/**
+	 * 验证码
+	 */
+	String LOGIN_VERIFY_CODE = BonlfConstant.PROJECT_NAME + ":login:%s";
 	/*===========================测试===========================*/
 
 	/*===========================订单===========================*/
 
+	/*===========================支付===========================*/
+	/**
+	 * wxma redis key prefix
+	 */
+	String WX_MA_KEY_PREFIX = BonlfConstant.PROJECT_NAME + ":";
 }

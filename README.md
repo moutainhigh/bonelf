@@ -17,7 +17,7 @@
 | `bonelf-service-promotion` | 营销服务 | HTTP - | [接口文档]() |
 | `bonelf-service-search` | 搜索服务 | HTTP - | [接口文档]() |
 | `bonelf-service-system` | 管理系统服务 | HTTP - | [接口文档]() |
-| `bonelf-service-user` | 用户服务 | HTTP - | [接口文档]() |
+| `bonelf-service-user` | 用户服务 | HTTP 8802 | [接口文档]() |
 | `bonelf-service-test` | 测试服务 | HTTP 8080 | [接口文档]() |
 
 ## Q&A

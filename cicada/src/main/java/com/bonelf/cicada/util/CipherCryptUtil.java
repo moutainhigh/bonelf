@@ -76,20 +76,18 @@ public class CipherCryptUtil {
 	 * @return 加密后的密文字符串
 	 * @throws Exception
 	 */
-	public static String encrypt(String plaintext, String password, String salt) {
+	public static String encrypt(String plaintext, String password, String salt) throws Exception {
 
 		Key key = getPbeKey(password);
 		byte[] encipheredData = null;
 		PBEParameterSpec parameterSpec = new PBEParameterSpec(salt.getBytes(), ITERATIONCOUNT);
-		try {
-			Cipher cipher = Cipher.getInstance(ALGORITHM);
 
-			cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
-			//update-begin-author:sccott date:20180815 for:中文作为用户名时，加密的密码windows和linux会得到不同的结果 gitee/issues/IZUD7
-			encipheredData = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
-			//update-end-author:sccott date:20180815 for:中文作为用户名时，加密的密码windows和linux会得到不同的结果 gitee/issues/IZUD7
-		} catch (Exception ignored) {
-		}
+		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
+		//update-begin-author:sccott date:20180815 for:中文作为用户名时，加密的密码windows和linux会得到不同的结果 gitee/issues/IZUD7
+		encipheredData = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
+		//update-end-author:sccott date:20180815 for:中文作为用户名时，加密的密码windows和linux会得到不同的结果 gitee/issues/IZUD7
+
 		return bytesToHexString(encipheredData);
 	}
 
@@ -102,7 +100,6 @@ public class CipherCryptUtil {
 	 * @throws Exception
 	 */
 	public static String decrypt(String ciphertext, String password, String salt) throws Exception {
-
 		Key key = getPbeKey(password);
 		byte[] passDec = null;
 		PBEParameterSpec parameterSpec = new PBEParameterSpec(salt.getBytes(), ITERATIONCOUNT);

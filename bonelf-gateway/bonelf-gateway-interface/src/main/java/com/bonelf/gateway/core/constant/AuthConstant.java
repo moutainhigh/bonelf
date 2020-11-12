@@ -53,7 +53,16 @@ public interface AuthConstant {
 	 * 刷新token payload 标记
 	 */
 	String REFRESH_CLAIM_FLAG = "refreshFlag";
+	/**
+	 * 前端MD5加密秘钥 8byte
+	 */
+	String FRONTEND_SAIT_CRYPTO = "==cjFE==";
+	/**
+	 * 数据库数据MD5加密秘钥
+	 */
+	String DATABASE_SALT_MD5 = "=choujiangDB=";
 
+	@Deprecated
 	List<String> EXCLUDE_URLS = CollectionUtil.newLinkedList(
 
 	);

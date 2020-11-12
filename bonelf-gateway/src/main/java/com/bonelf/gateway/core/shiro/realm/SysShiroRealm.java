@@ -24,11 +24,11 @@ public class SysShiroRealm extends AbstractShiroRealm {
 
 	@Override
 	protected Map<String, Set<String>> getUserRolesAndPermission(Long userId) {
-		return userFeignClient.getSysUserRolesAndPermission(userId);
+		return userFeignClient.getSysUserRolesAndPermission(userId).getResult();
 	}
 
 	@Override
 	protected CommonUser getCommonUser(Long userId) {
-		return userFeignClient.getSysUserById(userId);
+		return userFeignClient.getSysUserById(userId).getResult();
 	}
 }

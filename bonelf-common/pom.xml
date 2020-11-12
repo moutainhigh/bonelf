@@ -19,9 +19,13 @@
     <properties>
         <websocket-netty.version>0.9.5</websocket-netty.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
-        <druid.version>1.2.1</druid.version>
+        <!--discard long time none received connection-->
+        <!--<druid.version>1.2.1</druid.version>-->
+        <druid.version>1.1.22</druid.version>
         <dynamic-datasource.version>2.5.4</dynamic-datasource.version>
         <swagger2-ui.version>1.9.3</swagger2-ui.version>
+        <wechatmini-sdk.version>3.9.6.B</wechatmini-sdk.version>
+        <aliyun-sdk.version>4.5.14</aliyun-sdk.version>
     </properties>
 
     <dependencies>
@@ -119,9 +123,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <!--WXApi-->
         <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+            <version>${wechatmini-sdk.version}</version>
+        </dependency>
+        <!--阿里云的短信服务SDK-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>${aliyun-sdk.version}</version>
+        </dependency>
+        <!--因为没有Shiro-redis 所以需要这个-->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
         </dependency>
     </dependencies>
 

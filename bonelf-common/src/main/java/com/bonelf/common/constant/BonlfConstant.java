@@ -12,4 +12,9 @@ public interface BonlfConstant {
 	 * 项目名
 	 */
 	String PROJECT_NAME = "bonelf";
+
+	/**
+	 * 默认头像
+	 */
+	String DEFAULT_AVATAR_PATH = "/image/defaultAvatar.jpg";
 }
