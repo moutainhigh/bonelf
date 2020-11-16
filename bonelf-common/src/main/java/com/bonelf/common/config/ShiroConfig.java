@@ -105,11 +105,11 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/v1/user/wxLogin", "anon");
 		// 添加自定义过滤器为jwt
 		Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
-		filterMap.put("jwt", new JwtFilter(ShiroRealmEnum.API_SHIRO_REALM));
+		filterMap.put("jwt", new JwtFilter(ShiroRealmEnum.API_SHIRO_REALM, ctxPath));
 		shiroFilterFactoryBean.setFilters(filterMap);
 		// <!-- 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
 		//filterChainDefinitionMap.put(ctxPath + "/**", "jwt");
-		filterChainDefinitionMap.put("/v1/user/getUserFeign", "anon");
+		filterChainDefinitionMap.put("/**/feign", "anon");
 		filterChainDefinitionMap.put("/**", "jwt");
 		// 未授权界面返回的JSON
 		shiroFilterFactoryBean.setUnauthorizedUrl("/sys/error/401");

@@ -5,6 +5,9 @@ import com.bonelf.cicada.util.IpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
@@ -19,6 +22,9 @@ import java.net.UnknownHostException;
  * @since 2020/10/6 18:58
  */
 @Slf4j
+@EnableDiscoveryClient
+@EnableFeignClients(basePackages = "com.bonelf")
+@EnableCircuitBreaker
 @SpringBootApplication(scanBasePackages = {"com.bonelf.common", "com.bonelf.testservice"}, exclude = DruidDataSourceAutoConfigure.class)
 public class TestServiceApplication {
 

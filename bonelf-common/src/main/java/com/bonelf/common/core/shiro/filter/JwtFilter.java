@@ -27,9 +27,11 @@ import java.net.URLEncoder;
 @Slf4j
 public class JwtFilter extends BasicHttpAuthenticationFilter {
 	protected ShiroRealmEnum shiroRealm;
+	protected String ctxPath;
 
-	public JwtFilter(ShiroRealmEnum shiroRealm) {
+	public JwtFilter(ShiroRealmEnum shiroRealm, String ctxPath) {
 		this.shiroRealm = shiroRealm;
+		this.ctxPath = ctxPath;
 	}
 
 	/**
@@ -67,7 +69,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
 			//设置编码，否则中文字符在重定向时会变为空字符串
 			//request.setAttribute("errMsg", message);
 			//TODO feign请求网关服务接口
-			httpServletResponse.sendRedirect("/sys/error/401?errMsg=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+			httpServletResponse.sendRedirect(ctxPath + "/sys/error/401?errMsg=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
 		} catch (IOException exp) {
 			log.error(exp.getMessage());
 		}

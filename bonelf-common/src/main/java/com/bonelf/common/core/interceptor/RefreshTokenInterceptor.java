@@ -57,8 +57,11 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 			//缓存里的合法token
 			String cacheToken = (String)redisUtil.get(String.format(CacheConstant.API_USER_TOKEN_PREFIX, loginUser.getUserId()));
 			//使用redis实现   单点登录
+			if (cacheToken == null) {
+				throw new BonelfException(BizExceptionEnum.LOGIN_EXPIRED);
+			}
+			Claims claimsCache = JwtTokenUtil.getClaimFromToken(cacheToken);
 			if (!token.equals(cacheToken)) {
-				Claims claimsCache = JwtTokenUtil.getClaimFromToken(cacheToken);
 				if (claimsCache.get(AuthConstant.REFRESH_CLAIM_FLAG) != null) {
 					//1刷新token但是客户端没有存新的token（无需处理） 让前端主动调接口获取 不然就等过期
 					//并注释下面的刷新token相关的代码免得走一遍解析缓存token费时 refresh_time后重新登录
@@ -68,7 +71,6 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 				}
 			}
 			//提醒前端刷新token ，如果不处理等refresh_time时间token彻底过期就再需要登录，不使用刷新token也是可以的
-			Claims claimsCache = JwtTokenUtil.getClaimFromToken(cacheToken);
 			if (claimsCache != null && claimsCache.get(AuthConstant.REFRESH_CLAIM_FLAG) != null) {
 				//已经刷新过 需要主动刷新 TODO 刷新token的接口 让前端主动调接口获取
 				response.setHeader(AuthConstant.RESP_HEADER, "expired");

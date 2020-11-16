@@ -25,13 +25,13 @@ public class UserServiceFallback implements UserFeignClient {
 
 	@Override
 	public Result<ApiUser> getApiUserById(Long userId) {
-		log.error("Feign请求失败 userId{}", userId);
+		log.error("Feign请求失败 userId:{} cause:{}", userId, cause.getMessage());
 		return Result.error("Feign请求失败");
 	}
 
 	@Override
 	public Result<Map<String, Set<String>>> getApiUserRolesAndPermission(Long userId) {
-        log.error("Feign请求失败 userId{}", userId);
+		log.error("Feign请求失败 userId:{} cause:{}", userId, cause.getMessage());
 		return Result.error("Feign请求失败");
 	}
 }

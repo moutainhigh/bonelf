@@ -1,9 +1,6 @@
 package com.bonelf.common.config;
 
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -11,9 +8,6 @@ import org.springframework.web.client.RestTemplate;
 /**
  * 微服务相关bean注入
  */
-@EnableDiscoveryClient
-@EnableFeignClients(basePackages = "com.bonelf")
-@EnableCircuitBreaker
 @Configuration
 public class CloudConfigs {
 
