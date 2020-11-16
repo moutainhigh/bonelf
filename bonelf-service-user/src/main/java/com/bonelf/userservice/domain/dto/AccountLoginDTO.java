@@ -7,14 +7,16 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
-@ApiModel("微信登录")
+@ApiModel("账号密码登录")
 public class AccountLoginDTO {
 	/**
 	 * 手机号
 	 */
+	@NotNull
 	@ApiModelProperty("手机号")
 	@Pattern(regexp = RegexpConstant.VALIDATE_PHONE, message = "手机号格式不正确")
 	private String username;
@@ -29,7 +31,7 @@ public class AccountLoginDTO {
 	/**
 	 * 登录验证码
 	 */
-	@ApiModelProperty(value = "加密密码", name = "verify_code")
+	@ApiModelProperty(value = "登录验证码", name = "verify_code")
 	@JSONField(name = "verify_code", serialize = false)
 	@TableField(exist = false)
 	private String verifyCode;

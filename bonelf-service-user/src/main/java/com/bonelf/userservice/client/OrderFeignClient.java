@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 		fallbackFactory = OrderFeignFallbackFactory.class)
 public interface OrderFeignClient {
 	//定义要调用的方法的路径
-	@GetMapping("/v1/productOrder/getOrderById")
+	@GetMapping("/bonelf/v1/productOrder/getOrderById")
 	String getProductOrderById(@RequestParam("orderId") String orderId);
 }
 

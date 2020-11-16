@@ -2,6 +2,7 @@ package com.bonelf.testservice.core.websocket;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
+import com.bonelf.common.constant.AuthConstant;
 import com.bonelf.common.constant.CacheConstant;
 import com.bonelf.common.core.websocket.SocketMessage;
 import com.bonelf.common.core.websocket.SocketRespMessage;
@@ -10,7 +11,6 @@ import com.bonelf.common.core.websocket.constant.MessageRecvCmdEnum;
 import com.bonelf.common.core.websocket.constant.MessageSendCmdEnum;
 import com.bonelf.common.core.websocket.constant.OnlineStatusEnum;
 import com.bonelf.common.util.redis.RedisUtil;
-import com.bonelf.gateway.core.constant.AuthConstant;
 import com.bonelf.testservice.service.impl.SocketMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

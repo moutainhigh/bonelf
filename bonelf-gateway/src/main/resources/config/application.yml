@@ -30,6 +30,16 @@ spring:
           predicates:
             - Path=${server.servlet.context-path:}/support/**
 
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=${server.servlet.context-path:}/userService/**
+
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=${server.servlet.context-path:}/productService/**
+
         - id: test-service
           # 目标服务地址（uri：地址，请求转发后的地址） lb代表从注册中心获取服务
           uri: lb://test-service

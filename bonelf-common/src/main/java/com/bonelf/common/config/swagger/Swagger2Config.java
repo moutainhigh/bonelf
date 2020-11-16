@@ -1,6 +1,6 @@
 package com.bonelf.common.config.swagger;
 
-import com.bonelf.gateway.core.constant.AuthConstant;
+import com.bonelf.common.constant.AuthConstant;
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

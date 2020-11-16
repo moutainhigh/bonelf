@@ -22,16 +22,16 @@ public interface CacheConstant {
 	 * 重复提交aop + sessionId + servletPath
 	 */
 	String NO_REPEAT_SUBMIT = BonlfConstant.PROJECT_NAME + ":noRepeatSubmit:%s:%s";
+
+	/*===========================系统===========================*/
 	/**
-	 * redis 用户当前生效的Token + token（用户使用的Token）
-	 * 使用gateway的token静态常量
+	 * redis 用户当前生效的Token + token（用户使用的Token）  HASH
 	 */
-	String API_USER_TOKEN_PREFIX = com.bonelf.gateway.core.constant.CacheConstant.API_USER_TOKEN_PREFIX;
+	String API_USER_TOKEN_PREFIX = BonlfConstant.PROJECT_NAME + ":api:userToken:%s";
 	/**
 	 * 同上
-	 * 使用gateway的token静态常量
 	 */
-	String SYS_USER_TOKEN_PREFIX = com.bonelf.gateway.core.constant.CacheConstant.SYS_USER_TOKEN_PREFIX;
+	String SYS_USER_TOKEN_PREFIX = BonlfConstant.PROJECT_NAME + ":sys:userToken:%s";
 
 	/**
 	 * socket session hash 存储在线状态

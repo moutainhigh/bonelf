@@ -1,7 +1,7 @@
 package com.bonelf.gateway.filter;
 
 import cn.hutool.core.util.StrUtil;
-import com.bonelf.gateway.core.constant.AuthFeignConstant;
+import com.bonelf.gateway.constant.AuthFeignConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;

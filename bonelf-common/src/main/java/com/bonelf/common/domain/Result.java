@@ -3,26 +3,22 @@ package com.bonelf.common.domain;
 import com.bonelf.common.constant.BizConstants;
 import com.bonelf.common.core.aop.annotation.dict.DictField;
 import com.bonelf.common.core.exception.enums.BizExceptionEnum;
-import com.bonelf.gateway.domain.GateWayResult;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 /**
  * 接口返回数据格式
- * @see com.bonelf.gateway.domain.GateWayResult
  * @author bonelf
  * @date 2019年1月19日
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @ApiModel(value = "接口返回对象", description = "接口返回对象")
-public class Result<T> extends GateWayResult<T> implements Serializable {
+public class Result<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,7 +55,6 @@ public class Result<T> extends GateWayResult<T> implements Serializable {
 
 	/*===========================构造器===========================*/
 
-	@Override
 	public Result<T> success(Integer code, String message) {
 		if (code >= 300 || code < BizConstants.CODE_200) {
 			throw new RuntimeException("成功请求不应该返回非200-300的状态码");
@@ -71,12 +66,10 @@ public class Result<T> extends GateWayResult<T> implements Serializable {
 		return this;
 	}
 
-	@Override
 	public Result<T> success(String message) {
 		return this.success(BizConstants.CODE_200, message);
 	}
 
-	@Override
 	public Result<T> error500(String message) {
 		this.message = message;
 		this.code = BizConstants.CODE_500;
@@ -98,12 +91,31 @@ public class Result<T> extends GateWayResult<T> implements Serializable {
 		return r;
 	}
 
+	/**
+	 * 消息弹窗通知
+	 * @param msg 弹窗消息
+	 * @param <T> 消息类型
+	 * @return
+	 */
 	public static <T> Result<T> okMsg(String msg) {
 		Result<T> r = new Result<T>();
 		r.setSuccess(true);
 		r.setCode(BizConstants.CODE_200);
 		r.setTimestamp(System.currentTimeMillis());
 		r.setMessage(msg);
+		return r;
+	}
+
+	/**
+	 * 消息弹窗通知
+	 * @param msg 弹窗消息
+	 * @param debugResult 错误消息
+	 * @param <T> 消息类型
+	 * @return
+	 */
+	public static <T> Result<T> okMsg(String msg, T debugResult) {
+		Result<T> r = okMsg(msg);
+		r.setResult(debugResult);
 		return r;
 	}
 

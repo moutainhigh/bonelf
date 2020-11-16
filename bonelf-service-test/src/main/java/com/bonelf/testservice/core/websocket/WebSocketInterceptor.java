@@ -1,6 +1,6 @@
 package com.bonelf.testservice.core.websocket;
 
-import com.bonelf.gateway.core.constant.AuthConstant;
+import com.bonelf.common.constant.AuthConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;

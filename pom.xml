@@ -22,7 +22,6 @@
     <modules>
         <module>cicada</module>
         <module>bonelf-common</module>
-        <module>bonelf-gateway/bonelf-gateway-interface</module>
         <module>bonelf-gateway</module>
         <module>bonelf-service-order</module>
         <module>bonelf-service-product</module>

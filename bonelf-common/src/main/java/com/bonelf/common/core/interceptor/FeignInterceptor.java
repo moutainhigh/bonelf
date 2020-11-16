@@ -14,6 +14,7 @@ public class FeignInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception {
+		//FIXME 测试不过滤
 		return true;
 		//String secretKey = request.getHeader(AuthFeignConstant.AUTH_HEADER);
 		//if (secretKey != null) {

@@ -25,11 +25,11 @@
             <version>1.0.0</version>
         </dependency>
         <!--开启cas server的rest支持-->
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-rest</artifactId>
-            <version>${cas.version}</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>org.apereo.cas</groupId>-->
+        <!--    <artifactId>cas-server-support-rest</artifactId>-->
+        <!--    <version>${cas.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
 

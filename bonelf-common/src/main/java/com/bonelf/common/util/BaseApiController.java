@@ -1,14 +1,13 @@
 package com.bonelf.common.util;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bonelf.common.constant.AuthConstant;
+import com.bonelf.common.constant.CacheConstant;
+import com.bonelf.common.constant.ShiroRealmName;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.core.exception.enums.BizExceptionEnum;
+import com.bonelf.common.domain.CommonUser;
 import com.bonelf.common.util.redis.RedisUtil;
-import com.bonelf.gateway.core.constant.AuthConstant;
-import com.bonelf.gateway.core.constant.CacheConstant;
-import com.bonelf.gateway.core.constant.ShiroRealmName;
-import com.bonelf.gateway.domain.CommonUser;
-import com.bonelf.gateway.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.shiro.SecurityUtils;

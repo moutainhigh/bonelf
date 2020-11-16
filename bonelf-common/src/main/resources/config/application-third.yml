@@ -24,3 +24,8 @@ ali:
     bucket-name: ??
     bucket-url: ??
     endpoint: ??
+  # ============阿里云短信服务============
+  sms:
+    access-key-id: ??
+    access-secret: ??
+    sign-name: ??

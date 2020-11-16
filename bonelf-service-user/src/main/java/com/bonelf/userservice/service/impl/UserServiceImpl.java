@@ -11,15 +11,15 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bonelf.cicada.util.CipherCryptUtil;
 import com.bonelf.cicada.util.Md5CryptUtil;
+import com.bonelf.common.constant.AuthConstant;
 import com.bonelf.common.constant.BonlfConstant;
 import com.bonelf.common.constant.CacheConstant;
+import com.bonelf.common.constant.ShiroRealmName;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.core.exception.enums.BizExceptionEnum;
+import com.bonelf.common.util.JwtTokenUtil;
 import com.bonelf.common.util.SmsUtil;
 import com.bonelf.common.util.redis.RedisUtil;
-import com.bonelf.gateway.core.constant.AuthConstant;
-import com.bonelf.gateway.core.constant.ShiroRealmName;
-import com.bonelf.gateway.util.JwtTokenUtil;
 import com.bonelf.userservice.domain.dto.AccountLoginDTO;
 import com.bonelf.userservice.domain.dto.WechatLoginDTO;
 import com.bonelf.userservice.domain.entity.User;
@@ -57,7 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			throw new BonelfException(BizExceptionEnum.NO_REPEAT_SUBMIT, redisUtil.getExpire(CacheConstant.LOGIN_VERIFY_CODE));
 		}
 		String code = RandomUtil.randomNumbers(6);
-		smsUtil.sendVerify(phone, code);
+		//smsUtil.sendVerify(phone, code);
 		redisUtil.set(String.format(CacheConstant.LOGIN_VERIFY_CODE, phone), code, CacheConstant.VERIFY_CODE_EXPIRED_SECOND);
 		return code;
 	}
@@ -83,6 +83,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			try {
 				password = CipherCryptUtil.decrypt(dto.getPassword(), dto.getUsername(), AuthConstant.FRONTEND_SAIT_CRYPTO);
 			} catch (Exception e) {
+				e.printStackTrace();
 				throw new BonelfException(BizExceptionEnum.DECRYPT_ERROR);
 			}
 			//if (!Pattern.matches(RegexpConstant.NUMBERS_AND_LETTERS, password)) {
@@ -113,11 +114,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			} else {
 				this.baseMapper.update(new User(), Wrappers.<User>lambdaUpdate().set(User::getLastLoginTime, LocalDateTime.now()).eq(User::getUserId, user.getUserId()));
 			}
-			redisUtil.hdel(CacheConstant.LOGIN_VERIFY_CODE, user.getPhone());
+			redisUtil.del(CacheConstant.LOGIN_VERIFY_CODE, user.getPhone());
 		}
 		String token = JwtTokenUtil.generateToken(user.getUserId(), user.getPhone(), ShiroRealmName.API_SHIRO_REALM);
 		//存储token 刷新token用 初始的对应关系为 自己对自己
-		redisUtil.set(String.format(com.bonelf.gateway.core.constant.CacheConstant.API_USER_TOKEN_PREFIX, user.getUserId()), token, AuthConstant.REFRESH_SECOND);
+		redisUtil.set(String.format(com.bonelf.common.constant.CacheConstant.API_USER_TOKEN_PREFIX, user.getUserId()), token, AuthConstant.REFRESH_SECOND);
 
 		return LoginVO.builder()
 				.token(token)

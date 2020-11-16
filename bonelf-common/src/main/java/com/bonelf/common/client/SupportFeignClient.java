@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 		configuration = FeignConfig.class, fallbackFactory = SupportFeignFallbackFactory.class)
 public interface SupportFeignClient {
 
-	@PostMapping("/v1/websocket/sendMessage")
+	@PostMapping("/bonelf/v1/websocket/sendMessage")
 	Result<String> sendMessage(@RequestBody SocketRespMessage message);
 
-	@GetMapping("/v1/sys/dbdict/getByCode")
+	@GetMapping("/bonelf/v1/sys/dbdict/getByCode")
 	Result<String> queryDictTextByKey(@RequestParam String code, @RequestParam String value);
 }

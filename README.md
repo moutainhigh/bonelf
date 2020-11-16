@@ -46,13 +46,15 @@ string 替换文本注解
 
 支持表情注解（valid）
 
+空字符串转null注解
+
 过滤表情 过滤HTML表情（XSS）注解方式实现
 
 加密传输注解
 
-枚举注解（valid clazz or enum value）
+枚举校验注解（valid clazz or enum value）
 
-搜索服务
+搜索服务Elasticsearch
 
 rabbitmq（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
 
@@ -62,13 +64,15 @@ rabbitmq（应用订单服务通知商品修改销售数目、定时器发送消
 
 库存问题
 
-规格问题
+规格问题（下单）
 
 销售量排序问题
 
 二维码 验证码 图形验证码
 
 maven一键部署、使用docker部署（depoly）
+
+三方登录
 
 ## 已完成
 nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、shiro、消息转化器、异常处理advice、refreshToken机制、spring cache使用redis实现等）
@@ -82,3 +86,9 @@ quartz数据库定时器
 文件上传至服务器、OSS（七牛云一般前端传，后端维护refreshToken）
 
 swagger-ui 微服务下整合
+
+小程序、账号密码登录
+
+文件上传
+
+规格问题（增删改查）

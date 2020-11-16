@@ -1,13 +1,13 @@
 package com.bonelf.common.core.interceptor;
 
+import com.bonelf.common.constant.AuthConstant;
+import com.bonelf.common.constant.CacheConstant;
+import com.bonelf.common.constant.ShiroRealmName;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.core.exception.enums.BizExceptionEnum;
+import com.bonelf.common.domain.CommonUser;
+import com.bonelf.common.util.JwtTokenUtil;
 import com.bonelf.common.util.redis.RedisUtil;
-import com.bonelf.gateway.core.constant.AuthConstant;
-import com.bonelf.gateway.core.constant.CacheConstant;
-import com.bonelf.gateway.core.constant.ShiroRealmName;
-import com.bonelf.gateway.domain.CommonUser;
-import com.bonelf.gateway.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.shiro.SecurityUtils;
@@ -46,9 +46,9 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 			//没有token就不用走是否刷新，也不用管是否过滤，这些Shiro都做了
 			return true;
 		}
-		// TODO 引入Shiro
 		// 从登录数据获得id和subject，不再解析token，因为解析token耗时挺长，可以试试大概2-3秒，整个接口最好只解析一次
 		CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
+		//CommonUser loginUser = null;
 		if (loginUser == null) {
 			//没有token就不用走是否刷新，也不用管是否过滤，这些Shiro都做了
 			return true;

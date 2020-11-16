@@ -1,0 +1,3 @@
+idea解决Command line is too long. Shorten command line for ServiceStarter or also for Application报错
+找到 .idea\workspace.xml；如果找不到.idea是就更好显示目录，就能找到。
+找到<component name="PropertiesComponent">，在里面添加<property name="dynamic.classpath" value="true" />即可

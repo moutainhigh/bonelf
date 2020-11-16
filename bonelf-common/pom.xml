@@ -17,6 +17,8 @@
     <description>公共配置模块</description>
 
     <properties>
+        <shiro.version>1.6.0</shiro.version>
+        <shiro-redis.version>3.3.1</shiro-redis.version>
         <websocket-netty.version>0.9.5</websocket-netty.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <!--discard long time none received connection-->
@@ -33,11 +35,6 @@
         <dependency>
             <groupId>com.bonelf</groupId>
             <artifactId>cicada</artifactId>
-        </dependency>
-        <!--gateway 对外模块-->
-        <dependency>
-            <groupId>com.bonelf</groupId>
-            <artifactId>bonelf-gateway-interface</artifactId>
         </dependency>
         <!-- Spring Begin -->
         <!--nacos依赖-->
@@ -136,9 +133,29 @@
             <version>${aliyun-sdk.version}</version>
         </dependency>
         <!--因为没有Shiro-redis 所以需要这个-->
+        <!--<dependency>-->
+        <!--    <groupId>redis.clients</groupId>-->
+        <!--    <artifactId>jedis</artifactId>-->
+        <!--</dependency>-->
+        <!-- Shiro 注意使用的不是core
+        利用Spring Boot的自动化配置特性来实现快速的将Shiro集成到SpringBoot应用中
+        -->
         <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring-boot-starter</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <!-- shiro-redis session存储到redis -->
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>${shiro-redis.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.shiro</groupId>
+                    <artifactId>shiro-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

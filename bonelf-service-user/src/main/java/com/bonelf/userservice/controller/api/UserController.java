@@ -56,12 +56,12 @@ public class UserController extends BaseApiController {
 
 	/*===========================Feign===========================*/
 
-	@GetMapping(value = "/getUser")
+	@GetMapping(value = "/getUserFeign")
 	public Result<User> getUser(@RequestParam Long userId) {
 		return Result.ok(userService.getById(userId));
 	}
 
-	@PostMapping(value = "/getPermission")
+	@PostMapping(value = "/getPermissionFeign")
 	public Result<Map<String, Set<String>>> getPermission(@RequestParam Long userId) {
 		return Result.ok(userService.getApiUserRolesAndPermission(userId));
 	}

@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.bonelf.common.domain.CommonUser;
 import com.bonelf.common.domain.entity.base.BaseEntity;
-import com.bonelf.gateway.domain.CommonUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
  * @since 2020/10/12 16:57
  */
 @Data
-@TableName(value = "bnf_wechat_user")
+@TableName(value = "bnf_user")
 public class User extends BaseEntity implements Serializable, CommonUser {
 
 	@TableId(value = "user_id", type = IdType.ASSIGN_ID)
@@ -47,7 +47,7 @@ public class User extends BaseEntity implements Serializable, CommonUser {
 	 * 密码 暂且取openId加密值做密码
 	 */
 	@JSONField(serialize = false)
-	@TableField(value = "password")
+	@TableField(value = "user_password")
 	@ApiModelProperty(value = "密码 暂且取openId加密值做密码")
 	private String password;
 
@@ -96,7 +96,7 @@ public class User extends BaseEntity implements Serializable, CommonUser {
 	/**
 	 * 语言
 	 */
-	@TableField(value = "language")
+	@TableField(value = "user_language")
 	@ApiModelProperty(value = "语言")
 	private String language;
 
@@ -110,6 +110,7 @@ public class User extends BaseEntity implements Serializable, CommonUser {
 	/**
 	 * status
 	 */
+	@TableField(value = "user_status")
 	private Integer status;
 
 	@Override
