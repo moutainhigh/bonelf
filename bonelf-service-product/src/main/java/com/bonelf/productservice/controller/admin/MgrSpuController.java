@@ -1,12 +1,16 @@
 package com.bonelf.productservice.controller.admin;
 
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.bonelf.common.constant.enums.YesOrNotEnum;
 import com.bonelf.common.domain.Result;
 import com.bonelf.productservice.domain.dto.SkuEditDTO;
 import com.bonelf.productservice.domain.dto.SkuKeyEditDTO;
 import com.bonelf.productservice.domain.entity.Sku;
+import com.bonelf.productservice.domain.entity.Spu;
 import com.bonelf.productservice.domain.vo.SkuKeyMgrVO;
 import com.bonelf.productservice.service.SkuService;
+import com.bonelf.productservice.service.SpuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,6 +34,15 @@ import java.util.List;
 public class MgrSpuController {
 	@Autowired
 	private SkuService skuService;
+	@Autowired
+	private SpuService spuService;
+
+	@ApiOperation(value = "禁用规格")
+	@PostMapping("/disableSku")
+	public Result<?> disableSku(@ApiParam("商品编号") @RequestParam Long spuId) {
+		spuService.update(Wrappers.<Spu>lambdaUpdate().set(Spu::getEnableSku, YesOrNotEnum.N.getCode()).eq(Spu::getSpuId, spuId));
+		return Result.ok();
+	}
 
 	@ApiOperation(value = "规格键列表")
 	@GetMapping("/getSkuKey")
@@ -55,6 +68,7 @@ public class MgrSpuController {
 	@ApiOperation(value = "规格编辑")
 	@PostMapping("/editSku")
 	public Result<?> editSku(@RequestBody SkuEditDTO sku) {
+		spuService.update(Wrappers.<Spu>lambdaUpdate().set(Spu::getEnableSku, YesOrNotEnum.Y.getCode()).eq(Spu::getSpuId, sku.getSpuId()));
 		skuService.saveSku(sku);
 		return Result.ok();
 	}

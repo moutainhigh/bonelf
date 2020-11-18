@@ -23,6 +23,7 @@
         <module>cicada</module>
         <module>bonelf-common</module>
         <module>bonelf-gateway</module>
+        <module>bonelf-gateway/bonelf-gateway-constant</module>
         <module>bonelf-service-order</module>
         <module>bonelf-service-product</module>
         <module>bonelf-service-system</module>
@@ -32,6 +33,7 @@
         <module>bonelf-service-search</module>
         <module>bonelf-service-test</module>
         <module>bonelf-support</module>
+        <module>bonelf-auth</module>
     </modules>
 
     <properties>
@@ -40,7 +42,7 @@
         <java.version>1.8</java.version>
 
         <project.encoding>UTF-8</project.encoding>
-        <gateway-interface.version>1.0.0</gateway-interface.version>
+        <gateway-constant.version>1.0.0</gateway-constant.version>
         <common.version>1.0.0</common.version>
         <cicada.version>1.0.0</cicada.version>
         <nacos.version>2.2.0.RELEASE</nacos.version>
@@ -48,6 +50,7 @@
         <swagger2-bootstrap-ui.version>1.9.3</swagger2-bootstrap-ui.version>
         <jwt.version>0.9.1</jwt.version>
         <shiro-core.version>1.6.0</shiro-core.version>
+        <swagger-modal.version>1.5.22</swagger-modal.version>
     </properties>
 
     <dependencyManagement>
@@ -59,8 +62,8 @@
             </dependency>
             <dependency>
                 <groupId>com.bonelf</groupId>
-                <artifactId>bonelf-gateway-interface</artifactId>
-                <version>${gateway-interface.version}</version>
+                <artifactId>bonelf-gateway-constant</artifactId>
+                <version>${gateway-constant.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.bonelf</groupId>
@@ -112,6 +115,16 @@
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-core</artifactId>
                 <version>${shiro-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-modal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-models</artifactId>
+                <version>${swagger-modal.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -8,7 +8,7 @@ import com.bonelf.cicada.enums.EnumFactory;
 import com.bonelf.common.core.aop.annotation.dict.DbDict;
 import com.bonelf.common.core.aop.annotation.dict.DictField;
 import com.bonelf.common.core.aop.annotation.dict.EnumDict;
-import com.bonelf.common.util.DbDictUtil;
+import com.bonelf.common.service.DbDictService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -35,7 +35,7 @@ public class DictAspect {
 	 * queryDictTextByKey的@Cacheable的Aop生效，否则也可以注入自己把方法写类里面，但是我不这么做
 	 */
 	@Autowired
-	private DbDictUtil dbDictUtil;
+	private DbDictService dbDictUtil;
 	@Autowired
 	private ObjectMapper objectMapper;
 

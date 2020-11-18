@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bonelf.common.core.aop.annotation.dict.DbDict;
 import com.bonelf.common.domain.Result;
-import com.bonelf.common.util.DbDictUtil;
+import com.bonelf.common.service.DbDictService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
@@ -38,8 +37,8 @@ public class DbDictAddPropertyAspect {
 	/**
 	 * queryDictTextByKey的@Cacheable的Aop生效需要注入自己
 	 */
-	@Autowired
-	private DbDictUtil dbDictUtil;
+	//@Autowired
+	private DbDictService dbDictUtil;
 
 
 	// 定义切点Pointcut

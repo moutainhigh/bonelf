@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,11 +44,11 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 	private SkuKeyService skuKeyService;
 	@Autowired
 	private SkuValueService skuValueService;
-	@Resource
+	@Autowired
 	private SpuMapper spuMapper;
-	@Resource
+	@Autowired
 	private SkuKeyMapper skuKeyMapper;
-	@Resource
+	@Autowired
 	private SkuValueMapper skuValueMapper;
 
 	/**
@@ -283,6 +282,9 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 	 * @param skus
 	 */
 	private void saveSku(SkuEditDTO skuDto, List<Sku> skus) {
+		//清理空数据
+		skuDto.getSkus().removeIf(item -> item.getSellPrice() == null);
+
 		List<Sku> skuUpdateBatch = new ArrayList<>();
 		List<Sku> skuSaveBatch = new ArrayList<>();
 		for (Sku sku : skuDto.getSkus()) {

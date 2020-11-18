@@ -1,5 +1,6 @@
 package com.bonelf.productservice.domain.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.*;
 import com.bonelf.common.domain.entity.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -108,6 +109,10 @@ public class Spu  extends BaseEntity {
     @ApiModelProperty("关键字")
     @TableField("keywords")
     private String keywords;
+
+    @JSONField(name = "is_enable_sku")
+    @TableField("is_enable_sku")
+    private Integer enableSku;
 
     /**
      * 品牌

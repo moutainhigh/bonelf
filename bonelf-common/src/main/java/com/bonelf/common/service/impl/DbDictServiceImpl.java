@@ -1,12 +1,13 @@
-package com.bonelf.common.util;
+package com.bonelf.common.service.impl;
 
 import com.bonelf.common.client.SupportFeignClient;
 import com.bonelf.common.constant.CacheConstant;
 import com.bonelf.common.domain.Result;
+import com.bonelf.common.service.DbDictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -17,8 +18,8 @@ import org.springframework.web.client.RestTemplate;
  * @since 2020/10/14 13:13
  */
 @CacheConfig(cacheNames = CacheConstant.CACHE_NAME_7_DAY)
-@Component
-public class DbDictUtil {
+@Service
+public class DbDictServiceImpl implements DbDictService {
 	/**
 	 *  使用restTemplate对system模块发起请求 获取dict数据
 	 */

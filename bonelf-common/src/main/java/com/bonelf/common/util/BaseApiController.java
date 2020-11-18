@@ -1,17 +1,18 @@
 package com.bonelf.common.util;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bonelf.common.constant.AuthConstant;
 import com.bonelf.common.constant.CacheConstant;
-import com.bonelf.common.constant.ShiroRealmName;
+import com.bonelf.common.constant.enums.UserTypeEnum;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.core.exception.enums.BizExceptionEnum;
 import com.bonelf.common.domain.CommonUser;
 import com.bonelf.common.util.redis.RedisUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -80,7 +81,9 @@ public abstract class BaseApiController {
 	 * @return
 	 */
 	protected Long getUserId() {
-		CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
+		System.out.println("User:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication()));
+		//CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
+		CommonUser loginUser = null;
 		//另LoginInterceptor往request中加了id
 		return loginUser == null ? Long.parseLong(getClaims().getId()) : loginUser.getUserId();
 	}
@@ -90,7 +93,9 @@ public abstract class BaseApiController {
 	 * @return
 	 */
 	protected Long getUserIdCanNull() {
-		CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
+		System.out.println("User:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication()));
+		//CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
+		CommonUser loginUser = null;
 		if (loginUser != null) {
 			return loginUser.getUserId();
 		}
@@ -108,7 +113,8 @@ public abstract class BaseApiController {
 	 * @return
 	 */
 	protected String getPhone() {
-		CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
+		//CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
+		CommonUser loginUser = null;
 		if (loginUser != null) {
 			return loginUser.getUsername();
 		}
@@ -159,7 +165,8 @@ public abstract class BaseApiController {
 			//已经刷新过 需要主动刷新
 			response.setHeader(AuthConstant.RESP_HEADER, "expired");
 		} else {
-			String newAuthorization = JwtTokenUtil.generateRefreshToken(cacheClaims.getId(), cacheClaims.getSubject(), ShiroRealmName.API_SHIRO_REALM);
+			//String newAuthorization = JwtTokenUtil.generateRefreshToken(cacheClaims.getId(), cacheClaims.getSubject(), ShiroRealmName.API_SHIRO_REALM);
+			String newAuthorization = JwtTokenUtil.generateRefreshToken(cacheClaims.getId(), cacheClaims.getSubject(), UserTypeEnum.API_SHIRO_REALM.getRealmName());
 			redisUtil.set(String.format(CacheConstant.API_USER_TOKEN_PREFIX, cacheClaims.getId()), newAuthorization, AuthConstant.REFRESH_SECOND);
 			response.setHeader(AuthConstant.RESP_HEADER, newAuthorization);
 		}

@@ -4,12 +4,11 @@ import com.bonelf.common.domain.Result;
 import com.bonelf.support.service.DictService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * 定时任务在线管理
@@ -21,7 +20,7 @@ import javax.annotation.Resource;
 @Slf4j
 @Api(tags = "数据库字典接口")
 public class DbDictController {
-	@Resource
+	@Autowired
 	private DictService dictService;
 
 	@GetMapping(value = "/getByCode")

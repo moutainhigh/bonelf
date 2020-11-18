@@ -29,7 +29,7 @@ public class GatewayApplication {
 				"Application is running! Access URLs:\n\t" +
 				"Local: \t\t\thttp://localhost:" + port + path + "/\n\t" +
 				"Wlan: \t\t\thttp://" + ip + ":" + port + path + "/\n\t" +
-				"swagger-ui: \t1: http://" + ip + ":" + port + "/doc.html\t" + "2: http://" + ip + ":" + port + path + "/swagger-ui/\n\t" +
+				"swagger-ui: \t1: http://" + ip + ":" + port + "/doc.html\t" + "2: http://" + ip + ":" + port + "/swagger-ui/\n\t" +
 				// 与gateway无关写死了，根据具体自行修改~
 				"Websocket: \t\tws://" + ip + ":" + 8802 + "/\n" +
 				"----------------------------------------------------------");

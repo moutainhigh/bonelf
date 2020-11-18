@@ -1,0 +1,111 @@
+package com.bonelf.auth.config;
+
+import com.bonelf.auth.oauth2.granter.MobileAuthenticationProvider;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+
+/**
+ * <p>
+ * 签权服务
+ * </p>
+ * @author Chenyuan
+ * @since 2020/11/17 15:37
+ */
+@Slf4j
+@Configuration
+@EnableWebSecurity
+public class WebServerSecurityConfig extends WebSecurityConfigurerAdapter {
+	@Autowired
+	@Qualifier("userDetailsService")
+	private UserDetailsService userDetailsService;
+	@Autowired
+	@Qualifier("mobileUserDetailsService")
+	private UserDetailsService mobileUserDetailsService;
+
+	/**
+	 * @description 其他请在网关bonelf.anno-url过滤
+	 * @author guaishou
+	 * @date 2020-11-18 16:20
+	 */
+	@Override
+	public void configure(WebSecurity web) {
+		web.ignoring()
+				.antMatchers(HttpMethod.OPTIONS, "/**")
+				.antMatchers("/swagger-ui/index.html")
+				.antMatchers("/v2/api-docs");
+	}
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		log.debug("HttpSecurity configure method");
+		http.csrf().disable();
+		SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+		successHandler.setTargetUrlParameter("redirectTo");
+		http.authorizeRequests()
+				.antMatchers("/assets/**").permitAll()
+				.antMatchers("/actuator/**").permitAll()
+				.antMatchers("/login").permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.formLogin().loginPage("/login")
+				.successHandler(successHandler).and()
+				.logout().logoutUrl("/logout")
+				.and()
+				.httpBasic().and()
+				.csrf().disable();
+	}
+
+	/**
+	 * 注入自定义的userDetailsService实现，获取用户信息，设置密码加密方式
+	 * 多种验证方式
+	 * @param authenticationManagerBuilder
+	 * @throws Exception
+	 */
+	@Override
+	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		authenticationManagerBuilder
+				.userDetailsService(userDetailsService)
+				.passwordEncoder(passwordEncoder());
+		// 设置手机验证码登陆的AuthenticationProvider
+		authenticationManagerBuilder.authenticationProvider(mobileAuthenticationProvider());
+	}
+
+	/**
+	 * 将 AuthenticationManager 注册为 bean , 方便配置 oauth server 的时候使用
+	 */
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	/**
+	 * 创建手机验证码登陆的AuthenticationProvider
+	 * @return mobileAuthenticationProvider
+	 */
+	@Bean
+	public MobileAuthenticationProvider mobileAuthenticationProvider() {
+		MobileAuthenticationProvider mobileAuthenticationProvider = new MobileAuthenticationProvider(this.mobileUserDetailsService);
+		mobileAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		return mobileAuthenticationProvider;
+	}
+}

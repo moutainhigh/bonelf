@@ -2,7 +2,7 @@ package com.bonelf.common.core.interceptor;
 
 import com.bonelf.common.constant.AuthConstant;
 import com.bonelf.common.constant.CacheConstant;
-import com.bonelf.common.constant.ShiroRealmName;
+import com.bonelf.common.constant.enums.UserTypeEnum;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.core.exception.enums.BizExceptionEnum;
 import com.bonelf.common.domain.CommonUser;
@@ -10,9 +10,7 @@ import com.bonelf.common.util.JwtTokenUtil;
 import com.bonelf.common.util.redis.RedisUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Chenyuan
  * @since 2020/11/7 16:47
  */
+@Deprecated
 public class RefreshTokenInterceptor implements HandlerInterceptor {
 
 	private RedisUtil redisUtil;
@@ -47,8 +46,8 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 			return true;
 		}
 		// 从登录数据获得id和subject，不再解析token，因为解析token耗时挺长，可以试试大概2-3秒，整个接口最好只解析一次
-		CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
-		//CommonUser loginUser = null;
+		//CommonUser loginUser = (CommonUser)SecurityUtils.getSubject().getPrincipal();
+		CommonUser loginUser = null;
 		if (loginUser == null) {
 			//没有token就不用走是否刷新，也不用管是否过滤，这些Shiro都做了
 			return true;
@@ -75,7 +74,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 				//已经刷新过 需要主动刷新 TODO 刷新token的接口 让前端主动调接口获取
 				response.setHeader(AuthConstant.RESP_HEADER, "expired");
 			} else {
-				String newAuthorization = JwtTokenUtil.generateRefreshToken(loginUser.getUserId(), loginUser.getUsername(), ShiroRealmName.API_SHIRO_REALM);
+				String newAuthorization = JwtTokenUtil.generateRefreshToken(loginUser.getUserId(), loginUser.getUsername(),  UserTypeEnum.API_SHIRO_REALM.getRealmName());
 				redisUtil.set(String.format(CacheConstant.API_USER_TOKEN_PREFIX, loginUser.getUserId()), newAuthorization, AuthConstant.REFRESH_SECOND);
 				response.setHeader(AuthConstant.RESP_HEADER, newAuthorization);
 			}
@@ -85,14 +84,14 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 		return true;
 	}
 
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
-	}
-
-	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-	}
+	//@Override
+	//public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+	//
+	//}
+	//
+	//@Override
+	//public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+	//}
 
 	private String getToken(HttpServletRequest request) {
 		String token = request.getHeader(AuthConstant.HEADER);

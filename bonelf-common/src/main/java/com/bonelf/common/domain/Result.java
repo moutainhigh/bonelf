@@ -2,7 +2,7 @@ package com.bonelf.common.domain;
 
 import com.bonelf.common.constant.BizConstants;
 import com.bonelf.common.core.aop.annotation.dict.DictField;
-import com.bonelf.common.core.exception.enums.BizExceptionEnum;
+import com.bonelf.common.core.exception.AbstractBaseExceptionEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -145,11 +145,11 @@ public class Result<T> implements Serializable {
 		return r;
 	}
 
-	public static <T> Result<T> error(BizExceptionEnum exception) {
+	public static <T> Result<T> error(AbstractBaseExceptionEnum exception) {
 		return error(exception.getStatus(), exception.getMessage());
 	}
 
-	public static <T> Result<T> error(BizExceptionEnum exception, Object... format) {
+	public static <T> Result<T> error(AbstractBaseExceptionEnum exception, Object... format) {
 		return error(exception.getStatus(), String.format(exception.getMessage(), (Object[])format));
 	}
 }

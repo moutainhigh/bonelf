@@ -46,7 +46,7 @@ string 替换文本注解
 
 支持表情注解（valid）
 
-空字符串转null注解
+空字符串转null 注解
 
 过滤表情 过滤HTML表情（XSS）注解方式实现
 
@@ -54,7 +54,7 @@ string 替换文本注解
 
 枚举校验注解（valid clazz or enum value）
 
-搜索服务Elasticsearch
+搜索服务elasticsearch
 
 rabbitmq（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
 
@@ -73,6 +73,12 @@ rabbitmq（应用订单服务通知商品修改销售数目、定时器发送消
 maven一键部署、使用docker部署（depoly）
 
 三方登录
+
+zipkin
+
+grafana
+
+kibana
 
 ## 已完成
 nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、shiro、消息转化器、异常处理advice、refreshToken机制、spring cache使用redis实现等）

@@ -16,12 +16,12 @@ spring:
 
 # cas 单点登录
 # 配置 cas server 信息
-cas:
-  # cas服务端的地址
-  server-url-prefix: http://localhost:8080/cas
-  # cas服务端的登录地址
-  server-login-url: http://localhost:8080/cas/login
-  # 当前服务器的地址(客户端)
-  client-host-url: http://localhost:${server.port:8026}
-  # Ticket校验器使用Cas30ProxyReceivingTicketValidationFilter
-  validation-type: cas3
+#cas:
+#  # cas服务端的地址
+#  server-url-prefix: http://localhost:8080/cas
+#  # cas服务端的登录地址
+#  server-login-url: http://localhost:8080/cas/login
+#  # 当前服务器的地址(客户端)
+#  client-host-url: http://localhost:${server.port:8026}
+#  # Ticket校验器使用Cas30ProxyReceivingTicketValidationFilter
+#  validation-type: cas3

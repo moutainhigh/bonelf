@@ -14,7 +14,7 @@ import com.bonelf.cicada.util.Md5CryptUtil;
 import com.bonelf.common.constant.AuthConstant;
 import com.bonelf.common.constant.BonlfConstant;
 import com.bonelf.common.constant.CacheConstant;
-import com.bonelf.common.constant.ShiroRealmName;
+import com.bonelf.common.constant.enums.UserTypeEnum;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.core.exception.enums.BizExceptionEnum;
 import com.bonelf.common.util.JwtTokenUtil;
@@ -33,7 +33,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +44,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	private RedisUtil redisUtil;
 	@Autowired
 	private SmsUtil smsUtil;
-	@Resource
+	@Autowired
 	private WxMaService wxMaService;
 
 	@Value("${choujiang.base-url:http://localhost}")
@@ -116,7 +115,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			}
 			redisUtil.del(CacheConstant.LOGIN_VERIFY_CODE, user.getPhone());
 		}
-		String token = JwtTokenUtil.generateToken(user.getUserId(), user.getPhone(), ShiroRealmName.API_SHIRO_REALM);
+		String token = JwtTokenUtil.generateToken(user.getUserId(), user.getPhone(),  UserTypeEnum.API_SHIRO_REALM.getRealmName());
 		//存储token 刷新token用 初始的对应关系为 自己对自己
 		redisUtil.set(String.format(com.bonelf.common.constant.CacheConstant.API_USER_TOKEN_PREFIX, user.getUserId()), token, AuthConstant.REFRESH_SECOND);
 
@@ -172,7 +171,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 							.set(User::getLastLoginTime, LocalDateTime.now())
 							.eq(User::getUserId, user.getUserId()));
 		}
-		String token = JwtTokenUtil.generateToken(user.getUserId(), user.getPhone(), ShiroRealmName.API_SHIRO_REALM);
+		String token = JwtTokenUtil.generateToken(user.getUserId(), user.getPhone(), UserTypeEnum.API_SHIRO_REALM.getRealmName());
 		//存储token 刷新token用 初始的对应关系为 自己对自己
 		redisUtil.set(String.format(CacheConstant.API_USER_TOKEN_PREFIX, user.getUserId()), token, AuthConstant.REFRESH_SECOND);
 		return LoginVO.builder()

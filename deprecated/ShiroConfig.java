@@ -44,7 +44,8 @@ import java.util.*;
  * @since 2020/10/12 11:17
  */
 @Slf4j
-@Configuration
+@Deprecated
+//@Configuration
 public class ShiroConfig {
 	@Value("${spring.redis.database:0}")
 	private String database;

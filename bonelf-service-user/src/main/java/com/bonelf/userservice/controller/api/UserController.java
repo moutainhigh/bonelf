@@ -12,10 +12,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +31,7 @@ import java.util.Set;
 @Slf4j
 @Api(tags = "用户接口")
 public class UserController extends BaseApiController {
-	@Resource
+	@Autowired
 	private UserService userService;
 
 	@ApiOperation("验证码")

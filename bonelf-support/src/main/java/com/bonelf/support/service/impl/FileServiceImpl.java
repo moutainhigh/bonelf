@@ -10,10 +10,10 @@ import com.bonelf.support.config.property.OssProperty;
 import com.bonelf.support.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,9 +23,9 @@ import java.net.URLEncoder;
 @Slf4j
 @Service
 public class FileServiceImpl implements FileService {
-	@Resource
+	@Autowired
 	private OssProperty ossProperty;
-	@Resource
+	@Autowired
 	private BonelfProperty bonelfProperty;
 
 	@Override

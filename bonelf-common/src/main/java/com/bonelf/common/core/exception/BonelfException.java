@@ -19,6 +19,12 @@ public class BonelfException extends RuntimeException {
 	private Integer code;
 	private String errorMessage;
 
+
+	public BonelfException(Exception e) {
+		this.code = BizConstants.CODE_500;
+		this.errorMessage = e.getMessage();
+	}
+
 	public BonelfException(String messageFor500) {
 		this.code = BizConstants.CODE_500;
 		this.errorMessage = messageFor500;

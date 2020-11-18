@@ -20,15 +20,10 @@
     </properties>
 
     <dependencies>
-        <!--工具包-->
-        <dependency>
-            <groupId>com.bonelf</groupId>
-            <artifactId>cicada</artifactId>
-        </dependency>
         <!--gateway 对外接口-->
         <dependency>
             <groupId>com.bonelf</groupId>
-            <artifactId>bonelf-gateway-interface</artifactId>
+            <artifactId>bonelf-gateway-constant</artifactId>
         </dependency>
         <!-- Spring Begin -->
         <!--nacos依赖-->
@@ -98,6 +93,23 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <!-- 排除所有web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--CAS自动配置-->
         <!--<dependency>-->

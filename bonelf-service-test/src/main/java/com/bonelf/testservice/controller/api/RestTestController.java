@@ -1,6 +1,8 @@
 package com.bonelf.testservice.controller.api;
 
+import com.alibaba.fastjson.JSON;
 import com.bonelf.common.domain.Result;
+import com.bonelf.common.util.BaseApiController;
 import com.bonelf.testservice.client.OrderFeignClient;
 import com.bonelf.testservice.domain.dto.TestConverterDTO;
 import com.bonelf.testservice.domain.vo.TestConverterVO;
@@ -9,10 +11,10 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +22,19 @@ import java.util.Map;
 @RestController
 @RequestMapping("/test")
 //@DefaultProperties( threadPoolKey="xxx" )
-public class RestTestController {
+public class RestTestController extends BaseApiController {
 
 	@Autowired
 	private RestTemplate restTemplate;
-	@Resource
+	@Autowired
 	private OrderFeignClient orderFeignClient;
+
+	@ApiOperation(value = "testUser")
+	@GetMapping("/testUser")
+	public Result<?> testUser() {
+		System.out.println("User:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication()));
+		return Result.ok(null);
+	}
 
 	@ApiOperation(value = "testConverter")
 	@GetMapping("/testConverter")

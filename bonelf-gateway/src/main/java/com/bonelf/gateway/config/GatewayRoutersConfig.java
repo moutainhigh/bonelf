@@ -2,14 +2,13 @@ package com.bonelf.gateway.config;
 
 import com.bonelf.gateway.handler.HystrixFallbackHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
-
-import javax.annotation.Resource;
 
 /**
  * 路由配置信息
@@ -18,7 +17,7 @@ import javax.annotation.Resource;
 @Configuration
 //@AllArgsConstructor
 public class GatewayRoutersConfig {
-    @Resource
+    @Autowired
     private HystrixFallbackHandler hystrixFallbackHandler;
 
     @Bean

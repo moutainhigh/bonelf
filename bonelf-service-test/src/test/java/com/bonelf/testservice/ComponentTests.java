@@ -2,9 +2,7 @@ package com.bonelf.testservice;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSON;
-import com.bonelf.common.util.JsonUtil;
 import com.bonelf.common.util.redis.RedisUtil;
-import com.bonelf.testservice.domain.vo.TestConverterVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +30,7 @@ public class ComponentTests {
 
 	@Test
 	public void jsonUtilTest() {
-		log.info(JsonUtil.objToJson(new TestConverterVO()));
+		//log.info(JsonUtil.objToJson(new TestConverterVO()));
 	}
 
 	@Test

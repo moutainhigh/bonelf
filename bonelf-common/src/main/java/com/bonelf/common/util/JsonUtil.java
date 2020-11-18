@@ -1,103 +1,320 @@
 package com.bonelf.common.util;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.bonelf.common.core.exception.BonelfException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
- * <p>
- * Jackson转换方法
- * </p>
- * @author Chenyuan
- * @since 2020/11/3 23:11
+ * Jackson工具类
+ * @author guaishou
  */
 @Slf4j
 public class JsonUtil {
-	private static ObjectMapper objectMapper = SpringContextUtils.getBean(ObjectMapper.class);
 
-	public static <T> String objToJson(T obj) {
-		if (obj == null) {
-			return null;
-		}
-
+	/**
+	 * 将对象序列化成json字符串
+	 * @param value javaBean
+	 * @param <T> T 泛型标记
+	 * @return jsonString json字符串
+	 */
+	public static <T> String toJson(T value) {
 		try {
-			return obj instanceof String ? (String)obj : objectMapper.writeValueAsString(obj);
+			return getInstance().writeValueAsString(value);
 		} catch (Exception e) {
-			log.warn("obj To json is error", e);
-			return null;
+			log.error(e.getMessage(), e);
+		}
+		return null;
+	}
+
+	/**
+	 * 将对象序列化成 json byte 数组
+	 * @param object javaBean
+	 * @return jsonString json字符串
+	 */
+	public static byte[] toJsonAsBytes(Object object) {
+		try {
+			return getInstance().writeValueAsBytes(object);
+		} catch (JsonProcessingException e) {
+			throw new BonelfException(e);
 		}
 	}
 
 	/**
-	 * 返回格式化好的json串
-	 * @param obj
-	 * @param <T>
-	 * @return
+	 * 将json反序列化成对象
+	 * @param content content
+	 * @param valueType class
+	 * @param <T> T 泛型标记
+	 * @return Bean
 	 */
-	public static <T> String objToJsonPretty(T obj) {
-		if (obj == null) {
-			return null;
-		}
-
+	public static <T> T parse(String content, Class<T> valueType) {
 		try {
-			return obj instanceof String ? (String)obj : objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+			return getInstance().readValue(content, valueType);
 		} catch (Exception e) {
-			log.warn("obj To json pretty is error", e);
-			return null;
+			log.error(e.getMessage(), e);
 		}
+		return null;
 	}
 
-	public static <T> T json2Object(String json, Class<T> clazz) {
-		if (StringUtils.isEmpty(json) || clazz == null) {
-			return null;
-		}
-
+	/**
+	 * 将json反序列化成对象
+	 * @param content content
+	 * @param typeReference 泛型类型
+	 * @param <T> T 泛型标记
+	 * @return Bean
+	 */
+	public static <T> T parse(String content, TypeReference<T> typeReference) {
 		try {
-			return clazz.equals(String.class) ? (T)json : objectMapper.readValue(json, clazz);
-		} catch (Exception e) {
-			log.warn("json To obj is error", e);
-			return null;
+			return getInstance().readValue(content, typeReference);
+		} catch (IOException e) {
+			throw new BonelfException(e);
 		}
 	}
 
 	/**
-	 * 通过   TypeReference    处理List<User>这类多泛型问题
-	 * @param json
-	 * @param typeReference
-	 * @param <T>
-	 * @return
+	 * 将json byte 数组反序列化成对象
+	 * @param bytes json bytes
+	 * @param valueType class
+	 * @param <T> T 泛型标记
+	 * @return Bean
 	 */
-	public static <T> T json2Object(String json, TypeReference typeReference) {
-		if (StringUtils.isEmpty(json) || typeReference == null) {
-			return null;
-		}
-
+	public static <T> T parse(byte[] bytes, Class<T> valueType) {
 		try {
-			return (T)(typeReference.getType().equals(String.class) ? json : objectMapper.readValue(json, typeReference));
-		} catch (Exception e) {
-			log.warn("json To obj is error", e);
-			return null;
+			return getInstance().readValue(bytes, valueType);
+		} catch (IOException e) {
+			throw new BonelfException(e);
+		}
+	}
+
+
+	/**
+	 * 将json反序列化成对象
+	 * @param bytes bytes
+	 * @param typeReference 泛型类型
+	 * @param <T> T 泛型标记
+	 * @return Bean
+	 */
+	public static <T> T parse(byte[] bytes, TypeReference<T> typeReference) {
+		try {
+			return getInstance().readValue(bytes, typeReference);
+		} catch (IOException e) {
+			throw new BonelfException(e);
 		}
 	}
 
 	/**
-	 * 通过jackson 的javatype 来处理多泛型的转换
-	 * @param json
-	 * @param collectionClazz
-	 * @param elements
-	 * @param <T>
-	 * @return
+	 * 将json反序列化成对象
+	 * @param in InputStream
+	 * @param valueType class
+	 * @param <T> T 泛型标记
+	 * @return Bean
 	 */
-	public static <T> T json2Object(String json, Class<?> collectionClazz, Class<?>... elements) {
-		JavaType javaType = objectMapper.getTypeFactory().constructParametricType(collectionClazz, elements);
-
+	public static <T> T parse(InputStream in, Class<T> valueType) {
 		try {
-			return objectMapper.readValue(json, javaType);
-		} catch (Exception e) {
-			log.warn("json To obj is error", e);
-			return null;
+			return getInstance().readValue(in, valueType);
+		} catch (IOException e) {
+			throw new BonelfException(e);
 		}
 	}
+
+	/**
+	 * 将json反序列化成对象
+	 * @param in InputStream
+	 * @param typeReference 泛型类型
+	 * @param <T> T 泛型标记
+	 * @return Bean
+	 */
+	public static <T> T parse(InputStream in, TypeReference<T> typeReference) {
+		try {
+			return getInstance().readValue(in, typeReference);
+		} catch (IOException e) {
+			throw new BonelfException(e);
+		}
+	}
+
+	/**
+	 * 将json反序列化成List对象
+	 * @param content content
+	 * @param valueTypeRef class
+	 * @param <T> T 泛型标记
+	 * @return List
+	 */
+	public static <T> List<T> parseArray(String content, Class<T> valueTypeRef) {
+		try {
+
+			if (!StrUtil.startWithIgnoreCase(content, StringPool.LEFT_SQ_BRACKET)) {
+				content = StringPool.LEFT_SQ_BRACKET + content + StringPool.RIGHT_SQ_BRACKET;
+			}
+
+			List<Map<String, Object>> list = getInstance().readValue(content, new TypeReference<List<Map<String, Object>>>() {
+			});
+			List<T> result = new ArrayList<>();
+			for (Map<String, Object> map : list) {
+				result.add(toPojo(map, valueTypeRef));
+			}
+			return result;
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+		}
+		return null;
+	}
+
+	public static Map<String, Object> toMap(String content) {
+		try {
+			return getInstance().readValue(content, Map.class);
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+		}
+		return null;
+	}
+
+	public static <T> Map<String, T> toMap(String content, Class<T> valueTypeRef) {
+		try {
+			Map<String, Map<String, Object>> map = getInstance().readValue(content, new TypeReference<Map<String, Map<String, Object>>>() {
+			});
+			Map<String, T> result = new HashMap<>(16);
+			for (Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
+				result.put(entry.getKey(), toPojo(entry.getValue(), valueTypeRef));
+			}
+			return result;
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+		}
+		return null;
+	}
+
+	public static <T> T toPojo(Map fromValue, Class<T> toValueType) {
+		return getInstance().convertValue(fromValue, toValueType);
+	}
+
+	/**
+	 * 将json字符串转成 JsonNode
+	 * @param jsonString jsonString
+	 * @return jsonString json字符串
+	 */
+	public static JsonNode readTree(String jsonString) {
+		try {
+			return getInstance().readTree(jsonString);
+		} catch (IOException e) {
+			throw new BonelfException(e);
+		}
+	}
+
+	/**
+	 * 将json字符串转成 JsonNode
+	 * @param in InputStream
+	 * @return jsonString json字符串
+	 */
+	public static JsonNode readTree(InputStream in) {
+		try {
+			return getInstance().readTree(in);
+		} catch (IOException e) {
+			throw new BonelfException(e);
+		}
+	}
+
+	/**
+	 * 将json字符串转成 JsonNode
+	 * @param content content
+	 * @return jsonString json字符串
+	 */
+	public static JsonNode readTree(byte[] content) {
+		try {
+			return getInstance().readTree(content);
+		} catch (IOException e) {
+			throw new BonelfException(e);
+		}
+	}
+
+	/**
+	 * 将json字符串转成 JsonNode
+	 * @param jsonParser JsonParser
+	 * @return jsonString json字符串
+	 */
+	public static JsonNode readTree(JsonParser jsonParser) {
+		try {
+			return getInstance().readTree(jsonParser);
+		} catch (IOException e) {
+			throw new BonelfException(e);
+		}
+	}
+
+	public static ObjectMapper getInstance() {
+		return JacksonHolder.INSTANCE;
+	}
+
+	private static class JacksonHolder {
+		private static ObjectMapper INSTANCE = new JacksonObjectMapper();
+	}
+
+	public static class JacksonObjectMapper extends ObjectMapper {
+		private static final long serialVersionUID = 4288193147502386170L;
+
+		private static final Locale CHINA = Locale.CHINA;
+
+		public JacksonObjectMapper() {
+			super();
+			//设置地点为中国
+			super.setLocale(CHINA);
+			//去掉默认的时间戳格式
+			super.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+			//设置为中国上海时区
+			super.setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
+			//序列化时，日期的统一格式
+			super.setDateFormat(new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN, Locale.CHINA));
+			//序列化处理
+			super.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
+			super.configure(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER.mappedFeature(), true);
+			super.findAndRegisterModules();
+			//失败处理
+			super.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+			super.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			//单引号处理
+			super.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+			//反序列化时，属性不存在的兼容处理s
+			super.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			//日期格式化
+			SimpleModule simpleModule = new SimpleModule();
+			simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DatePattern.NORM_DATETIME_FORMATTER));
+			simpleModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DatePattern.NORM_DATE_FORMATTER));
+			simpleModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN)));
+			simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DatePattern.NORM_DATETIME_FORMATTER));
+			simpleModule.addSerializer(LocalDate.class, new LocalDateSerializer(DatePattern.NORM_DATE_FORMATTER));
+			simpleModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN)));
+			super.registerModule(simpleModule);
+			super.findAndRegisterModules();
+		}
+
+		@Override
+		public ObjectMapper copy() {
+			return super.copy();
+		}
+	}
+
 }

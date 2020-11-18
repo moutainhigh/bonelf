@@ -12,10 +12,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+@RestControllerAdvice
 @Order(-1)
 public class GlobalExceptionHandler {
 
@@ -34,7 +33,6 @@ public class GlobalExceptionHandler {
 	 * @param e
 	 * @return
 	 */
-	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	@ExceptionHandler(value = BonelfException.class)
 	public Result<?> errorHandler(BonelfException e) {
@@ -55,7 +53,6 @@ public class GlobalExceptionHandler {
 			MethodArgumentNotValidException.class,
 			MissingServletRequestParameterException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
 	public Result<?> handleApiConstraintViolationException(Exception e, HttpServletRequest request) {
 		String message = null;
 		if (e instanceof BindException) {
@@ -87,7 +84,6 @@ public class GlobalExceptionHandler {
 	 * @return
 	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
 	@ExceptionHandler(value = HttpMessageNotReadableException.class)
 	public Result<?> httpMessageNotReadableException(HttpMessageNotReadableException e) {
 		//便于调试
@@ -95,7 +91,6 @@ public class GlobalExceptionHandler {
 		return Result.error(BizExceptionEnum.JSON_SERIALIZE_EXCEPTION);
 	}
 
-	@ResponseBody
 	@ExceptionHandler(value = MaxUploadSizeExceededException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public Result<?> handleUploadException(MaxUploadSizeExceededException exp) {
@@ -121,7 +116,6 @@ public class GlobalExceptionHandler {
 	 * @param e
 	 * @return
 	 */
-	@ResponseBody
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(value = Exception.class)
 	public Result<?> errorHandler(Exception e) {

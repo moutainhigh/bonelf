@@ -6,8 +6,8 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.bonelf.common.core.interceptor.DebugInterceptor;
 import com.bonelf.common.core.interceptor.FeignInterceptor;
-import com.bonelf.common.core.interceptor.RefreshTokenInterceptor;
 import com.bonelf.common.util.redis.RedisUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -62,10 +62,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.addPathPatterns("/**")
 				.excludePathPatterns("/swagger-ui");
 		// 接口token刷新拦截器
-		registry.addInterceptor(new RefreshTokenInterceptor(redisUtil))
-				.addPathPatterns("/**")
-				.excludePathPatterns("/swagger-ui");
+		//registry.addInterceptor(new RefreshTokenInterceptor(redisUtil))
+		//		.addPathPatterns("/**")
+		//		.excludePathPatterns("/swagger-ui");
 		// 接口debug拦截器
+		registry.addInterceptor(new DebugInterceptor())
+				.addPathPatterns("/**");
 	}
 
 	/**
