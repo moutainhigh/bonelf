@@ -2,7 +2,7 @@ package com.bonelf.cicada.enums;
 
 /**
  * 枚举工厂
- * @author chenyuan
+ * @author bonelf
  * @since 2020/8/31 17:37
  */
 public class EnumFactory {
@@ -32,7 +32,7 @@ public class EnumFactory {
      * <p>
      * 获得中文值
      * </p>
-     * @author chenyuan
+     * @author bonelf
      * @since 2020/8/31 17:37
      */
     public static <T extends CodeEnum> String getEnumString(Object code, Class<T> enumClass) {

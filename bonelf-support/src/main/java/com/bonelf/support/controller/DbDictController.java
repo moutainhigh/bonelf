@@ -23,7 +23,7 @@ public class DbDictController {
 	@Autowired
 	private DictService dictService;
 
-	@GetMapping(value = "/getByCode")
+	@GetMapping(value = "/v1/getByCode")
 	public Result<String> queryPageList(@RequestParam String code, @RequestParam String value) {
 		return Result.ok(dictService.getDictText(code, value));
 	}

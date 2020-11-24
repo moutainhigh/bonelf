@@ -25,7 +25,7 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
       routes:
-        # 下面的Path我在项目里默认都是使用的spring.application.name的驼峰形式，横杠形式做服务名称来做配置，所有新的服务请都加个驼峰形式的前缀路径
+        # 下面的Path我在项目里默认都是使用的spring.application.name的驼峰形式，横杠形式做服务名称来做配置 比如swagger路径加服务名的配置，所有新的服务请都加个驼峰形式的前缀路径
         - id: auth
           uri: lb://auth
           predicates:

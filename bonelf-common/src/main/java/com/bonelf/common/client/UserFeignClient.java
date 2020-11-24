@@ -25,18 +25,22 @@ import java.util.Set;
 @FeignClient(contextId = "userFeignClient", value = ServiceNameConstant.USER_SERVICE,
 		configuration = FeignConfig.class, fallbackFactory = UserFeignFallbackFactory.class)
 public interface UserFeignClient {
-	@GetMapping("/bonelf/v1/user/getUser")
+	@Deprecated
+	@GetMapping("/user/v1/getUser")
 	Result<ApiUser> getApiUserById(@RequestParam Long userId);
 
 	// FIXME: 2020/10/12 实现
+	@Deprecated
 	default Result<SysUser> getSysUserById(long userId) {
 		return Result.ok(new SysUser());
 	}
 
-	@GetMapping("/bonelf/v1/user/getPermission")
+	@GetMapping("/user/v1/getPermission")
+	@Deprecated
 	Result<Map<String, Set<String>>> getApiUserRolesAndPermission(Long userId);
 
 	// FIXME: 2020/10/12 实现
+	@Deprecated
 	default Result<Map<String, Set<String>>> getSysUserRolesAndPermission(Long userId) {
 		return Result.ok(new HashMap<String, Set<String>>(2) {{
 			put("role", Collections.emptySet());

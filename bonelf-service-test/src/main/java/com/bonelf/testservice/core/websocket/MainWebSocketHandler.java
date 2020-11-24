@@ -3,7 +3,6 @@ package com.bonelf.testservice.core.websocket;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.bonelf.common.constant.AuthConstant;
-import com.bonelf.common.constant.CacheConstant;
 import com.bonelf.common.core.websocket.SocketMessage;
 import com.bonelf.common.core.websocket.SocketRespMessage;
 import com.bonelf.common.core.websocket.constant.ChannelEnum;
@@ -11,6 +10,7 @@ import com.bonelf.common.core.websocket.constant.MessageRecvCmdEnum;
 import com.bonelf.common.core.websocket.constant.MessageSendCmdEnum;
 import com.bonelf.common.core.websocket.constant.OnlineStatusEnum;
 import com.bonelf.common.util.redis.RedisUtil;
+import com.bonelf.testservice.constant.CacheConstant;
 import com.bonelf.testservice.service.impl.SocketMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,7 +177,7 @@ public class MainWebSocketHandler implements WebSocketHandler {
 		// FIXME: 2020/10/14 测试用户编号
 		String userId = "1";
 		if (StringUtils.hasText(userId)) {
-			redisUtil.hset(CacheConstant.WEB_SOCKET_SESSION_HASH, userId, OnlineStatusEnum.ONLINE.getCode());
+			redisUtil.hset(CacheConstant.WEB_SOCKET_SESSION_HASH, userId, OnlineStatusEnum.OFFLINE.getCode());
 			websocketMap.getSocketSessionMap().remove(userId);
 		}
 		if (session.isOpen()) {

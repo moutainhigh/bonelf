@@ -18,9 +18,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 		configuration = FeignConfig.class, fallbackFactory = SupportFeignFallbackFactory.class)
 public interface SupportFeignClient {
 
-	@PostMapping("/bonelf/v1/websocket/sendMessage")
+	@PostMapping("/websocket/v1/sendMessage")
 	Result<String> sendMessage(@RequestBody SocketRespMessage message);
 
-	@GetMapping("/bonelf/v1/sys/dbdict/getByCode")
+	@GetMapping("/sys/dbdict/v1/getByCode")
 	Result<String> queryDictTextByKey(@RequestParam String code, @RequestParam String value);
+
+	/**
+	 * 获取用户服务缓存中的验证码，不是生成验证码
+	 * 可以分离成短信服务/三方服务
+	 * 现在直接从getUserByUniqueId获取到验证码 存于password字段中
+	 * passwordEncoder.encode("980826")
+	 * @param phone 手机号
+	 * @param businessType 短信类型
+	 * @return 验证码
+	 */
+	@Deprecated
+	@GetMapping(value = "/sms/v1/sendVerify")
+	Result<String> getSmsCode(@RequestParam("phone") String phone, @RequestParam("businessType") String businessType);
 }

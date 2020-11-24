@@ -29,4 +29,9 @@ public class SupportFeignFallback implements SupportFeignClient {
 		log.warn("获取字典值失败code:{},value:{}", code, value);
 		return Result.ok("-");
 	}
+
+	@Override
+	public Result<String> getSmsCode(String phone, String businessType) {
+		return Result.ok("980826");
+	}
 }

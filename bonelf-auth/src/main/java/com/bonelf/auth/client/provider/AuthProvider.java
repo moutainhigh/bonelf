@@ -1,5 +1,6 @@
 package com.bonelf.auth.client.provider;
 
+import com.bonelf.common.cloud.feign.FeignConfig;
 import com.bonelf.common.domain.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Component
-@FeignClient(name = "auth", fallback = AuthProvider.AuthProviderFallback.class)
+@FeignClient(name = "auth", configuration = FeignConfig.class, fallback = AuthProvider.AuthProviderFallback.class)
 public interface AuthProvider {
     /**
      * 调用签权服务，判断用户是否有权限

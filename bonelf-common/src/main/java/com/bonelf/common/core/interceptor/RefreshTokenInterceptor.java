@@ -1,10 +1,10 @@
 package com.bonelf.common.core.interceptor;
 
 import com.bonelf.common.constant.AuthConstant;
-import com.bonelf.common.constant.CacheConstant;
+import com.bonelf.common.constant.CommonCacheConstant;
 import com.bonelf.common.constant.enums.UserTypeEnum;
 import com.bonelf.common.core.exception.BonelfException;
-import com.bonelf.common.core.exception.enums.BizExceptionEnum;
+import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import com.bonelf.common.domain.CommonUser;
 import com.bonelf.common.util.JwtTokenUtil;
 import com.bonelf.common.util.redis.RedisUtil;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p>
  * 刷新token机制拦截器
  * </p>
- * @author Chenyuan
+ * @author bonelf
  * @since 2020/11/7 16:47
  */
 @Deprecated
@@ -54,10 +54,10 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 		}
 		try {
 			//缓存里的合法token
-			String cacheToken = (String)redisUtil.get(String.format(CacheConstant.API_USER_TOKEN_PREFIX, loginUser.getUserId()));
+			String cacheToken = (String)redisUtil.get(String.format(CommonCacheConstant.API_USER_TOKEN_PREFIX, loginUser.getUserId()));
 			//使用redis实现   单点登录
 			if (cacheToken == null) {
-				throw new BonelfException(BizExceptionEnum.LOGIN_EXPIRED);
+				throw new BonelfException(CommonBizExceptionEnum.LOGIN_EXPIRED);
 			}
 			Claims claimsCache = JwtTokenUtil.getClaimFromToken(cacheToken);
 			if (!token.equals(cacheToken)) {
@@ -66,7 +66,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 					//并注释下面的刷新token相关的代码免得走一遍解析缓存token费时 refresh_time后重新登录
 				} else {
 					//2 用户在其他设备登录导致过期
-					throw new BonelfException(BizExceptionEnum.LOGIN_INSTEAD);
+					throw new BonelfException(CommonBizExceptionEnum.LOGIN_INSTEAD);
 				}
 			}
 			//提醒前端刷新token ，如果不处理等refresh_time时间token彻底过期就再需要登录，不使用刷新token也是可以的
@@ -75,11 +75,11 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 				response.setHeader(AuthConstant.RESP_HEADER, "expired");
 			} else {
 				String newAuthorization = JwtTokenUtil.generateRefreshToken(loginUser.getUserId(), loginUser.getUsername(),  UserTypeEnum.API_SHIRO_REALM.getRealmName());
-				redisUtil.set(String.format(CacheConstant.API_USER_TOKEN_PREFIX, loginUser.getUserId()), newAuthorization, AuthConstant.REFRESH_SECOND);
+				redisUtil.set(String.format(CommonCacheConstant.API_USER_TOKEN_PREFIX, loginUser.getUserId()), newAuthorization, AuthConstant.REFRESH_SECOND);
 				response.setHeader(AuthConstant.RESP_HEADER, newAuthorization);
 			}
 		} catch (ExpiredJwtException e) {
-			throw new BonelfException(BizExceptionEnum.LOGIN_EXPIRED);
+			throw new BonelfException(CommonBizExceptionEnum.LOGIN_EXPIRED);
 		}
 		return true;
 	}

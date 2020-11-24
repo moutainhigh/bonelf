@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * 微信小程序配置
  * </p>
- * @author guaishou
+ * @author bonelf
  * @since 2020/8/31 16:40
  */
 @Component

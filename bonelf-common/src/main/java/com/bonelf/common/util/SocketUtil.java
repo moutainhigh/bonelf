@@ -3,7 +3,7 @@ package com.bonelf.common.util;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.bonelf.common.core.exception.BonelfException;
-import com.bonelf.common.core.exception.enums.BizExceptionEnum;
+import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 
 /**
  * <p>
@@ -23,13 +23,13 @@ public class SocketUtil {
 	 */
 	public static <T> T parseSocketData(JSONObject data, Class<T> clazz) {
 		if (data == null) {
-			throw new BonelfException(BizExceptionEnum.REQUEST_NULL);
+			throw new BonelfException(CommonBizExceptionEnum.REQUEST_NULL);
 		}
 		T obj;
 		try {
 			obj = data.toJavaObject(clazz);
 		} catch (JSONException e) {
-			throw new BonelfException(BizExceptionEnum.JSON_SERIALIZE_EXCEPTION);
+			throw new BonelfException(CommonBizExceptionEnum.JSON_SERIALIZE_EXCEPTION);
 		}
 		return obj;
 	}

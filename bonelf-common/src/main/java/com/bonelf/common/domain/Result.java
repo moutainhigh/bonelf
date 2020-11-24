@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
 
@@ -80,7 +81,7 @@ public class Result<T> implements Serializable {
 
 	/*===========================静态方法===========================*/
 
-	public static Result<String> ok() {
+	public static <T> Result<T> ok() {
 		return ok(null);
 	}
 
@@ -119,7 +120,7 @@ public class Result<T> implements Serializable {
 		return r;
 	}
 
-	public static <T> Result<T> ok(T data) {
+	public static <T> Result<T> ok(@NonNull T data) {
 		Result<T> r = new Result<T>();
 		r.setSuccess(true);
 		r.setCode(BizConstants.CODE_200);

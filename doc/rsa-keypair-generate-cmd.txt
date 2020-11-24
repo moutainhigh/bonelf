@@ -1,0 +1,6 @@
+//3650天（默认90） SHA256withRSA加密（默认） RSA加密 类型：PKCS12 文件名example.p12 密钥信息 密码：=bonelf=
+keytool -genkeypair -validity 3650 -v -alias bonelf -sigalg SHA256withRSA -keyalg RSA -storetype PKCS12 -keystore example.p12 -dname "CN=www.bonelf.com,OU=ipcc,O=Organization,L=City,S=State,C=CN" -storepass =bonelf= -keypass =bonelf=
+
+password-> =bonelf=
+
+(keytool -genkeypair -alias bonelf -keyalg RSA -dname "CN=Web Server,OU=Unit,O=Organization,L=City,S=State,C=CN" -keypass wordpass -keystore server.jks -storepass =bonelf=)

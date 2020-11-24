@@ -1,6 +1,7 @@
 package com.bonelf.auth.config;
 
-import com.bonelf.auth.oauth2.granter.MobileAuthenticationProvider;
+import com.bonelf.auth.core.oauth2.granter.mobile.MobileAuthenticationProvider;
+import com.bonelf.auth.core.oauth2.granter.openid.OpenIdAuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +23,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
  * <p>
  * 签权服务
  * </p>
- * @author Chenyuan
+ * @author bonelf
  * @since 2020/11/17 15:37
  */
 @Slf4j
@@ -35,10 +36,13 @@ public class WebServerSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier("mobileUserDetailsService")
 	private UserDetailsService mobileUserDetailsService;
+	@Autowired
+	@Qualifier("openidUserDetailsService")
+	private UserDetailsService openidUserDetailsService;
 
 	/**
 	 * @description 其他请在网关bonelf.anno-url过滤
-	 * @author guaishou
+	 * @author bonelf
 	 * @date 2020-11-18 16:20
 	 */
 	@Override
@@ -46,6 +50,7 @@ public class WebServerSecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring()
 				.antMatchers(HttpMethod.OPTIONS, "/**")
 				.antMatchers("/swagger-ui/index.html")
+				.antMatchers("/oauth/token_key")
 				.antMatchers("/v2/api-docs");
 	}
 
@@ -80,8 +85,10 @@ public class WebServerSecurityConfig extends WebSecurityConfigurerAdapter {
 		authenticationManagerBuilder
 				.userDetailsService(userDetailsService)
 				.passwordEncoder(passwordEncoder());
-		// 设置手机验证码登陆的AuthenticationProvider
+		// 设置手机验证码登录的AuthenticationProvider
 		authenticationManagerBuilder.authenticationProvider(mobileAuthenticationProvider());
+		// 设置微信登录的AuthenticationProvider
+		authenticationManagerBuilder.authenticationProvider(openIdAuthenticationProvider());
 	}
 
 	/**
@@ -99,7 +106,7 @@ public class WebServerSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	/**
-	 * 创建手机验证码登陆的AuthenticationProvider
+	 * 创建手机验证码登录的AuthenticationProvider
 	 * @return mobileAuthenticationProvider
 	 */
 	@Bean
@@ -107,5 +114,10 @@ public class WebServerSecurityConfig extends WebSecurityConfigurerAdapter {
 		MobileAuthenticationProvider mobileAuthenticationProvider = new MobileAuthenticationProvider(this.mobileUserDetailsService);
 		mobileAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		return mobileAuthenticationProvider;
+	}
+
+	@Bean
+	public OpenIdAuthenticationProvider openIdAuthenticationProvider() {
+		return new OpenIdAuthenticationProvider(this.openidUserDetailsService);
 	}
 }

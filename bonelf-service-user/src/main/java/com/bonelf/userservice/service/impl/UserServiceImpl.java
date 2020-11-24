@@ -6,20 +6,19 @@ import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.HexUtil;
-import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bonelf.cicada.util.CipherCryptUtil;
 import com.bonelf.cicada.util.Md5CryptUtil;
 import com.bonelf.common.constant.AuthConstant;
 import com.bonelf.common.constant.BonlfConstant;
-import com.bonelf.common.constant.CacheConstant;
+import com.bonelf.common.constant.CommonCacheConstant;
 import com.bonelf.common.constant.enums.UserTypeEnum;
 import com.bonelf.common.core.exception.BonelfException;
-import com.bonelf.common.core.exception.enums.BizExceptionEnum;
+import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import com.bonelf.common.util.JwtTokenUtil;
-import com.bonelf.common.util.SmsUtil;
 import com.bonelf.common.util.redis.RedisUtil;
+import com.bonelf.userservice.constant.CacheConstant;
 import com.bonelf.userservice.domain.dto.AccountLoginDTO;
 import com.bonelf.userservice.domain.dto.WechatLoginDTO;
 import com.bonelf.userservice.domain.entity.User;
@@ -43,23 +42,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	@Autowired
 	private RedisUtil redisUtil;
 	@Autowired
-	private SmsUtil smsUtil;
-	@Autowired
 	private WxMaService wxMaService;
 
 	@Value("${choujiang.base-url:http://localhost}")
 	private String baseUrl;
-
-	@Override
-	public String sendVerify(String phone) {
-		if (redisUtil.get(String.format(CacheConstant.LOGIN_VERIFY_CODE, phone)) != null) {
-			throw new BonelfException(BizExceptionEnum.NO_REPEAT_SUBMIT, redisUtil.getExpire(CacheConstant.LOGIN_VERIFY_CODE));
-		}
-		String code = RandomUtil.randomNumbers(6);
-		//smsUtil.sendVerify(phone, code);
-		redisUtil.set(String.format(CacheConstant.LOGIN_VERIFY_CODE, phone), code, CacheConstant.VERIFY_CODE_EXPIRED_SECOND);
-		return code;
-	}
 
 	@Override
 	public Map<String, Set<String>> getApiUserRolesAndPermission(Long userId) {
@@ -75,7 +61,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		User user = this.baseMapper.selectOneByPhone(dto.getUsername());
 		if (dto.getVerifyCode() == null) {
 			if (user == null) {
-				throw new BonelfException(BizExceptionEnum.DB_RESOURCE_NULL, "用户");
+				throw new BonelfException(CommonBizExceptionEnum.DB_RESOURCE_NULL, "用户");
 			}
 			//密码登录
 			String password;
@@ -83,20 +69,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 				password = CipherCryptUtil.decrypt(dto.getPassword(), dto.getUsername(), AuthConstant.FRONTEND_SAIT_CRYPTO);
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new BonelfException(BizExceptionEnum.DECRYPT_ERROR);
+				throw new BonelfException(CommonBizExceptionEnum.DECRYPT_ERROR);
 			}
 			//if (!Pattern.matches(RegexpConstant.NUMBERS_AND_LETTERS, password)) {
 			//	throw new BonelfException(BizExceptionEnum.REQUEST_INVALIDATE_EMPTY, "请输入6-16位数字,字母组成的密码");
 			//}
 			if (!Md5CryptUtil.encrypt(password, AuthConstant.DATABASE_SALT_MD5).equals(Md5CryptUtil.encrypt(password, AuthConstant.DATABASE_SALT_MD5))) {
-				throw new BonelfException(BizExceptionEnum.REQUEST_INVALIDATE_EMPTY, "密码不正确");
+				throw new BonelfException(CommonBizExceptionEnum.REQUEST_INVALIDATE_EMPTY, "密码不正确");
 			}
 			this.baseMapper.update(new User(), Wrappers.<User>lambdaUpdate().set(User::getLastLoginTime, LocalDateTime.now()).eq(User::getUserId, user.getUserId()));
 		} else {
 			//验证码登录
-			String trueVerifyCode = (String)redisUtil.get(String.format(CacheConstant.LOGIN_VERIFY_CODE, dto.getUsername()));
+			String trueVerifyCode = (String)redisUtil.get(String.format(CacheConstant.LOGIN_VERIFY_CODE, "login", dto.getUsername()));
 			if (!dto.getVerifyCode().equals(trueVerifyCode)) {
-				throw new BonelfException(BizExceptionEnum.REQUEST_INVALIDATE_EMPTY, "验证码错误");
+				throw new BonelfException(CommonBizExceptionEnum.REQUEST_INVALIDATE_EMPTY, "验证码错误");
 			}
 			if (user == null) {
 				//注册
@@ -117,7 +103,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		}
 		String token = JwtTokenUtil.generateToken(user.getUserId(), user.getPhone(),  UserTypeEnum.API_SHIRO_REALM.getRealmName());
 		//存储token 刷新token用 初始的对应关系为 自己对自己
-		redisUtil.set(String.format(com.bonelf.common.constant.CacheConstant.API_USER_TOKEN_PREFIX, user.getUserId()), token, AuthConstant.REFRESH_SECOND);
+		redisUtil.set(String.format(CommonCacheConstant.API_USER_TOKEN_PREFIX, user.getUserId()), token, AuthConstant.REFRESH_SECOND);
 
 		return LoginVO.builder()
 				.token(token)
@@ -133,11 +119,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		// 获取微信用户session
 		WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(wechatLoginDto.getCode());
 		if (null == session) {
-			throw new BonelfException(BizExceptionEnum.THIRD_FAIL, "session获取失败");
+			throw new BonelfException(CommonBizExceptionEnum.THIRD_FAIL, "session获取失败");
 		}
 		WxMaUserInfo wxUserInfo = wxMaService.getUserService().getUserInfo(session.getSessionKey(), wechatLoginDto.getEncryptedData(), wechatLoginDto.getIv());
 		if (null == wxUserInfo) {
-			throw new BonelfException(BizExceptionEnum.THIRD_FAIL, "无法找到用户信息");
+			throw new BonelfException(CommonBizExceptionEnum.THIRD_FAIL, "无法找到用户信息");
 		}
 		String openId = wxUserInfo.getOpenId();
 		String unionId = wxUserInfo.getUnionId();
@@ -149,7 +135,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 					wechatLoginDto.getEncryptedData(), wechatLoginDto.getIv());
 			if (wxMaPhoneNumberInfo == null || !StringUtils.hasText(wxMaPhoneNumberInfo.getPhoneNumber())) {
 				// 解密手机号码信息错误
-				throw new BonelfException(BizExceptionEnum.THIRD_FAIL, "解析手机号失败");
+				throw new BonelfException(CommonBizExceptionEnum.THIRD_FAIL, "解析手机号失败");
 			}
 			String phone = wxMaPhoneNumberInfo.getPhoneNumber();
 			user = new User();
@@ -173,7 +159,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		}
 		String token = JwtTokenUtil.generateToken(user.getUserId(), user.getPhone(), UserTypeEnum.API_SHIRO_REALM.getRealmName());
 		//存储token 刷新token用 初始的对应关系为 自己对自己
-		redisUtil.set(String.format(CacheConstant.API_USER_TOKEN_PREFIX, user.getUserId()), token, AuthConstant.REFRESH_SECOND);
+		redisUtil.set(String.format(CommonCacheConstant.API_USER_TOKEN_PREFIX, user.getUserId()), token, AuthConstant.REFRESH_SECOND);
 		return LoginVO.builder()
 				.token(token)
 				.tokenType(AuthConstant.TOKEN_PREFIX.trim())

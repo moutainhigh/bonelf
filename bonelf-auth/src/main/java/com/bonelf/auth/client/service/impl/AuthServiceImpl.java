@@ -2,7 +2,6 @@ package com.bonelf.auth.client.service.impl;
 
 import com.bonelf.auth.client.provider.AuthProvider;
 import com.bonelf.auth.client.service.AuthService;
-import com.bonelf.auth.service.IAuthenticationService;
 import com.bonelf.common.domain.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -23,8 +22,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private AuthProvider authProvider;
-    @Autowired
-    IAuthenticationService authenticationService;
 
     /**
      * Authorization认证开头是"bearer "

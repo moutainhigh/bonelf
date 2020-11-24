@@ -12,7 +12,7 @@ import java.util.Enumeration;
  * <p>
  * debug用拦截器
  * </p>
- * @author Chenyuan
+ * @author bonelf
  * @since 2020/11/7 16:47
  */
 @Slf4j
@@ -20,6 +20,7 @@ public class DebugInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		//出现Unauthorized会这个request重定向到/error 暂时没找到什么原因
 		Enumeration<String> headers = request.getHeaders(HttpHeaders.AUTHORIZATION);
 		String authentication = "";
 		if (headers.hasMoreElements()) {

@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
-@AutoConfigureBefore(FeignAutoConfiguration.class)
-@Configuration
-@ConditionalOnClass(Feign.class)
 /****
  *     需要修改成OKHTTP的客户端，需要在配置文件增加
  *     feign.httpclient.enabled=false
-	   feign.okhttp.enabled=true
+ feign.okhttp.enabled=true
  */
+@AutoConfigureBefore(FeignAutoConfiguration.class)
+@Configuration
+@ConditionalOnClass(Feign.class)
 public class FeignOkHttpConfig {
 
 	private int feignOkHttpReadTimeout = 60;

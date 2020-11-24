@@ -28,6 +28,10 @@
         <swagger2-ui.version>1.9.3</swagger2-ui.version>
         <wechatmini-sdk.version>3.9.6.B</wechatmini-sdk.version>
         <aliyun-sdk.version>4.5.14</aliyun-sdk.version>
+        <!--最新2.5.0.RELEASE 已过时-->
+        <oauth.version>2.3.6.RELEASE</oauth.version>
+        <!--最新RELEASE 或 1.1.1.RELEASE 已过时-->
+        <oauth-jwt.version>1.0.10.RELEASE</oauth-jwt.version>
     </properties>
 
     <dependencies>
@@ -159,6 +163,21 @@
         <!--        </exclusion>-->
         <!--    </exclusions>-->
         <!--</dependency>-->
+        <!--oauth2认证-->
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${oauth.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+            <version>${oauth-jwt.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

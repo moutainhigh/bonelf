@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020/10/18 20:29
  */
 @RestController
-@RequestMapping("/v1/websocket")
+@RequestMapping("/websocket")
 public class WebsocketController {
 
 	@Autowired
@@ -30,7 +30,7 @@ public class WebsocketController {
 	 * @author bonelf
 	 * @since 2020/10/5 21:57
 	 */
-	@PostMapping("/sendMessage")
+	@PostMapping("/v1/sendMessage")
 	public Result<String> sendMessage(@RequestBody SocketRespMessage message) {
 		int result = socketMessageService.sendMessage(message.getFromUid(), message.getSocketMessage());
 		return SocketMessageService.SEND_OK == result ? Result.ok() : Result.error();

@@ -15,7 +15,7 @@
  */
 package com.bonelf.common.config;
 
-import com.bonelf.common.constant.CacheConstant;
+import com.bonelf.common.constant.CommonCacheConstant;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -74,13 +74,13 @@ public class RedisAutoConfig extends CachingConfigurerSupport {
 
 		// 设置一个初始化的缓存空间set集合
 		Set<String> cacheNames = new HashSet<>();
-		cacheNames.add(CacheConstant.CACHE_NAME_5_MINUTES);
-		cacheNames.add(CacheConstant.CACHE_NAME_7_DAY);
+		cacheNames.add(CommonCacheConstant.CACHE_NAME_5_MINUTES);
+		cacheNames.add(CommonCacheConstant.CACHE_NAME_7_DAY);
 
 		// 对每个缓存空间应用不同的配置
 		Map<String, RedisCacheConfiguration> configMap = new HashMap<>(10);
-		configMap.put(CacheConstant.CACHE_NAME_5_MINUTES, config);
-		configMap.put(CacheConstant.CACHE_NAME_7_DAY, config.entryTtl(Duration.ofSeconds(120)));
+		configMap.put(CommonCacheConstant.CACHE_NAME_5_MINUTES, config);
+		configMap.put(CommonCacheConstant.CACHE_NAME_7_DAY, config.entryTtl(Duration.ofSeconds(120)));
 
 		// 使用自定义的缓存配置初始化一个cacheManager
 		return RedisCacheManager.builder(factory)

@@ -1,7 +1,7 @@
 package com.bonelf.common.service.impl;
 
 import com.bonelf.common.client.SupportFeignClient;
-import com.bonelf.common.constant.CacheConstant;
+import com.bonelf.common.constant.CommonCacheConstant;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.service.DbDictService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
  * @author bonelf
  * @since 2020/10/14 13:13
  */
-@CacheConfig(cacheNames = CacheConstant.CACHE_NAME_7_DAY)
+@CacheConfig(cacheNames = CommonCacheConstant.CACHE_NAME_7_DAY)
 @Service
 public class DbDictServiceImpl implements DbDictService {
 	/**
@@ -35,7 +35,7 @@ public class DbDictServiceImpl implements DbDictService {
 	 * @param value
 	 * @return
 	 */
-	@Cacheable(value = CacheConstant.DB_DICT, condition = "!'-'.equals(#result)")
+	@Cacheable(value = CommonCacheConstant.DB_DICT, condition = "!'-'.equals(#result)")
 	public String queryDictTextByKey(String code, String value) {
 		Result<String> result = supportFeignClient.queryDictTextByKey(code, value);
 		return result != null && result.getSuccess() ? result.getResult() : "-";

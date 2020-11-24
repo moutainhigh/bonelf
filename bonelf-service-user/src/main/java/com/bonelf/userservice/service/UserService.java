@@ -29,10 +29,4 @@ public interface UserService extends IService<User> {
 	 * @return
 	 */
 	LoginVO loginByAccount(AccountLoginDTO dto);
-	/**
-	 * 发送验证码
-	 * @param username
-	 * @return
-	 */
-	String sendVerify(String username);
 }

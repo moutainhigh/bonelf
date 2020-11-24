@@ -1,9 +1,9 @@
 package com.bonelf.common.core.aop;
 
-import com.bonelf.common.constant.CacheConstant;
+import com.bonelf.common.constant.CommonCacheConstant;
 import com.bonelf.common.core.aop.annotation.NoRepeatSubmit;
 import com.bonelf.common.core.exception.BonelfException;
-import com.bonelf.common.core.exception.enums.BizExceptionEnum;
+import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import com.bonelf.common.util.redis.RedisLock;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -62,7 +62,7 @@ public class RepeatSubmitAspect {
 			// 获取锁失败，认为是重复提交的请求
 			log.info("tryLock fail, key = [{}]", key);
 			// 400 请误重复提交
-			throw new BonelfException(BizExceptionEnum.NO_REPEAT_SUBMIT, (redisLock.getExpiredTime(getKey(jSessionId, path)) + 1));
+			throw new BonelfException(CommonBizExceptionEnum.NO_REPEAT_SUBMIT, (redisLock.getExpiredTime(getKey(jSessionId, path)) + 1));
 		}
 	}
 
@@ -73,7 +73,7 @@ public class RepeatSubmitAspect {
 	 * @return redis键值
 	 */
 	private String getKey(String token, String path) {
-		return String.format(CacheConstant.NO_REPEAT_SUBMIT, token, path);
+		return String.format(CommonCacheConstant.NO_REPEAT_SUBMIT, token, path);
 	}
 
 	private String getClientId() {

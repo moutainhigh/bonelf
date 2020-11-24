@@ -4,7 +4,7 @@ import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl;
 import cn.binarywang.wx.miniapp.config.impl.WxMaRedisConfigImpl;
 import com.bonelf.common.config.property.WechatProperty;
-import com.bonelf.common.constant.CacheConstant;
+import com.bonelf.common.constant.CommonCacheConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,7 @@ import java.time.Duration;
  * <p>
  * 支付配置
  * </p>
- * @author guaishou
+ * @author bonelf
  * @since 2020/9/9 14:38
  */
 @Component
@@ -57,7 +57,7 @@ public class WechatMiniConfig {
 		JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeoutMils, password, database);
 
 		WxMaRedisConfigImpl config = new WxMaRedisConfigImpl(jedisPool);
-		config.setRedisKeyPrefix(CacheConstant.WX_MA_KEY_PREFIX);
+		config.setRedisKeyPrefix(CommonCacheConstant.WX_MA_KEY_PREFIX);
 		config.setAppid(wechatProperty.getMini().getAppid());
 		config.setSecret(wechatProperty.getSecret());
 		config.setMsgDataFormat("JSON");

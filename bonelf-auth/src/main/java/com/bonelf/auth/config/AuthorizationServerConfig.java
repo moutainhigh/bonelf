@@ -1,16 +1,21 @@
 package com.bonelf.auth.config;
 
-import com.bonelf.auth.exception.CustomWebResponseExceptionTranslator;
-import com.bonelf.auth.oauth2.enhancer.CustomTokenEnhancer;
-import com.bonelf.auth.oauth2.granter.MobileTokenGranter;
+import cn.binarywang.wx.miniapp.api.WxMaService;
+import com.bonelf.auth.core.exception.CustomWebResponseExceptionTranslator;
+import com.bonelf.auth.core.oauth2.enhancer.CustomTokenEnhancer;
+import com.bonelf.auth.core.oauth2.granter.mobile.MobileTokenGranter;
+import com.bonelf.auth.core.oauth2.granter.openid.OpenIdTokenGranter;
+import com.bonelf.auth.service.UserService;
+import com.bonelf.common.config.property.Oauth2JwtProperty;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -28,16 +33,19 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
+import java.security.KeyPair;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * <p>
- * 签权服务
+ * 签权服务 获取access_token的配置
  * </p>
- * @author Chenyuan
+ * @author bonelf
  * @since 2020/11/17 15:37
  */
 @Configuration
@@ -45,22 +53,22 @@ import java.util.List;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 	@Autowired
+	private Oauth2JwtProperty oauth2JwtProperty;
+	//@Autowired
+	//private WebResponseExceptionTranslator<OAuth2Exception> customExceptionTranslator;
+	@Autowired
 	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authenticationManager;
-
 	@Qualifier("dataSource")
 	@Autowired
-	DataSource dataSource;
-
+	private DataSource dataSource;
 	@Autowired
 	@Qualifier("userDetailsService")
-	UserDetailsService userDetailsService;
-
-	/**
-	 * jwt 对称加密密钥
-	 */
-	@Value("${spring.security.oauth2.jwt.signing-key:123456}")
-	private String signingKey;
+	private UserDetailsService userDetailsService;
+	@Autowired
+	private WxMaService wxMaService;
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
@@ -74,6 +82,38 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		// 配置客户端信息，从数据库中读取，对应oauth_client_details表
 		clients.jdbc(dataSource);
+        /*
+        以下是不使用数据库的例子的使用方法
+         */
+		//int accessTokenValidity = ??;
+		//accessTokenValidity = Math.max(accessTokenValidity, MIN_ACCESS_TOKEN_VALIDITY_SECS);
+		//int refreshTokenValidity = refreshTokenValidityInSecondsForRememberMe;
+		//refreshTokenValidity = Math.max(refreshTokenValidity, accessTokenValidity);
+		//clients.inMemory()
+		//		.withClient(clientId)
+		//		.secret(passwordEncoder.encode(clientSecret))
+		//		.scopes("web")
+		//		.autoApprove(true)
+		//		.authorizedGrantTypes("implicit","refresh_token", "password", "authorization_code")
+		//		.accessTokenValiditySeconds(accessTokenValidity)
+		//		.refreshTokenValiditySeconds(refreshTokenValidity)
+		//		.and()
+		//		.withClient(clientId2)
+		//		.secret(passwordEncoder.encode(clientSecret2))
+		//		.scopes("app")
+		//		.authorities("ROLE_ADMIN")
+		//		.autoApprove(true)
+		//		.authorizedGrantTypes("client_credentials")
+		//		.accessTokenValiditySeconds(3600)
+		//		.refreshTokenValiditySeconds(tokenValidityInSecondsForRememberMe);
+	}
+
+	public static void main(String[] args) {
+		//System.out.println(new BCryptPasswordEncoder().matches("app_secret","$2a$10$smMhxDIvYlaSAhba/BJekeDktJ/76LfkIfKezqJZg7tSxsej0RYPG"));
+		System.out.println(new BCryptPasswordEncoder().encode("980826"));
+		//System.out.println(new BCryptPasswordEncoder().encode("app_secret"));
+		//System.out.println(new BCryptPasswordEncoder().encode("web_secret"));
+		//System.out.println(new BCryptPasswordEncoder().encode("third_secret"));
 	}
 
 	@Override
@@ -92,7 +132,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	}
 
 	/**
-	 * 自定义OAuth2异常处理
+	 * 自定义OAuth2异常处理 ResourceConfig配置
 	 * @return CustomWebResponseExceptionTranslator
 	 */
 	@Bean
@@ -142,27 +182,46 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	 * jwt token的生成配置
 	 * @return
 	 */
+	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-		converter.setSigningKey(signingKey);
-		//不设置这个会出现 Cannot convert access token to JSON
-		//converter.setVerifier(new RsaVerifier(signingKey));
+		//1:
+		//converter.setSigningKey(oauth2JwtProperty.getSigningKey());
+		//出现 Cannot convert access token to JSON （实际上为NPE，verifier为空）考虑设置
+		//converter.setVerifier(new RsaVerifier("---Begin--???---End---"));
+		//2:
+		if(!StringUtils.hasText(oauth2JwtProperty.getKeystore())){
+			throw new RuntimeException("keystore is not set");
+		}
+		KeyPair keyPair = new KeyStoreKeyFactory(
+				new ClassPathResource(oauth2JwtProperty.getKeystore()), oauth2JwtProperty.getPassword().toCharArray())
+				.getKeyPair(oauth2JwtProperty.getAlias());
+		converter.setKeyPair(keyPair);
 		return converter;
 	}
 
 	/**
-	 * 配置自定义的granter,手机号验证码登陆
+	 * 配置自定义的granter,手机号验证码登录
 	 * @param endpoints
-	 * @return
-	 * @auth joe_chen
+	 * @author joe_chen
+	 * @see com.bonelf.auth.core.oauth2.granter
 	 */
 	public TokenGranter tokenGranter(final AuthorizationServerEndpointsConfigurer endpoints) {
 		List<TokenGranter> granters = Lists.newArrayList(endpoints.getTokenGranter());
+		//新增granter 新增登录方式
 		granters.add(new MobileTokenGranter(
 				authenticationManager,
 				endpoints.getTokenServices(),
 				endpoints.getClientDetailsService(),
 				endpoints.getOAuth2RequestFactory()));
+
+		granters.add(new OpenIdTokenGranter(
+				authenticationManager,
+				endpoints.getTokenServices(),
+				endpoints.getClientDetailsService(),
+				endpoints.getOAuth2RequestFactory(),
+				wxMaService,
+				userService));
 		return new CompositeTokenGranter(granters);
 	}
 

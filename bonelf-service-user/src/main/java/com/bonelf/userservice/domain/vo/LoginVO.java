@@ -10,7 +10,7 @@ import lombok.Data;
  * <p>
  * 登录返回信息
  * </p>
- * @author guaishou
+ * @author bonelf
  * @since 2020/11/3 16:17
  */
 @Data

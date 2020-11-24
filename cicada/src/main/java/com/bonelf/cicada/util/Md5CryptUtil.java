@@ -20,7 +20,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * 密码加密工具类
- * @author guaishou
+ * @author bonelf
  * @date 2020-11-02
  */
 public class Md5CryptUtil {

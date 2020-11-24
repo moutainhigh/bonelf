@@ -4,7 +4,7 @@ package com.bonelf.common.constant;
  * <p>
  * 短信模板
  * </p>
- * @author guaishou
+ * @author bonelf
  * @since 2020/11/3 9:17
  */
 public interface AliSmsTemplateCode {

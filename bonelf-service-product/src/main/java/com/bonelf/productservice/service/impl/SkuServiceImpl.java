@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * <p>
  * 规格服务
  * </p>
- * @author guaishou
+ * @author bonelf
  * @since 2020/11/13 14:32
  */
 @Service

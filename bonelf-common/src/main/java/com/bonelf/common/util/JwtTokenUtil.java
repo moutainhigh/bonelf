@@ -20,9 +20,10 @@ import java.util.Map;
  *         6. iat -- jwt发布时间
  *         7. jti -- jwt唯一标识,防止重复使用
  * </pre>
- * @author chenyuan
+ * @author bonelf
  * @date 2020-02-22 17:21:00
  */
+@Deprecated
 public class JwtTokenUtil {
 	/**
 	 * 去掉Bearer

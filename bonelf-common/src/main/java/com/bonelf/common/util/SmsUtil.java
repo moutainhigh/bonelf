@@ -10,7 +10,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.bonelf.common.config.property.AliSmsProperty;
 import com.bonelf.common.constant.AliSmsTemplateCode;
 import com.bonelf.common.core.exception.BonelfException;
-import com.bonelf.common.core.exception.enums.BizExceptionEnum;
+import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,7 +50,7 @@ public class SmsUtil {
 			response = client.getCommonResponse(request);
 		} catch (ClientException e) {
 			e.printStackTrace();
-			throw new BonelfException(BizExceptionEnum.THIRD_FAIL, e.getErrCode());
+			throw new BonelfException(CommonBizExceptionEnum.THIRD_FAIL, e.getErrCode());
 		}
 		return response.getHttpStatus();
 

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 /**
  * 注释：pojo顶层父类实体 定义公共字段
- * @author guaishou
+ * @author bonelf
  * @date 2020/4/22 0022 13:53
  */
 @Data

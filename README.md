@@ -38,9 +38,9 @@ Windows启动：切换到/bin目录 -> .\startup.cmd -m standalone
 Jeecg-boot、ruoyi-cloud、Guns、litemall、best-pay
 
 ## 开发计划
-CAS单点登录
+OAuth2
 
-继承Webserver是否可以替换springboot的web服务
+继承Webserver是否可以替换springboot的web服务？
 
 string 替换文本注解
 
@@ -80,6 +80,8 @@ grafana
 
 kibana
 
+RabbitMQ 实现 redis websocket发布订阅
+
 ## 已完成
 nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、shiro、消息转化器、异常处理advice、refreshToken机制、spring cache使用redis实现等）
 
@@ -98,3 +100,6 @@ swagger-ui 微服务下整合
 文件上传
 
 规格问题（增删改查）
+
+## 放弃
+CAS单点登录（使用OAuth2.0解决）

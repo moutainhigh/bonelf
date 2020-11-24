@@ -11,5 +11,9 @@ public interface AuthFeignConstant {
 	/**
 	 * 网关调用请求头标识
 	 */
-	String AUTH_HEADER = "Authorization-UserName";
+	String AUTH_HEADER = "Authorization-Flag";
+	/**
+	 * feign请求特别标识
+	 */
+	String FEIGN_REQ_FLAG_PREFIX = "feign";
 }

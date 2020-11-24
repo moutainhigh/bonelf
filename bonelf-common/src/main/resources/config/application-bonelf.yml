@@ -1,0 +1,9 @@
+bonelf:
+  oauth2:
+    jwt:
+      # customer:
+      signing-key: 123456
+      # classpath:
+      keystore: /tls/example.p12
+      password: =bonelf=
+      alias: bonelf

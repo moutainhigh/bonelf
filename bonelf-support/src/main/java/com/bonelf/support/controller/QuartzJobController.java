@@ -25,7 +25,7 @@ import java.util.List;
  * @date  2019-01-02
  */
 @RestController
-@RequestMapping("/v1/sys/quartzJob")
+@RequestMapping("/sys/quartzJob")
 @Slf4j
 @Api(tags = "定时任务接口")
 public class QuartzJobController {
@@ -40,7 +40,7 @@ public class QuartzJobController {
 	 * @param pageSize
 	 * @return
 	 */
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/list", method = RequestMethod.GET)
 	public Result<?> queryPageList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
 								   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
 		QueryWrapper<QuartzJob> queryWrapper = Wrappers.query();
@@ -55,7 +55,7 @@ public class QuartzJobController {
 	 * @param quartzJob
 	 * @return
 	 */
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/v1/add", method = RequestMethod.POST)
 	public Result<?> add(@RequestBody QuartzJob quartzJob) {
 		List<QuartzJob> list = quartzJobService.findByJobClassName(quartzJob.getJobClassName());
 		if (list != null && list.size() > 0) {
@@ -70,7 +70,7 @@ public class QuartzJobController {
 	 * @param quartzJob
 	 * @return
 	 */
-	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
+	@RequestMapping(value = "/v1/edit", method = RequestMethod.PUT)
 	public Result<?> edit(@RequestBody QuartzJob quartzJob) {
 		try {
 			quartzJobService.editAndScheduleJob(quartzJob);
@@ -86,7 +86,7 @@ public class QuartzJobController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/v1/delete", method = RequestMethod.DELETE)
 	public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
 		QuartzJob quartzJob = quartzJobService.getById(id);
 		if (quartzJob == null) {
@@ -102,7 +102,7 @@ public class QuartzJobController {
 	 * @param ids
 	 * @return
 	 */
-	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/v1/deleteBatch", method = RequestMethod.DELETE)
 	public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
 		if (ids == null || "".equals(ids.trim())) {
 			return Result.error("参数不识别！");
@@ -119,7 +119,7 @@ public class QuartzJobController {
 	 * @param jobClassName
 	 * @return
 	 */
-	@GetMapping(value = "/pause")
+	@GetMapping(value = "/v1/pause")
 	@ApiOperation(value = "暂停定时任务")
 	public Result<Object> pauseJob(@RequestParam(name = "jobClassName", required = true) String jobClassName) {
 		QuartzJob job = null;
@@ -136,7 +136,7 @@ public class QuartzJobController {
 	 * @param jobClassName
 	 * @return
 	 */
-	@GetMapping(value = "/resume")
+	@GetMapping(value = "/v1/resume")
 	@ApiOperation(value = "恢复定时任务")
 	public Result<Object> resumeJob(@RequestParam(name = "jobClassName", required = true) String jobClassName) {
 		QuartzJob job = quartzJobService.getOne(new LambdaQueryWrapper<QuartzJob>().eq(QuartzJob::getJobClassName, jobClassName));
@@ -153,7 +153,7 @@ public class QuartzJobController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "/queryById", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/queryById", method = RequestMethod.GET)
 	public Result<?> queryById(@RequestParam(name = "id", required = true) String id) {
 		QuartzJob quartzJob = quartzJobService.getById(id);
 		return Result.ok(quartzJob);
@@ -164,7 +164,7 @@ public class QuartzJobController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("/execute")
+	@GetMapping("/v1/execute")
 	public Result<?> execute(@RequestParam(name = "id", required = true) String id) {
 		QuartzJob quartzJob = quartzJobService.getById(id);
 		if (quartzJob == null) {

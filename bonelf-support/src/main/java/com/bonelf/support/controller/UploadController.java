@@ -20,11 +20,11 @@ import java.util.Map;
  * <p>
  * 第三方和公用接口
  * </p>
- * @author guaishou
+ * @author bonelf
  * @since 2020/10/30 9:29
  */
 @RestController
-@RequestMapping("/v1/upload")
+@RequestMapping("/upload")
 @Slf4j
 @Api(tags = "上传接口")
 public class UploadController {
@@ -32,7 +32,7 @@ public class UploadController {
 	private FileService fileService;
 
 	@ApiOperation("上传文件到服务器")
-	@RequestMapping(value = "/file", method = RequestMethod.POST)
+	@RequestMapping(value = "/v1/file", method = RequestMethod.POST)
 	public Result<?> uploadFile(@RequestParam MultipartFile file) throws IOException {
 		//上传文件大小为1000条数据
 		if (file.getSize() > 1024 * 1024 * 10) {
@@ -51,7 +51,7 @@ public class UploadController {
 	 * @return
 	 */
 	@ApiOperation("上传文件到服务器")
-	@RequestMapping(value = "/ossFile", method = RequestMethod.POST)
+	@RequestMapping(value = "/v1/ossFile", method = RequestMethod.POST)
 	public Result<?> uploadOssFile(@RequestParam MultipartFile file) throws IOException {
 		//上传文件大小为1000条数据
 		if (file.getSize() > 1024 * 1024 * 10) {

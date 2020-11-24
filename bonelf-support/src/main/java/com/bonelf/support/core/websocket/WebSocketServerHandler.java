@@ -3,7 +3,6 @@ package com.bonelf.support.core.websocket;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.bonelf.common.constant.AuthConstant;
-import com.bonelf.common.constant.CacheConstant;
 import com.bonelf.common.core.websocket.SocketMessage;
 import com.bonelf.common.core.websocket.SocketRespMessage;
 import com.bonelf.common.core.websocket.constant.ChannelEnum;
@@ -11,6 +10,7 @@ import com.bonelf.common.core.websocket.constant.MessageRecvCmdEnum;
 import com.bonelf.common.core.websocket.constant.MessageSendCmdEnum;
 import com.bonelf.common.core.websocket.constant.OnlineStatusEnum;
 import com.bonelf.common.util.redis.RedisUtil;
+import com.bonelf.support.constant.CacheConstant;
 import com.bonelf.support.service.impl.SocketMessageService;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
@@ -59,11 +59,21 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<WebSocke
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		log.error("exceptionCaught", cause);
+		String userId = ctx.channel().attr(WebsocketMap.USER_ID_CHANNEL_KEY).get();
+		if (StringUtils.hasText(userId)) {
+			redisUtil.hset(CacheConstant.WEB_SOCKET_SESSION_HASH, userId, OnlineStatusEnum.OFFLINE.getCode());
+			websocketMap.getSocketSessionMap().remove(userId);
+		}
 	}
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		log.info("channelInactive");
+		String userId = ctx.channel().attr(WebsocketMap.USER_ID_CHANNEL_KEY).get();
+		if (StringUtils.hasText(userId)) {
+			redisUtil.hset(CacheConstant.WEB_SOCKET_SESSION_HASH, userId, OnlineStatusEnum.OFFLINE.getCode());
+			websocketMap.getSocketSessionMap().remove(userId);
+		}
 	}
 
 	/**

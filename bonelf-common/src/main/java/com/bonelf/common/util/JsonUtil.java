@@ -1,42 +1,41 @@
 package com.bonelf.common.util;
 
-import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.bonelf.common.core.exception.BonelfException;
+import com.bonelf.common.core.serializer.RestObjectMapper;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Jackson工具类
- * @author guaishou
+ * @author bonelf
  */
 @Slf4j
 public class JsonUtil {
+	public static boolean isJson(String value) {
+		return JSONUtil.isJson(value);
+	}
+
+	public static boolean isJsonObj(String value) {
+		return JSONUtil.isJsonObj(value);
+	}
+
+	public static boolean isJsonArray(String value) {
+		return JSONUtil.isJsonArray(value);
+	}
 
 	/**
 	 * 将对象序列化成json字符串
@@ -50,7 +49,7 @@ public class JsonUtil {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
-		return null;
+		return "";
 	}
 
 	/**
@@ -209,7 +208,7 @@ public class JsonUtil {
 		return null;
 	}
 
-	public static <T> T toPojo(Map fromValue, Class<T> toValueType) {
+	public static <T> T toPojo(Map<?, ?> fromValue, Class<T> toValueType) {
 		return getInstance().convertValue(fromValue, toValueType);
 	}
 
@@ -270,51 +269,7 @@ public class JsonUtil {
 	}
 
 	private static class JacksonHolder {
-		private static ObjectMapper INSTANCE = new JacksonObjectMapper();
-	}
-
-	public static class JacksonObjectMapper extends ObjectMapper {
-		private static final long serialVersionUID = 4288193147502386170L;
-
-		private static final Locale CHINA = Locale.CHINA;
-
-		public JacksonObjectMapper() {
-			super();
-			//设置地点为中国
-			super.setLocale(CHINA);
-			//去掉默认的时间戳格式
-			super.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-			//设置为中国上海时区
-			super.setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
-			//序列化时，日期的统一格式
-			super.setDateFormat(new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN, Locale.CHINA));
-			//序列化处理
-			super.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
-			super.configure(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER.mappedFeature(), true);
-			super.findAndRegisterModules();
-			//失败处理
-			super.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-			super.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			//单引号处理
-			super.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-			//反序列化时，属性不存在的兼容处理s
-			super.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			//日期格式化
-			SimpleModule simpleModule = new SimpleModule();
-			simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DatePattern.NORM_DATETIME_FORMATTER));
-			simpleModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DatePattern.NORM_DATE_FORMATTER));
-			simpleModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN)));
-			simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DatePattern.NORM_DATETIME_FORMATTER));
-			simpleModule.addSerializer(LocalDate.class, new LocalDateSerializer(DatePattern.NORM_DATE_FORMATTER));
-			simpleModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN)));
-			super.registerModule(simpleModule);
-			super.findAndRegisterModules();
-		}
-
-		@Override
-		public ObjectMapper copy() {
-			return super.copy();
-		}
+		private static ObjectMapper INSTANCE = new RestObjectMapper();
 	}
 
 }

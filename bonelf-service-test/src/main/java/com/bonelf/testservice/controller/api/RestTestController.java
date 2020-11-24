@@ -36,6 +36,13 @@ public class RestTestController extends BaseApiController {
 		return Result.ok(null);
 	}
 
+	@ApiOperation(value = "testLogin")
+	@GetMapping("/testLogin")
+	public Result<?> testLogin() {
+		System.out.println("User:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication()));
+		return Result.ok(null);
+	}
+
 	@ApiOperation(value = "testConverter")
 	@GetMapping("/testConverter")
 	public Result<TestConverterVO> testConverter() {

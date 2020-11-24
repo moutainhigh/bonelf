@@ -79,6 +79,31 @@
       "name": "ali.oss.endpoint",
       "type": "java.lang.String",
       "description": "Description for ali.oss.endpoint."
+    },
+    {
+      "name": "bonelf.oauth2.jwt.signing-key",
+      "type": "java.lang.String",
+      "description": "Description for bonelf.oauth2.jwt.signing-key."
+    },
+    {
+      "name": "bonelf.oauth2.jwt.keystore",
+      "type": "java.lang.String",
+      "description": "Description for bonelf.oauth2.jwt.keystore."
+    },
+    {
+      "name": "bonelf.oauth2.jwt.password",
+      "type": "java.lang.String",
+      "description": "Description for bonelf.oauth2.jwt.password."
+    },
+    {
+      "name": "bonelf.oauth2.jwt.alias",
+      "type": "java.lang.String",
+      "description": "Description for bonelf.oauth2.jwt.alias."
+    },
+    {
+      "name": "bonelf.oauth2.jwt.signing-key",
+      "type": "java.lang.String",
+      "description": "Description for bonelf.oauth2.jwt.signing-key."
     }
   ]
 }

@@ -15,7 +15,6 @@
     <description>网关</description>
 
     <properties>
-        <oauth.version>[2.2.4,)</oauth.version>
     </properties>
 
     <dependencies>
@@ -27,21 +26,6 @@
         <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-okhttp</artifactId>
-        </dependency>
-        <!--oauth2认证-->
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>${oauth.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-jwt</artifactId>
-            <version>RELEASE</version>
         </dependency>
     </dependencies>
 
