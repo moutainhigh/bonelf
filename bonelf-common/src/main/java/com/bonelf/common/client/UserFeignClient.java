@@ -1,12 +1,8 @@
 package com.bonelf.common.client;
 
-import com.bonelf.common.client.factory.UserFeignFallbackFactory;
-import com.bonelf.common.cloud.constant.ServiceNameConstant;
-import com.bonelf.common.cloud.feign.FeignConfig;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.domain.vo.ApiUser;
 import com.bonelf.common.domain.vo.SysUser;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,8 +18,9 @@ import java.util.Set;
  * @author bonelf
  * @since 2020/10/5 21:12
  */
-@FeignClient(contextId = "userFeignClient", value = ServiceNameConstant.USER_SERVICE,
-		configuration = FeignConfig.class, fallbackFactory = UserFeignFallbackFactory.class)
+@Deprecated
+//@FeignClient(contextId = "userFeignClient", value = ServiceNameConstant.USER_SERVICE,
+//		configuration = FeignConfig.class, fallbackFactory = UserFeignFallbackFactory.class)
 public interface UserFeignClient {
 	@Deprecated
 	@GetMapping("/user/v1/getUser")

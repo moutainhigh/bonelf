@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bonelf.cicada.util.CipherCryptUtil;
 import com.bonelf.cicada.util.Md5CryptUtil;
 import com.bonelf.common.constant.AuthConstant;
-import com.bonelf.common.constant.BonlfConstant;
+import com.bonelf.common.constant.BonelfConstant;
 import com.bonelf.common.constant.CommonCacheConstant;
 import com.bonelf.common.constant.enums.UserTypeEnum;
 import com.bonelf.common.core.exception.BonelfException;
@@ -92,7 +92,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 				//}
 				user.setPassword(Md5CryptUtil.encrypt(user.getPhone().substring(user.getPhone().length() - 6), AuthConstant.DATABASE_SALT_MD5));
 				user.setLastLoginTime(LocalDateTime.now());
-				user.setAvatar(baseUrl + BonlfConstant.DEFAULT_AVATAR_PATH);
+				user.setAvatar(baseUrl + BonelfConstant.DEFAULT_AVATAR_PATH);
 				this.baseMapper.insert(user);
 				user.setNickname("用户" + HexUtil.toHex(user.getUserId()));
 				this.baseMapper.updateById(user);

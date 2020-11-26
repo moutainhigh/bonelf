@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHand
  * <p>
  * 异常封装
  * 不是设置这个没有用，先留着
+ * @see AuthExceptionEntryPoint
  * </p>
  * @author bonelf
  * @since 2020/11/21 11:53

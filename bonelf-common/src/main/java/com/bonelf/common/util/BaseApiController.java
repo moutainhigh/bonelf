@@ -89,6 +89,6 @@ public abstract class BaseApiController {
 	 */
 	protected String getPhone() {
 		System.out.println("User:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication()));
-		return "13758233011";
+		return (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 }

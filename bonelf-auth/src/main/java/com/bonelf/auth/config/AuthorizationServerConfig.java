@@ -3,6 +3,7 @@ package com.bonelf.auth.config;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import com.bonelf.auth.core.exception.CustomWebResponseExceptionTranslator;
 import com.bonelf.auth.core.oauth2.enhancer.CustomTokenEnhancer;
+import com.bonelf.auth.core.oauth2.granter.mail.MailTokenGranter;
 import com.bonelf.auth.core.oauth2.granter.mobile.MobileTokenGranter;
 import com.bonelf.auth.core.oauth2.granter.openid.OpenIdTokenGranter;
 import com.bonelf.auth.service.UserService;
@@ -210,6 +211,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		List<TokenGranter> granters = Lists.newArrayList(endpoints.getTokenGranter());
 		//新增granter 新增登录方式
 		granters.add(new MobileTokenGranter(
+				authenticationManager,
+				endpoints.getTokenServices(),
+				endpoints.getClientDetailsService(),
+				endpoints.getOAuth2RequestFactory()));
+
+		granters.add(new MailTokenGranter(
 				authenticationManager,
 				endpoints.getTokenServices(),
 				endpoints.getClientDetailsService(),

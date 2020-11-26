@@ -1,16 +1,24 @@
 package com.bonelf.userservice.controller.api;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.bonelf.common.client.SupportFeignClient;
 import com.bonelf.common.config.property.BonelfProperty;
-import com.bonelf.common.constant.BonlfConstant;
+import com.bonelf.common.constant.BonelfConstant;
+import com.bonelf.common.constant.enums.VerifyCodeTypeEnum;
+import com.bonelf.common.constant.enums.YesOrNotEnum;
 import com.bonelf.common.core.aop.annotation.MustFeignRequest;
+import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.util.BaseApiController;
+import com.bonelf.common.util.redis.RedisUtil;
 import com.bonelf.userservice.constant.enums.UserStatusEnum;
 import com.bonelf.userservice.core.exception.UserExceptionEnum;
 import com.bonelf.userservice.domain.dto.AccountLoginDTO;
 import com.bonelf.userservice.domain.dto.WechatLoginDTO;
+import com.bonelf.userservice.domain.dto.WechatRegisterUserDTO;
 import com.bonelf.userservice.domain.entity.User;
+import com.bonelf.userservice.domain.response.UserResponse;
 import com.bonelf.userservice.domain.vo.LoginVO;
 import com.bonelf.userservice.service.UserService;
 import io.swagger.annotations.Api;
@@ -41,6 +49,10 @@ public class UserController extends BaseApiController {
 	private UserService userService;
 	@Autowired
 	private BonelfProperty bonelfProperty;
+	@Autowired
+	private SupportFeignClient supportFeignClient;
+	@Autowired
+	private RedisUtil redisUtil;
 
 	@Deprecated
 	@ApiOperation("账号密码登录")
@@ -60,8 +72,24 @@ public class UserController extends BaseApiController {
 	/*===========================Feign FIXME 为Feign新建模块 ===========================*/
 
 	@GetMapping(value = "/v1/getUser")
-	public Result<User> getUser(@RequestParam Long userId) {
-		return Result.ok(userService.getById(userId));
+	public Result<UserResponse> getUser(@RequestParam("uniqueId") String uniqueId) {
+		User user = userService.getOne(Wrappers.<User>lambdaQuery()
+				.eq(User::getUserId, uniqueId).or()
+				.eq(User::getPhone, uniqueId).or()
+				.eq(User::getOpenId, uniqueId).orderByDesc(User::getUpdateTime).last("limit 1"));
+		if (user == null) {
+			return Result.error(CommonBizExceptionEnum.DB_RESOURCE_NULL, "用户");
+		}
+		UserResponse resp = BeanUtil.copyProperties(user, UserResponse.class);
+		resp.setEnabled(YesOrNotEnum.N.getCode().equals(user.getStatus()));
+		resp.setAccountNonExpired(true);
+		resp.setCredentialsNonExpired(true);
+		resp.setAccountNonLocked(YesOrNotEnum.N.getCode().equals(user.getStatus()));
+		Result<String> codeResult = supportFeignClient.getVerify(user.getPhone(), VerifyCodeTypeEnum.LOGIN.getCode());
+		if (codeResult.getSuccess()) {
+			resp.setVerifyCode(codeResult.getResult());
+		}
+		return Result.ok(resp);
 	}
 
 	@MustFeignRequest
@@ -73,8 +101,25 @@ public class UserController extends BaseApiController {
 			return errorCheckResult;
 		}
 		User user = new User();
-		user.setAvatar(bonelfProperty.getBaseUrl() + BonlfConstant.DEFAULT_AVATAR_PATH);
+		user.setAvatar(bonelfProperty.getBaseUrl() + BonelfConstant.DEFAULT_AVATAR_PATH);
 		user.setPhone(phone);
+		user.setLastLoginTime(LocalDateTime.now());
+		userService.save(user);
+		userService.update(Wrappers.<User>lambdaUpdate().set(User::getNickname, "手机用户").eq(User::getUserId, user.getUserId()).last("limit 1"));
+		return Result.ok(user);
+	}
+
+	@MustFeignRequest
+	@PostMapping(value = "/v1/registerByMail")
+	public Result<User> registerByMail(@RequestParam("mail") String mail) {
+		User past = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getMail, mail));
+		Result<User> errorCheckResult = registerUserCheck(past);
+		if (errorCheckResult != null) {
+			return errorCheckResult;
+		}
+		User user = new User();
+		user.setAvatar(bonelfProperty.getBaseUrl() + BonelfConstant.DEFAULT_AVATAR_PATH);
+		user.setMail(mail);
 		user.setLastLoginTime(LocalDateTime.now());
 		userService.save(user);
 		userService.update(Wrappers.<User>lambdaUpdate().set(User::getNickname, "手机用户").eq(User::getUserId, user.getUserId()).last("limit 1"));
@@ -93,20 +138,23 @@ public class UserController extends BaseApiController {
 
 	@MustFeignRequest
 	@PostMapping(value = "/v1/registerByOpenId")
-	public Result<User> registerByOpenId(@RequestParam("openId") String openId,
-										 @RequestParam("unionId") String unionId) {
-		User past = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getOpenId, openId).or().eq(User::getUnionId, unionId).last("limit 1"));
+	public Result<User> registerByOpenId(@RequestBody WechatRegisterUserDTO wechatRegisterUserDto) {
+		User past = userService.getOne(Wrappers.<User>lambdaQuery()
+				.eq(User::getOpenId, wechatRegisterUserDto.getOpenId()).or()
+				.eq(User::getUnionId, wechatRegisterUserDto.getUnionId()).last("limit 1"));
 		Result<User> errorCheckResult = registerUserCheck(past);
 		if (errorCheckResult != null) {
 			return errorCheckResult;
 		}
-		User user = new User();
-		user.setAvatar(bonelfProperty.getBaseUrl() + BonlfConstant.DEFAULT_AVATAR_PATH);
-		user.setOpenId(openId);
-		user.setUnionId(unionId);
+		User user = BeanUtil.copyProperties(wechatRegisterUserDto, User.class);
+		if (user.getAvatar() == null) {
+			user.setAvatar(bonelfProperty.getBaseUrl() + BonelfConstant.DEFAULT_AVATAR_PATH);
+		}
 		user.setLastLoginTime(LocalDateTime.now());
 		userService.save(user);
-		userService.update(Wrappers.<User>lambdaUpdate().set(User::getNickname, "手机用户").eq(User::getUserId, user.getUserId()));
+		if (user.getNickname() == null) {
+			userService.update(Wrappers.<User>lambdaUpdate().set(User::getNickname, "手机用户").eq(User::getUserId, user.getUserId()));
+		}
 		return Result.ok(user);
 	}
 

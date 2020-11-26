@@ -1,10 +1,10 @@
 package com.bonelf.auth.client.provider;
 
-import com.bonelf.auth.entity.Role;
-import com.bonelf.auth.entity.User;
+import com.bonelf.auth.domain.entity.Role;
+import com.bonelf.auth.domain.entity.User;
+import com.bonelf.auth.domain.request.RegisterUserRequest;
 import com.bonelf.common.domain.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -25,22 +25,22 @@ public class UserClientFallback implements UserClient {
 	PasswordEncoder passwordEncoder;
 
 	@Override
-	public Result<User> getUserByUniqueId(Long uniqueId) {
+	public Result<User> getUserByUniqueId(String uniqueId) {
 		// FIXME: 2020/11/19 超时报错返回error
-		User user = new User();
-		user.setEnabled(true);
-		user.setAccountNonExpired(true);
-		user.setAccountNonLocked(true);
-		user.setCredentialsNonExpired(true);
-		user.setMobile("13758233010");
-		user.setNickname("nickname");
-		user.setPassword("123456");
-		user.setUsername("13758233010");
-		user.setOpenId("test-open-id");
-		user.setVerifyCode("980826");
-		user.setUserId(-1L);
-		return Result.ok(user);
-        //return Result.error();
+		//User user = new User();
+		//user.setEnabled(true);
+		//user.setAccountNonExpired(true);
+		//user.setAccountNonLocked(true);
+		//user.setCredentialsNonExpired(true);
+		//user.setMobile("13758233010");
+		//user.setNickname("nickname");
+		//user.setPassword("123456");
+		//user.setUsername("13758233010");
+		//user.setOpenId("test-open-id");
+		//user.setVerifyCode("980826");
+		//user.setUserId(-1L);
+		//return Result.ok(user);
+        return Result.error();
 	}
 
 	@Override
@@ -55,7 +55,12 @@ public class UserClientFallback implements UserClient {
 	}
 
 	@Override
-	public Result<User> registerByOpenId(@NonNull String openId,@NonNull String unionId) {
+	public Result<User> registerByMail(String mail) {
+		return Result.error();
+	}
+
+	@Override
+	public Result<User> registerByOpenId(RegisterUserRequest registerUser) {
 		return Result.error();
 	}
 }

@@ -12,4 +12,8 @@ public class BonelfProperty {
 	 * 项目网址
 	 */
 	private String baseUrl = "undefined";
+
+	private String appName = "bonelf总结项目";
+
+	private MailProperty mail = new MailProperty();
 }

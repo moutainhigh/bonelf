@@ -18,6 +18,13 @@ public class VerifyCodeDTO {
 	private String phone;
 
 	/**
+	 * 邮箱
+	 */
+	@ApiModelProperty("邮箱")
+	@Pattern(regexp = RegexpConstant.VALIDATE_MAIL, message = "邮箱格式不正确")
+	private String mail;
+
+	/**
 	 * 验证码类型
 	 * FIXME 尝试直接传枚举
 	 */

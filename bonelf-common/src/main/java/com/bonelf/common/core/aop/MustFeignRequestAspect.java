@@ -1,9 +1,9 @@
 package com.bonelf.common.core.aop;
 
-import com.bonelf.common.cloud.constant.AuthFeignConstant;
 import com.bonelf.common.core.aop.annotation.MustFeignRequest;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
+import com.gateway.constant.AuthFeignConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

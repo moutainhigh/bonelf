@@ -97,7 +97,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	 */
 	@Bean
 	public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-		return builder -> builder.serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)));
+		return builder -> {
+			//空字符串转null RestObjectMapper.class 写了
+			//JsonSerializer<String> serializer = new StdSerializer<String>(String.class) {
+			//	@Override
+			//	public void serialize(String value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+			//		if (value == null || "".equals(value.trim()) || "null".equals(value) || "undefined".equals(value)) {
+			//			gen.writeNull();
+			//		}
+			//		gen.writeString(value);
+			//	}
+			//};
+			//builder.serializerByType(String.class, serializer);
+			builder.serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)));
+		};
 	}
 
 	/**

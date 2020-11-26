@@ -8,8 +8,8 @@
 
 package com.bonelf.auth.core.oauth2.service;
 
-import com.bonelf.auth.entity.Role;
-import com.bonelf.auth.entity.User;
+import com.bonelf.auth.domain.entity.Role;
+import com.bonelf.auth.domain.entity.User;
 import com.bonelf.auth.service.RoleService;
 import com.bonelf.auth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String uniqueId) {
-        User user = userService.getByUniqueId(Long.parseLong(uniqueId)).getResult();
+        User user = userService.getByUniqueId(uniqueId).getResult();
         // FIXME: 2020/11/19 错误和NPE处理
         log.info("load user by username :{}", user.toString());
         return new org.springframework.security.core.userdetails.User(

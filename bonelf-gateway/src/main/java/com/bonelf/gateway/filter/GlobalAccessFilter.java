@@ -4,9 +4,9 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.bonelf.gateway.config.property.GatewayBonelfProperty;
-import com.bonelf.gateway.constant.AuthFeignConstant;
 import com.bonelf.gateway.domain.Result;
 import com.bonelf.gateway.service.AuthService;
+import com.gateway.constant.AuthFeignConstant;
 import com.gateway.constant.OAuth2Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,10 +79,10 @@ public class GlobalAccessFilter implements GlobalFilter, Ordered {
 				log.debug("url:{},method:{},headers:{}, 请求未携带token信息", url, method, request.getHeaders());
 				return unauthorized(exchange);
 			}
-			//过了Auth服务直接完成权限校验，其他服务不必再鉴权
-			if (!authService.hasPermission(authentication, url, method)) {
-				return unauthorized(exchange);
-			}
+			//过了Auth服务直接完成权限校验，其他服务不必再鉴权 FIXME 签权Sign
+			//if (!authService.hasPermission(authentication, url, method)) {
+			//	return unauthorized(exchange);
+			//}
 		}
 
 		// 1. 重写StripPrefix(获取真实的URL)

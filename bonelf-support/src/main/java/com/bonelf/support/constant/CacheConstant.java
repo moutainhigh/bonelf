@@ -8,7 +8,7 @@
 
 package com.bonelf.support.constant;
 
-import com.bonelf.common.constant.BonlfConstant;
+import com.bonelf.common.constant.BonelfConstant;
 
 public interface CacheConstant {
 	/**
@@ -19,7 +19,7 @@ public interface CacheConstant {
 	/**
 	 * 验证码 businessType phone
 	 */
-	String LOGIN_VERIFY_CODE = BonlfConstant.PROJECT_NAME + ":%s:%s";
+	String LOGIN_VERIFY_CODE = BonelfConstant.PROJECT_NAME + ":%s:%s";
 
 	/*
 	 * session 有效时间 如果不使用hash表存储session使用
@@ -29,5 +29,5 @@ public interface CacheConstant {
 	/**
 	 * socket session hash 存储在线状态
 	 */
-	String WEB_SOCKET_SESSION_HASH = BonlfConstant.PROJECT_NAME + ":websocket:session";
+	String WEB_SOCKET_SESSION_HASH = BonelfConstant.PROJECT_NAME + ":websocket:session";
 }

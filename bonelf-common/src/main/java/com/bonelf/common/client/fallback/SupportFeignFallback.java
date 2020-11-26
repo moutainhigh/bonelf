@@ -31,7 +31,14 @@ public class SupportFeignFallback implements SupportFeignClient {
 	}
 
 	@Override
-	public Result<String> getSmsCode(String phone, String businessType) {
+	public Result<String> sendVerify(String phone, String businessType) {
+		// FIXME: 2020/11/19 取消返回结果
+		return Result.ok("980826");
+	}
+
+	@Override
+	public Result<String> getVerify(String phone, String businessType) {
+		// FIXME: 2020/11/19 超时报错返回error
 		return Result.ok("980826");
 	}
 }

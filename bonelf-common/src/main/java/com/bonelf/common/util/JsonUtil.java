@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * Jackson工具类
+ * 使用与web序列化一样的ObjectMapper处理数据
  * @author bonelf
  */
 @Slf4j

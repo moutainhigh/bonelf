@@ -16,6 +16,7 @@ public interface RegexpConstant {
 	 * 电话号码校验（不包含港澳台手机号）
 	 */
 	String VALIDATE_PHONE = "^(13[0-9]|14[579]|15[0-3,5-9]|16[0-9]|17[0135678]|18[0-9]|19[89])\\d{8}$";
+	String VALIDATE_MAIL = "^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-z]{2,}$";
 
 	/**
 	 * 地址校验

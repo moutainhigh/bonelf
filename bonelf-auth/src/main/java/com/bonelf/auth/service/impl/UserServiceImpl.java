@@ -1,12 +1,13 @@
 package com.bonelf.auth.service.impl;
 
 import com.bonelf.auth.client.provider.UserClient;
-import com.bonelf.auth.entity.User;
+import com.bonelf.auth.domain.entity.User;
+import com.bonelf.auth.domain.request.RegisterUserRequest;
 import com.bonelf.auth.service.UserService;
+import com.bonelf.common.core.exception.BonelfException;
+import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import com.bonelf.common.domain.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,17 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * 根据用户唯一标识获取用户信息
 	 * FIXME 此处添加缓存
-	 * @param userId userId
+	 * @param uniqueId uniqueId
 	 * @return
 	 */
 	@Override
-	@Cacheable(value = "#id", condition = "#result.getSuccess()")
-	public Result<User> getByUniqueId(Long userId) {
-		return userClient.getUserByUniqueId(userId);
+	//@Cacheable(value = "#id", condition = "#result.getSuccess()")
+	public Result<User> getByUniqueId(String uniqueId) {
+		Result<User> user = userClient.getUserByUniqueId(uniqueId);
+		if (!user.getSuccess()) {
+			throw new BonelfException(CommonBizExceptionEnum.BUSY);
+		}
+		return user;
 	}
 
 	@Override
@@ -38,7 +43,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Result<User> registerByOpenId(@NonNull String openId, @NonNull String unionId) {
-		return userClient.registerByOpenId(openId, unionId);
+	public User registerByMail(String mail) {
+		Result<User> userResult = userClient.registerByMail(mail);
+		if (!userResult.getSuccess() || userResult.getResult() == null) {
+			throw new UsernameNotFoundException("register fail");
+		}
+		return userResult.getResult();
+	}
+
+	@Override
+	public Result<User> registerByOpenId(RegisterUserRequest registerUser) {
+		return userClient.registerByOpenId(registerUser);
 	}
 }

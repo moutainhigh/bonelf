@@ -1,4 +1,12 @@
-package com.bonelf.auth.entity;
+/*
+ * Copyright (c) 2020. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
+package com.bonelf.auth.domain.entity;
 
 
 import lombok.Data;
@@ -19,7 +27,11 @@ public class User implements Serializable {
     /**
      * 手机 手机注册、微信登录获取
      */
-    private String mobile;
+    private String phone;
+    /**
+     * 邮箱
+     */
+    private String mail;
     /**
      * 账号 自动生成、用户注册
      */
@@ -45,7 +57,18 @@ public class User implements Serializable {
      */
     private Boolean enabled;
 
+    /**
+     * 账户是否没过期
+     */
     private Boolean accountNonExpired;
+
+    /**
+     * 密码是否没过期
+     */
     private Boolean credentialsNonExpired;
+
+    /**
+     * 账户是否没冻结
+     */
     private Boolean accountNonLocked;
 }

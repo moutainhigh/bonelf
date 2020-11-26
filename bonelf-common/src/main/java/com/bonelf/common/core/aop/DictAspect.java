@@ -50,11 +50,11 @@ public class DictAspect {
 		long time1 = System.currentTimeMillis();
 		Object result = pjp.proceed();
 		long time2 = System.currentTimeMillis();
-		log.debug("supportFeignClient获取数据 耗时：" + (time2 - time1) + "ms");
+		//log.debug("supportFeignClient获取数据 耗时：" + (time2 - time1) + "ms");
 		long start = System.currentTimeMillis();
 		this.parseDictText(result);
 		long end = System.currentTimeMillis();
-		log.debug("解析注入数据  耗时" + (end - start) + "ms");
+		//log.debug("解析注入数据  耗时" + (end - start) + "ms");
 		return result;
 	}
 

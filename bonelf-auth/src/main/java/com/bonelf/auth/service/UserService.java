@@ -1,8 +1,8 @@
 package com.bonelf.auth.service;
 
-import com.bonelf.auth.entity.User;
+import com.bonelf.auth.domain.entity.User;
+import com.bonelf.auth.domain.request.RegisterUserRequest;
 import com.bonelf.common.domain.Result;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,10 +17,10 @@ public interface UserService {
 
     /**
      * 根据用户唯一标识获取用户信息
-     * @param userId
+     * @param uniqueId
      * @return
      */
-	Result<User> getByUniqueId(Long userId);
+	Result<User> getByUniqueId(String uniqueId);
 
 	/**
 	 * 注册
@@ -28,12 +28,17 @@ public interface UserService {
 	 * @return
 	 */
 	User registerByPhone(String phone);
+	/**
+	 * 注册
+	 * @param mail
+	 * @return
+	 */
+	User registerByMail(String mail);
 
 	/**
 	 * 微信注册
-	 * @param openId
-	 * @param unionId
+	 * @param registerUser
 	 * @return
 	 */
-	Result<User> registerByOpenId(@NonNull String openId,@NonNull String unionId);
+	Result<User> registerByOpenId(RegisterUserRequest registerUser);
 }

@@ -1,6 +1,6 @@
 package com.bonelf.auth.service;
 
-import com.bonelf.auth.entity.Role;
+import com.bonelf.auth.domain.entity.Role;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;

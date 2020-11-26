@@ -10,9 +10,10 @@ package com.bonelf.common.core.serializer;
 
 import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -34,10 +35,12 @@ public class RestObjectMapper extends ObjectMapper {
 		//pretty format
 		//this.writerWithDefaultPrettyPrinter();
 		this.setDateFormat(new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN));
+		//序列化两边接受方字段不足 不报UnrecognizedPropertyException，只解析对应的
+		this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		//驼峰转下划线
-		//objectMapper.setPropertyNamingStrategy(com.fasterxml.jackson.databind.PropertyNamingStrategy.SNAKE_CASE);
+		//this.setPropertyNamingStrategy(com.fasterxml.jackson.databind.PropertyNamingStrategy.SNAKE_CASE);
 		// 字段和值都加引号
-		//objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+		//this.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 		this.getSerializerProvider().setNullValueSerializer(new NullValueSerializer());
 		this.findAndRegisterModules();
 		/*
@@ -56,6 +59,19 @@ public class RestObjectMapper extends ObjectMapper {
 		//simpleModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN)));
 		//旧：DateTimeFormatter.ISO_TIME
 		simpleModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN)));
+		//空转null
+		JsonDeserializer<String> serializer = new StdDeserializer<String>(String.class) {
+			@Override
+			public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+				String value = StringDeserializer.instance.deserialize(p, ctxt);
+				if (value == null || "".equals(value.trim()) || "null".equals(value) || "undefined".equals(value)) {
+					return null;
+				}
+				return value;
+			}
+		};
+		simpleModule.addDeserializer(String.class, serializer);
+		this.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 		this.registerModule(simpleModule);
 	}
 
@@ -70,7 +86,7 @@ public class RestObjectMapper extends ObjectMapper {
 					//字符串null返回空字符串
 					gen.writeString("");
 					return;
-				} else if (Objects.equals(field.getType(), Collection.class)) {
+				} else if (Objects.equals(field.getType(), Collection.class) || field.getType().isArray()) {
 					//List字段如果为null,输出为[],而非null
 					gen.writeStartArray();
 					gen.writeEndArray();

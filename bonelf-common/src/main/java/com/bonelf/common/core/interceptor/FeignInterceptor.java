@@ -2,8 +2,8 @@ package com.bonelf.common.core.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.bonelf.common.cloud.constant.AuthFeignConstant;
 import com.bonelf.common.domain.Result;
+import com.gateway.constant.AuthFeignConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 

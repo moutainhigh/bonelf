@@ -10,6 +10,7 @@ package com.bonelf.common.config.security;
 
 import com.bonelf.common.config.property.Oauth2JwtProperty;
 import com.bonelf.common.core.security.AuthExceptionEntryPoint;
+import com.gateway.constant.AuthFeignConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,7 +58,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.csrf().disable()
 				//.antMatcher("/login").anonymous()
 				//.and()
-				.authorizeRequests().anyRequest().authenticated();
+				.authorizeRequests()
+				//Feign请求全部不需要认证
+				.requestMatchers(request -> {
+					String head = request.getHeader(AuthFeignConstant.AUTH_HEADER);
+					return head != null && head.startsWith(AuthFeignConstant.FEIGN_REQ_FLAG_PREFIX);
+				}).permitAll()
+				.anyRequest().authenticated();
 	}
 
 	//@Override

@@ -8,7 +8,7 @@
 
 package com.bonelf.auth.core.oauth2.service;
 
-import com.bonelf.auth.entity.User;
+import com.bonelf.auth.domain.entity.User;
 import com.bonelf.auth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +34,13 @@ public class OpenIdUserDetailsService extends CustomUserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String uniqueId) {
-		User user = userService.getByUniqueId(Long.parseLong(uniqueId)).getResult();
+		User user = userService.getByUniqueId(uniqueId).getResult();
 		// FIXME: 2020/11/19 错误和NPE处理
 		log.info("load user by openId:{}", user.toString());
 		// 如果为openId模式，从短信服务中获取验证码（动态密码）
 		return new org.springframework.security.core.userdetails.User(
+				user.getPhone(),
 				user.getOpenId(),
-				//TODO 不使用password
-				user.getPassword(),
 				user.getEnabled(),
 				user.getAccountNonExpired(),
 				user.getCredentialsNonExpired(),

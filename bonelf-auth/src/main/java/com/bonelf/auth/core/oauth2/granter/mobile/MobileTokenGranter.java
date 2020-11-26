@@ -31,6 +31,8 @@ import java.util.Map;
  * 以下参数对应用户
  * username:13758233000
  * password:123456
+ * 添加配置{@link com.bonelf.auth.config.AuthorizationServerConfig}
+ *
  * 验证{@link com.bonelf.auth.core.oauth2.service.MobileUserDetailsService}
  *
  * 注册见{@link com.bonelf.auth.core.oauth2.service.MobileUserDetailsService}

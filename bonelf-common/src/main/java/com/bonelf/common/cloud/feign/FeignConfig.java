@@ -1,7 +1,7 @@
 package com.bonelf.common.cloud.feign;
 
 import cn.hutool.core.util.StrUtil;
-import com.bonelf.common.cloud.constant.AuthFeignConstant;
+import com.gateway.constant.AuthFeignConstant;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +21,9 @@ public class FeignConfig implements RequestInterceptor {
 		if (attributes != null) {
 			HttpServletRequest request = attributes.getRequest();
 			String header = request.getHeader(AuthFeignConstant.AUTH_HEADER);
+
 			log.debug(" Authorization-UserName :" + header);
-			requestTemplate.header(AuthFeignConstant.AUTH_HEADER, "feign" + (StrUtil.isEmpty(header) ? "" : " ") + header);
+			requestTemplate.header(AuthFeignConstant.AUTH_HEADER, AuthFeignConstant.FEIGN_REQ_FLAG_PREFIX + (StrUtil.isEmpty(header) ? "" : " ") + header);
 		}
 	}
 }

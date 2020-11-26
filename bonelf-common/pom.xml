@@ -30,15 +30,13 @@
         <aliyun-sdk.version>4.5.14</aliyun-sdk.version>
         <!--最新2.5.0.RELEASE 已过时-->
         <oauth.version>2.3.6.RELEASE</oauth.version>
-        <!--最新RELEASE 或 1.1.1.RELEASE 已过时-->
-        <oauth-jwt.version>1.0.10.RELEASE</oauth-jwt.version>
+        <mail.version>1.4.7</mail.version>
     </properties>
 
     <dependencies>
-        <!--工具包-->
         <dependency>
             <groupId>com.bonelf</groupId>
-            <artifactId>cicada</artifactId>
+            <artifactId>bonelf-gateway-constant</artifactId>
         </dependency>
         <!-- Spring Begin -->
         <!--nacos依赖-->
@@ -176,7 +174,12 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-jwt</artifactId>
-            <version>${oauth-jwt.version}</version>
+        </dependency>
+        <!--MAIL-->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${mail.version}</version>
         </dependency>
     </dependencies>
 

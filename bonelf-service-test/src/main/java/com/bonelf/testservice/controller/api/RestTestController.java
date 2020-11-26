@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.util.BaseApiController;
 import com.bonelf.testservice.client.OrderFeignClient;
+import com.bonelf.testservice.client.UserClient;
 import com.bonelf.testservice.domain.dto.TestConverterDTO;
 import com.bonelf.testservice.domain.vo.TestConverterVO;
 import com.bonelf.testservice.domain.vo.TestDictVO;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Api(tags = {"测试接口"})
 @RestController
 @RequestMapping("/test")
@@ -28,19 +31,25 @@ public class RestTestController extends BaseApiController {
 	private RestTemplate restTemplate;
 	@Autowired
 	private OrderFeignClient orderFeignClient;
+	@Autowired
+	private UserClient userClient;
 
 	@ApiOperation(value = "testUser")
 	@GetMapping("/testUser")
 	public Result<?> testUser() {
-		System.out.println("User:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication()));
-		return Result.ok(null);
+		log.info("\nall:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication()));
+		log.info("\nusername:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
+		log.info("\npsw:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication().getCredentials()));
+		log.info("\ntokenInfo:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication().getDetails()));
+		log.info("\npermission:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
+		return Result.ok();
 	}
 
 	@ApiOperation(value = "testLogin")
 	@GetMapping("/testLogin")
 	public Result<?> testLogin() {
 		System.out.println("User:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication()));
-		return Result.ok(null);
+		return Result.ok();
 	}
 
 	@ApiOperation(value = "testConverter")
@@ -67,7 +76,7 @@ public class RestTestController extends BaseApiController {
 	public String restTemplateTest() {
 		Map<String, Object> params = new HashMap<>(1);
 		params.put("orderId", "123");
-		return restTemplate.getForObject("http://order/productOrder/getOrderById" + "?orderId={orderId}",
+		return restTemplate.getForObject("http://order-service/productOrder/getOrderById" + "?orderId={orderId}",
 				String.class,
 				params);
 	}
@@ -82,6 +91,11 @@ public class RestTestController extends BaseApiController {
 	@GetMapping("/orderFeign")
 	public String orderFeign() {
 		return orderFeignClient.getProductOrderById("123");
+	}
+
+	@GetMapping("/userFeign")
+	public Result<?> userFeign() {
+		return userClient.getUserByUniqueId("1328231759195709441");
 	}
 
 	@ApiOperation(value = "testDict")

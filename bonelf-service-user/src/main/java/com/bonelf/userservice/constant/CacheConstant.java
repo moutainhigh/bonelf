@@ -8,7 +8,7 @@
 
 package com.bonelf.userservice.constant;
 
-import com.bonelf.common.constant.BonlfConstant;
+import com.bonelf.common.constant.BonelfConstant;
 
 public interface CacheConstant {
 
@@ -16,5 +16,5 @@ public interface CacheConstant {
 	 * 验证码 businessType phone
 	 */
 	@Deprecated
-	String LOGIN_VERIFY_CODE = BonlfConstant.PROJECT_NAME + ":%s:%s";
+	String LOGIN_VERIFY_CODE = BonelfConstant.PROJECT_NAME + ":%s:%s";
 }

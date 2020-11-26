@@ -1,5 +1,6 @@
 package com.bonelf.auth.config;
 
+import com.bonelf.auth.core.oauth2.granter.mail.MailAuthenticationProvider;
 import com.bonelf.auth.core.oauth2.granter.mobile.MobileAuthenticationProvider;
 import com.bonelf.auth.core.oauth2.granter.openid.OpenIdAuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,9 @@ public class WebServerSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier("openidUserDetailsService")
 	private UserDetailsService openidUserDetailsService;
+	@Autowired
+	@Qualifier("mailUserDetailsService")
+	private UserDetailsService mailUserDetailsService;
 
 	/**
 	 * @description 其他请在网关bonelf.anno-url过滤
@@ -87,6 +91,7 @@ public class WebServerSecurityConfig extends WebSecurityConfigurerAdapter {
 				.passwordEncoder(passwordEncoder());
 		// 设置手机验证码登录的AuthenticationProvider
 		authenticationManagerBuilder.authenticationProvider(mobileAuthenticationProvider());
+		authenticationManagerBuilder.authenticationProvider(mailAuthenticationProvider());
 		// 设置微信登录的AuthenticationProvider
 		authenticationManagerBuilder.authenticationProvider(openIdAuthenticationProvider());
 	}
@@ -114,6 +119,13 @@ public class WebServerSecurityConfig extends WebSecurityConfigurerAdapter {
 		MobileAuthenticationProvider mobileAuthenticationProvider = new MobileAuthenticationProvider(this.mobileUserDetailsService);
 		mobileAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		return mobileAuthenticationProvider;
+	}
+
+	@Bean
+	public MailAuthenticationProvider mailAuthenticationProvider() {
+		MailAuthenticationProvider mailAuthenticationProvider = new MailAuthenticationProvider(this.mailUserDetailsService);
+		mailAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		return mailAuthenticationProvider;
 	}
 
 	@Bean

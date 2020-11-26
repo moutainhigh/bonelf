@@ -8,14 +8,14 @@
 
 package com.bonelf.testservice.constant;
 
-import com.bonelf.common.constant.BonlfConstant;
+import com.bonelf.common.constant.BonelfConstant;
 
 public interface CacheConstant {
 
 	/**
 	 * socket session hash 存储在线状态
 	 */
-	String WEB_SOCKET_SESSION_HASH = BonlfConstant.PROJECT_NAME + ":websocket:session";
+	String WEB_SOCKET_SESSION_HASH = BonelfConstant.PROJECT_NAME + ":websocket:session";
 
 	/*
 	 * session 有效时间 如果不使用hash表存储session使用

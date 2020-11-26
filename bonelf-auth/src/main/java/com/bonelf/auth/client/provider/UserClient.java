@@ -1,21 +1,22 @@
 package com.bonelf.auth.client.provider;
 
-import com.bonelf.auth.entity.Role;
-import com.bonelf.auth.entity.User;
+import com.bonelf.auth.domain.entity.Role;
+import com.bonelf.auth.domain.entity.User;
+import com.bonelf.auth.domain.request.RegisterUserRequest;
 import com.bonelf.common.cloud.constant.ServiceNameConstant;
 import com.bonelf.common.cloud.feign.FeignConfig;
 import com.bonelf.common.domain.Result;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Set;
 
 /**
  * <p>
- * 签权服务
+ * 签权服务, fallback = UserClientFallback.class
  * </p>
  * @author bonelf
  * @since 2020/11/17 15:37
@@ -25,18 +26,18 @@ public interface UserClient {
 
     /**
      * 查询用户
-     * @param userId
+     * @param uniqueId
      * @return
      */
-    @GetMapping(value = "/user/v1/getUser")
-    Result<User> getUserByUniqueId(@RequestParam("userId") Long userId);
+    @GetMapping(value = "/bonelf/user/v1/getUser")
+    Result<User> getUserByUniqueId(@RequestParam("uniqueId") String uniqueId);
 
     /**
      * 用户角色
      * @param userId
      * @return
      */
-    @GetMapping(value = "/role/v1")
+    @GetMapping(value = "/bonelf/role/v1")
     Result<Set<Role>> queryRolesByUserId(@RequestParam("userId") Long userId);
 
     /**
@@ -44,15 +45,17 @@ public interface UserClient {
      * @param phone
      * @return
      */
-    @PostMapping(value = "/user/v1/registerByPhone")
+    @PostMapping(value = "/bonelf/user/v1/registerByPhone")
     Result<User> registerByPhone(@RequestParam("phone") String phone);
 
     /**
      * 微信注册
-     * @param openId
-     * @param unionId
+     * @param registerUser
      * @return
      */
-    @PostMapping(value = "/user/v1/registerByOpenId")
-    Result<User> registerByOpenId(@NonNull @RequestParam("openId") String openId,@NonNull @RequestParam("unionId") String unionId);
+    @PostMapping(value = "/bonelf/user/v1/registerByOpenId")
+    Result<User> registerByOpenId(@RequestBody RegisterUserRequest registerUser);
+
+    @PostMapping(value = "/bonelf/user/v1/registerByMail")
+    Result<User> registerByMail(@RequestParam("mail") String mail);
 }

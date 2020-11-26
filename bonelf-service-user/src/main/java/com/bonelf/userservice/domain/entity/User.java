@@ -37,9 +37,28 @@ public class User extends BaseEntity implements Serializable, CommonUser {
 	@ApiModelProperty(value = "手机")
 	private String phone;
 
+	/**
+	 * 手机
+	 */
+	@TableField(value = "username")
+	@ApiModelProperty(value = "用户名")
+	private String username;
+	/**
+	 * 邮箱
+	 */
+	@TableField(value = "mail")
+	@ApiModelProperty(value = "邮箱")
+	private String mail;
+
+	/**
+	 * unionId
+	 */
 	@TableField(value = "union_id")
 	private String unionId;
 
+	/**
+	 * openId
+	 */
 	@TableField(value = "open_id")
 	private String openId;
 

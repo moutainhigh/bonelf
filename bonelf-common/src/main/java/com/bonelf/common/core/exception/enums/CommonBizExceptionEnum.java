@@ -28,12 +28,13 @@ public enum CommonBizExceptionEnum implements AbstractBaseExceptionEnum {
 	NOT_LOGIN(401, "请先登录"),
 	EMPTY_TOKEN(401, "访问非法"),
 	LOGIN_EXPIRED(401, "登录过期，请重新登录"),
-	INVALID_TOKEN(401, "非法的用户凭据"),
+	INVALID_TOKEN(40005, "用户凭据非法"),
 	LOGIN_INSTEAD(401, "用户在其他设备登录，请重新登录"),
 	/*===========================数据库访问信息===========================*/
 	DB_RESOURCE_NULL(404, "%s不存在"),
 	/*===========================服务器异常信息===========================*/
 	NO_REPEAT_SUBMIT(402, "技能冷却中，请等待%s秒"),
+	BUSY(402, "服务器繁忙"),
 	SERVER_ERROR(500, "服务器异常:%s"),
 	THIRD_FAIL(500, "三方调用失败:%s"),
 	DECRYPT_ERROR(500, "解密失败"),

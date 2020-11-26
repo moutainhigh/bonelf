@@ -29,11 +29,20 @@ public interface SupportFeignClient {
 	 * 可以分离成短信服务/三方服务
 	 * 现在直接从getUserByUniqueId获取到验证码 存于password字段中
 	 * passwordEncoder.encode("980826")
+	 * 由userService调用
 	 * @param phone 手机号
-	 * @param businessType 短信类型
+	 * @param businessType 短信类型 ${@link com.bonelf.common.constant.enums.VerifyCodeTypeEnum}
 	 * @return 验证码
 	 */
-	@Deprecated
-	@GetMapping(value = "/sms/v1/sendVerify")
-	Result<String> getSmsCode(@RequestParam("phone") String phone, @RequestParam("businessType") String businessType);
+	@PostMapping(value = "/sms/v1/sendVerify")
+	Result<String> sendVerify(@RequestParam("phone") String phone, @RequestParam("businessType") String businessType);
+
+	/**
+	 * 获取验证码
+	 * @param phone 手机号
+	 * @param businessType 短信类型 ${@link com.bonelf.common.constant.enums.VerifyCodeTypeEnum}
+	 * @return 验证码
+	 */
+	@GetMapping(value = "/sms/v1/getVerify")
+	Result<String> getVerify(@RequestParam("phone") String phone, @RequestParam("businessType") String businessType);
 }

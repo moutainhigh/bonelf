@@ -9,6 +9,7 @@
 package com.bonelf.auth.core.exception;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 
@@ -20,6 +21,9 @@ public class CustomWebResponseExceptionTranslator implements WebResponseExceptio
 			OAuth2Exception oAuth2Exception = (OAuth2Exception)e;
 			return ResponseEntity.status(oAuth2Exception.getHttpErrorCode())
 					.body(new CustomOauthException(oAuth2Exception));
+		} else if (e instanceof InternalAuthenticationServiceException) {
+			InternalAuthenticationServiceException exception = (InternalAuthenticationServiceException)e;
+			return ResponseEntity.ok().body(new CustomOauthException(exception));
 		} else {
 			return ResponseEntity.status(500)
 					.body(new CustomOauthException(new OAuth2Exception("system_error")));

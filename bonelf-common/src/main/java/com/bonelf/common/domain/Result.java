@@ -134,7 +134,7 @@ public class Result<T> implements Serializable {
 	}
 
 	public static <T> Result<T> error() {
-		return error(BizConstants.CODE_500, null);
+		return error(BizConstants.CODE_500, "fail");
 	}
 
 	public static <T> Result<T> error(int code, String msg) {

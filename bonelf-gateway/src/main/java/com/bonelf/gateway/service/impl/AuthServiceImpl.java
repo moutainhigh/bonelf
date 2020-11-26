@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.InvalidSignatureException;
-import org.springframework.security.jwt.crypto.sign.MacSigner;
+import org.springframework.security.jwt.crypto.sign.RsaVerifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
 	/**
 	 * jwt验签
 	 */
-	private MacSigner verifier;
+	private RsaVerifier verifier;
 
 	@Override
 	public Result<Boolean> authenticate(String authentication, String url, String method) {
@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public boolean invalidJwtAccessToken(String authentication) {
-		verifier = Optional.ofNullable(verifier).orElse(new MacSigner(signingKey));
+		verifier = Optional.ofNullable(verifier).orElse(new RsaVerifier(signingKey));
 		//是否无效true表示无效
 		boolean invalid = Boolean.TRUE;
 

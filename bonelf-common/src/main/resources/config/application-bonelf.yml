@@ -1,4 +1,6 @@
 bonelf:
+  base-url: localhost
+  app-name: bonelf总结项目
   oauth2:
     jwt:
       # customer:
@@ -7,3 +9,7 @@ bonelf:
       keystore: /tls/example.p12
       password: =bonelf=
       alias: bonelf
+  mail:
+    password: ccy297115649
+    smtp: smtp.ym.163.com
+    username: me@chenchengyuan.com

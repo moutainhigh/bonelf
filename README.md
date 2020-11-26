@@ -38,15 +38,11 @@ Windows启动：切换到/bin目录 -> .\startup.cmd -m standalone
 Jeecg-boot、ruoyi-cloud、Guns、litemall、best-pay
 
 ## 开发计划
-OAuth2
-
 继承Webserver是否可以替换springboot的web服务？
 
 string 替换文本注解
 
 支持表情注解（valid）
-
-空字符串转null 注解
 
 过滤表情 过滤HTML表情（XSS）注解方式实现
 
@@ -56,7 +52,7 @@ string 替换文本注解
 
 搜索服务elasticsearch
 
-rabbitmq（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
+rocketmq（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
 
 点击量排序问题
 
@@ -80,7 +76,13 @@ grafana
 
 kibana
 
-RabbitMQ 实现 redis websocket发布订阅
+seata
+
+sentired
+
+RocketMQ 实现 redis websocket发布订阅
+
+OAuth自动刷新token
 
 ## 已完成
 nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、shiro、消息转化器、异常处理advice、refreshToken机制、spring cache使用redis实现等）
@@ -100,6 +102,10 @@ swagger-ui 微服务下整合
 文件上传
 
 规格问题（增删改查）
+
+空字符串转null 注解（并没有实现注解，而是全局设置）
+
+OAuth2
 
 ## 放弃
 CAS单点登录（使用OAuth2.0解决）

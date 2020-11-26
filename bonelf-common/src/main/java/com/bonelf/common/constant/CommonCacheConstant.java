@@ -22,34 +22,34 @@ public interface CommonCacheConstant {
 	/**
 	 * 重复提交aop + sessionId + servletPath
 	 */
-	String NO_REPEAT_SUBMIT = BonlfConstant.PROJECT_NAME + ":noRepeatSubmit:%s:%s";
+	String NO_REPEAT_SUBMIT = BonelfConstant.PROJECT_NAME + ":noRepeatSubmit:%s:%s";
 	/**
 	 * redis 用户当前生效的Token + token（用户使用的Token）  HASH
 	 * 新的OAuth2已不适用公共redis KEY存储
 	 */
 	@Deprecated
-	String API_USER_TOKEN_PREFIX = BonlfConstant.PROJECT_NAME + ":api:userToken:%s";
+	String API_USER_TOKEN_PREFIX = BonelfConstant.PROJECT_NAME + ":api:userToken:%s";
 	/**
 	 * 同上
 	 */
 	@Deprecated
-	String SYS_USER_TOKEN_PREFIX = BonlfConstant.PROJECT_NAME + ":sys:userToken:%s";
+	String SYS_USER_TOKEN_PREFIX = BonelfConstant.PROJECT_NAME + ":sys:userToken:%s";
 
 	/**
 	 * socket redis发布订阅 使用户ChannelEnum中的频道
 	 * 推荐使用mq，因为使用redis做发布订阅意味着所有的服务的缓存必须是一个库
 	 */
 	@Deprecated
-	String WEB_SOCKET_CHANNEL = BonlfConstant.PROJECT_NAME + ":websocket:channel:%s";
+	String WEB_SOCKET_CHANNEL = BonelfConstant.PROJECT_NAME + ":websocket:channel:%s";
 
 	/**
 	 * 字典缓存
 	 */
-	String DB_DICT = BonlfConstant.PROJECT_NAME + ":dbDict";
+	String DB_DICT = BonelfConstant.PROJECT_NAME + ":dbDict";
 
 	/*===========================common===========================*/
 	/**
 	 * wxma redis key prefix
 	 */
-	String WX_MA_KEY_PREFIX = BonlfConstant.PROJECT_NAME + ":";
+	String WX_MA_KEY_PREFIX = BonelfConstant.PROJECT_NAME + ":";
 }

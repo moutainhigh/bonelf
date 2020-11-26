@@ -8,7 +8,7 @@
 
 package com.bonelf.auth.core.oauth2.service;
 
-import com.bonelf.auth.entity.User;
+import com.bonelf.auth.domain.entity.User;
 import com.bonelf.auth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 手机验证码登录校验
+ * 配置注入 {@link com.bonelf.auth.config.WebServerSecurityConfig}
  * @author bonelf
  */
 @Slf4j
@@ -35,7 +36,7 @@ public class MobileUserDetailsService extends CustomUserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String uniqueId) {
-		User user = userService.getByUniqueId(Long.parseLong(uniqueId)).getResult();
+		User user = userService.getByUniqueId(uniqueId).getResult();
 		if (user == null) {
 			// 验证码正确 但是用户不存在注册
 			user = userService.registerByPhone(uniqueId);
@@ -47,7 +48,7 @@ public class MobileUserDetailsService extends CustomUserDetailsService {
 		//String credentials = user.getVerifyCode();
 		String credentials = new BCryptPasswordEncoder().encode(user.getVerifyCode());
 		return new org.springframework.security.core.userdetails.User(
-				user.getMobile(),
+				user.getPhone(),
 				credentials,
 				user.getEnabled(),
 				user.getAccountNonExpired(),
