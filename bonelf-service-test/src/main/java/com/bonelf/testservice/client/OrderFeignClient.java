@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @since 2020/10/5 21:12
  */
 //@FeignClient(ServiceNameConstant.ORDER_SERVICE)
-@FeignClient(contextId = "orderFeignClient", value = ServiceNameConstant.ORDER_SERVICE,
+@FeignClient(contextId = "orderFeignClient",
+		value = ServiceNameConstant.ORDER_SERVICE,
 		configuration = FeignConfig.class,
 		fallbackFactory = OrderFeignFallbackFactory.class)
 public interface OrderFeignClient {

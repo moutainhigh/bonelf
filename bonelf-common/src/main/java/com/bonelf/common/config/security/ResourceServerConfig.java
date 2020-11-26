@@ -64,6 +64,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 					String head = request.getHeader(AuthFeignConstant.AUTH_HEADER);
 					return head != null && head.startsWith(AuthFeignConstant.FEIGN_REQ_FLAG_PREFIX);
 				}).permitAll()
+				.mvcMatchers("/noAuth/**").permitAll()
 				.anyRequest().authenticated();
 	}
 

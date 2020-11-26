@@ -6,7 +6,6 @@ import com.bonelf.auth.domain.request.RegisterUserRequest;
 import com.bonelf.common.domain.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +17,6 @@ import java.util.Set;
  * @author bonelf
  * @since 2020/11/17 15:37
  */
-@Component
 public class UserClientFallback implements UserClient {
 
 	@Autowired

@@ -11,12 +11,10 @@ package com.bonelf.common.client.fallback;
 import com.bonelf.common.client.ResourceProvider;
 import com.bonelf.common.domain.Resource;
 import com.bonelf.common.domain.Result;
-import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
 public class ResourceProviderFallback implements ResourceProvider {
 	@Override
 	public Result<Set<Resource>> resources() {
