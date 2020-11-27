@@ -34,3 +34,7 @@ spring:
             thread-count: 10
             thread-priority: 5
             threads-inherit-context-class-loader-of-initializing-thread: true
+
+kaptcha:
+  width: 125
+  height: 45

@@ -9,6 +9,9 @@ bonelf:
       keystore: /tls/example.p12
       password: =bonelf=
       alias: bonelf
+    no-auth:
+      - /noAuth/**
+      - /verificationCode/**
   mail:
     password: ccy297115649
     smtp: smtp.ym.163.com

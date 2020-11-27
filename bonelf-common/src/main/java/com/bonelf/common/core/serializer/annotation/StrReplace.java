@@ -8,6 +8,7 @@
 
 package com.bonelf.common.core.serializer.annotation;
 
+import javax.annotation.RegEx;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -29,6 +30,7 @@ public @interface StrReplace {
 	 * from regex
 	 * @return
 	 */
+	@RegEx
 	String from();
 
 	/**

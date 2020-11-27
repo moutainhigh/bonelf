@@ -23,8 +23,8 @@ public class MailServiceImpl implements MailService {
 
 	@Override
 	public String sendVerify(String mail, VerifyCodeTypeEnum bizType) {
-		if (redisUtil.get(String.format(CacheConstant.LOGIN_VERIFY_CODE, bizType.getCode(), mail)) != null) {
-			throw new BonelfException(CommonBizExceptionEnum.NO_REPEAT_SUBMIT, redisUtil.getExpire(String.format(CacheConstant.LOGIN_VERIFY_CODE, bizType.getCode(), mail)));
+		if (redisUtil.get(String.format(CacheConstant.VERIFY_CODE, bizType.getCode(), mail)) != null) {
+			throw new BonelfException(CommonBizExceptionEnum.NO_REPEAT_SUBMIT, redisUtil.getExpire(String.format(CacheConstant.VERIFY_CODE, bizType.getCode(), mail)));
 		}
 		String code = RandomUtil.randomNumbers(6);
 		//mailUtil.sendVerifyMail(phone, code);
@@ -36,7 +36,7 @@ public class MailServiceImpl implements MailService {
 		account.setPass(bonelfProperty.getMail().getPassword());
 		cn.hutool.extra.mail.MailUtil.send(account, mail, bonelfProperty.getAppName(),
 				BonelfConstant.VERIFY_HTML.replace("{CODE}", code).replace("{APPNAME}", bonelfProperty.getAppName()), true);
-		redisUtil.set(String.format(CacheConstant.LOGIN_VERIFY_CODE, bizType.getCode(),  mail), code, CacheConstant.VERIFY_CODE_EXPIRED_SECOND);
+		redisUtil.set(String.format(CacheConstant.VERIFY_CODE, bizType.getCode(),  mail), code, CacheConstant.VERIFY_CODE_EXPIRED_SECOND);
 		return code;
 	}
 }

@@ -8,7 +8,8 @@
 
 package com.bonelf.common.core.serializer;
 
-import com.bonelf.common.core.serializer.annotation.StrReplace;
+import com.bonelf.cicada.enums.CodeEnum;
+import com.bonelf.cicada.enums.EnumFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -17,33 +18,22 @@ import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 /**
- * 字符串序列化替换注解
+ * 加密传输解密注解
+ * 加解密JS: classpath：static/js/doCrypted.js
  * @author bonelf
  * @date 2020-11-27 09:12:00
  */
 @Slf4j
-public class StrReplaceDeserializer extends JsonDeserializer<Object> {
-
-
+public class CodeEnumDeserializer extends JsonDeserializer<CodeEnum> {
 	@Override
-	public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+	public CodeEnum deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
 		String value = StringDeserializer.instance.deserialize(p, ctxt);
-		String fieldName = p.getCurrentName();
 		try {
-			//反射获取字段类型 如果转了下划线这里要转回驼峰取field
-			Field field = p.getCurrentValue().getClass().getDeclaredField(fieldName);
-			if (field.isAnnotationPresent(StrReplace.class)) {
-				StrReplace strReplace = field.getAnnotation(StrReplace.class);
-				String str = value.replaceAll(strReplace.from(), strReplace.to());
-				return DeserializerHelper.getByFieldType(field.getType(), str, strReplace.getClass().getSimpleName());
-				//return str;
-			}
-		} catch (NoSuchFieldException e) {
-			log.warn("NoSuchFieldException", e);
+			return EnumFactory.getByCode(value, (Class<CodeEnum>)p.getCurrentValue().getClass());
+		} catch (ClassCastException e) {
+			throw new IllegalArgumentException("enum define error, only support enum which extends CodeEnum. ");
 		}
-		return value;
 	}
 }

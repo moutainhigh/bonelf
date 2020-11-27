@@ -58,7 +58,7 @@ RocketMQ 实现 redis websocket发布订阅
 
 经纬度排序问题
 
-二维码 验证码 图形验证码
+二维码
 
 三方登录
 
@@ -79,7 +79,7 @@ seata
 sentired
 
 ## 已完成
-nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、消息转化器、异常处理advice、refreshToken机制、spring cache使用redis实现等）
+nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、消息转化器、异常处理advice、spring cache使用redis实现等）
 
 SpringBoot、Netty、redis发布订阅三者的websocket
 
@@ -110,6 +110,8 @@ string 替换文本注解
 加密传输注解
 
 枚举校验注解（valid clazz or enum value）
+
+验证码 图形验证码
 
 ## 放弃
 CAS单点登录（使用OAuth2.0解决）

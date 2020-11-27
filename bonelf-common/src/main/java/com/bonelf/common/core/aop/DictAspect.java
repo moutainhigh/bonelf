@@ -1,6 +1,7 @@
 package com.bonelf.common.core.aop;
 
 import cn.hutool.core.exceptions.UtilException;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,6 +17,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -52,7 +54,9 @@ public class DictAspect {
 		long time2 = System.currentTimeMillis();
 		//log.debug("supportFeignClient获取数据 耗时：" + (time2 - time1) + "ms");
 		long start = System.currentTimeMillis();
-		this.parseDictText(result);
+		if (result != null) {
+			this.parseDictText(result);
+		}
 		long end = System.currentTimeMillis();
 		//log.debug("解析注入数据  耗时" + (end - start) + "ms");
 		return result;
@@ -63,10 +67,17 @@ public class DictAspect {
 	 * 例输入当前返回值的就会多出一个sex_{nameSuffix}字段
 	 * @param record
 	 */
-	private <T> void parseDictText(T record) {
+	private <T> void parseDictText(@NonNull T record) {
 		//对POJO解析
-		for (Field field : ReflectUtil.getFields(record.getClass())) {
+		Field[] fields = ReflectUtil.getFields(record.getClass());
+		if (ArrayUtil.isEmpty(fields)) {
+			return;
+		}
+		for (Field field : fields) {
 			Object fieldValue = ReflectUtil.getFieldValue(record, field.getName());
+			if (fieldValue == null) {
+				continue;
+			}
 			//对每个field进行判断
 			DbDict dbDict = field.getAnnotation(DbDict.class);
 			if (dbDict != null) {
@@ -78,7 +89,7 @@ public class DictAspect {
 				log.debug("翻译字典字段： " + field.getName() + nameSuffix + ":" + textValue);
 				try {
 					ReflectUtil.setFieldValue(record, field.getName() + nameSuffix, textValue);
-				} catch (UtilException|IllegalArgumentException e) {
+				} catch (UtilException | IllegalArgumentException e) {
 					log.warn("对象需要转字典的对应Field找不到：{}", field.getName() + nameSuffix);
 				}
 			}
@@ -92,7 +103,7 @@ public class DictAspect {
 				log.debug("翻译字典字段： " + field.getName() + nameSuffix + ":" + textValue);
 				try {
 					ReflectUtil.setFieldValue(record, field.getName() + nameSuffix, textValue);
-				} catch (UtilException|IllegalArgumentException e) {
+				} catch (UtilException | IllegalArgumentException e) {
 					log.warn("对象需要转字典的对应Field找不到：{}，请检查类型名称是否正确和类型是否为String", field.getName() + nameSuffix);
 				}
 			}

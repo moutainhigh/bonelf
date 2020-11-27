@@ -5,7 +5,7 @@ package com.bonelf.cicada.enums;
  *
  * @Author: caiyuan
  * @Date: 2020/8/6 0006 9:22
- * @Version: v1.0
+ * @Version: v1.FreezeEnum
  */
 public interface CodeEnum {
 

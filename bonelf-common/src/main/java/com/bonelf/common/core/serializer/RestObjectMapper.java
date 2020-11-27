@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -31,6 +32,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
+@Slf4j
 public class RestObjectMapper extends ObjectMapper {
 	public RestObjectMapper() {
 		//pretty format

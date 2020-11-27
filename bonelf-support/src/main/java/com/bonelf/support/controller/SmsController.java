@@ -67,7 +67,7 @@ public class SmsController {
 		} else {
 			return Result.error(CommonBizExceptionEnum.REQUEST_INVALIDATE);
 		}
-		String key = String.format(CacheConstant.LOGIN_VERIFY_CODE, accountLoginDto.getBusinessType(), target);
+		String key = String.format(CacheConstant.VERIFY_CODE, accountLoginDto.getBusinessType(), target);
 		String code = (String)redisUtil.get(key);
 		switch (codeType) {
 			case LOGIN:

@@ -50,6 +50,7 @@ public class TestConverterDTO {
 	private String disableEmoji;
 	@JsonDeserialize(using = XssDeserializer.class)
 	private String xssFilter;
+	private FreezeEnum freeze;
 	/**
 	 * 5253bcfe997b8727->nihao
 	 */

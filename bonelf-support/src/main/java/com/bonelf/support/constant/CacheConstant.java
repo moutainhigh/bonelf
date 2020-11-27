@@ -17,9 +17,10 @@ public interface CacheConstant {
 	long VERIFY_CODE_EXPIRED_SECOND = 5 * 60L;
 
 	/**
-	 * 验证码 businessType phone
+	 * 验证码 businessType {phone、random uuid}
+	 * @see BizTypeEnum
 	 */
-	String LOGIN_VERIFY_CODE = BonelfConstant.PROJECT_NAME + ":%s:%s";
+	String VERIFY_CODE = BonelfConstant.PROJECT_NAME + ":%s:%s";
 
 	/*
 	 * session 有效时间 如果不使用hash表存储session使用

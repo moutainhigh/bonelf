@@ -25,8 +25,8 @@ public class VerifyCodeDTO {
 	private String mail;
 
 	/**
-	 * 验证码类型
-	 * FIXME 尝试直接传枚举
+	 * 验证码类型 mail image phone
+	 * @see com.bonelf.common.constant.enums.VerifyCodeTypeEnum
 	 */
 	@ApiModelProperty("验证码类型")
 	private String businessType;

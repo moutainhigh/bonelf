@@ -49,7 +49,7 @@ public class CipherDecryptDeserializer extends JsonDeserializer<Object> {
 				log.error("解密失败", e);
 				throw new BonelfException(CommonBizExceptionEnum.DECRYPT_ERROR);
 			}
-			return DeserializerHelper.getByFieldType(field, str, "cipherDecrypt");
+			return DeserializerHelper.getByFieldType(field.getType(), str, "cipherDecrypt");
 			//return str;
 		} catch (NoSuchFieldException e) {
 			log.warn("NoSuchFieldException", e);

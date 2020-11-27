@@ -8,33 +8,31 @@
 
 package com.bonelf.common.core.serializer;
 
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
 class DeserializerHelper {
 	/**
 	 * 根据类型返回参数
-	 * @param field
+	 * @param clazz
 	 * @param str
 	 * @param name
 	 * @return
 	 */
-	static Object getByFieldType(Field field, String str, String name) {
-		if (field.getType() == String.class) {
+	static Object getByFieldType(Class<?> clazz, String str, String name) {
+		if (clazz == String.class) {
 			return str;
-		} else if (field.getType() == Long.class ||
-				field.getType() == Long.TYPE) {
+		} else if (clazz == Long.class ||
+				clazz == Long.TYPE) {
 			return Long.parseLong(str);
 		} else if (
-				field.getType() == Double.class ||
-						field.getType() == Double.TYPE) {
+				clazz == Double.class ||
+						clazz == Double.TYPE) {
 			return Double.parseDouble(str);
 		} else if (
-				field.getType() == Integer.class ||
-						field.getType() == Integer.TYPE) {
+				clazz == Integer.class ||
+						clazz == Integer.TYPE) {
 			return Integer.parseInt(str);
-		} else if (
-				field.getType() == BigDecimal.class) {
+		} else if (clazz == BigDecimal.class) {
 			return new BigDecimal(str);
 		} else {
 			throw new IllegalArgumentException(name + " can't be replaced on not number or string value");

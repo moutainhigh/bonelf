@@ -8,7 +8,7 @@
 
 package com.bonelf.common.config.security;
 
-import com.bonelf.common.config.property.Oauth2JwtProperty;
+import com.bonelf.common.config.property.Oauth2Property;
 import com.bonelf.common.core.security.AuthExceptionEntryPoint;
 import com.gateway.constant.AuthFeignConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ import java.security.KeyPair;
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Autowired
-	private Oauth2JwtProperty oauth2JwtProperty;
+	private Oauth2Property oauth2Property;
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resourceServerSecurityConfigurer) {
@@ -64,7 +64,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 					String head = request.getHeader(AuthFeignConstant.AUTH_HEADER);
 					return head != null && head.startsWith(AuthFeignConstant.FEIGN_REQ_FLAG_PREFIX);
 				}).permitAll()
-				.mvcMatchers("/noAuth/**").permitAll()
+				.mvcMatchers(oauth2Property.getNoAuth()).permitAll()
 				.anyRequest().authenticated();
 	}
 
@@ -100,16 +100,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
 		//1:
-		//converter.setSigningKey(oauth2JwtProperty.getSigningKey());
+		//converter.setSigningKey(oauth2Property.getJwt().getSigningKey());
 		//出现 Cannot convert access token to JSON （实际上为NPE，verifier为空）考虑设置
 		//converter.setVerifier(new RsaVerifier("---Begin--???---End---"));
 		//2:
-		if (!StringUtils.hasText(oauth2JwtProperty.getKeystore())) {
+		if (!StringUtils.hasText(oauth2Property.getJwt().getKeystore())) {
 			throw new RuntimeException("keystore is not set");
 		}
 		KeyPair keyPair = new KeyStoreKeyFactory(
-				new ClassPathResource(oauth2JwtProperty.getKeystore()), oauth2JwtProperty.getPassword().toCharArray())
-				.getKeyPair(oauth2JwtProperty.getAlias());
+				new ClassPathResource(oauth2Property.getJwt().getKeystore()), oauth2Property.getJwt().getPassword().toCharArray())
+				.getKeyPair(oauth2Property.getJwt().getAlias());
 		converter.setKeyPair(keyPair);
 		return converter;
 	}

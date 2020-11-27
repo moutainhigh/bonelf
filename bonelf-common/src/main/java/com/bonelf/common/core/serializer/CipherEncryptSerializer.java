@@ -54,7 +54,8 @@ public class CipherEncryptSerializer extends JsonSerializer<Object> {
 					field.getType() == Integer.TYPE) {
 				gen.writeNumber(str);
 			} else {
-				throw new RuntimeException("CipherDecrypt can't be replaced on not number or string value");
+				gen.writeObject(value);
+				//throw new IllegalArgumentException("CipherDecrypt can't be replaced on not number or string value");
 			}
 			return;
 		} catch (NoSuchFieldException e) {
