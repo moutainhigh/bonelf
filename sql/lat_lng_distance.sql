@@ -1,4 +1,4 @@
-# MySQL 经纬度距离计算函数
+# MySQL 经纬度距离计算函数 建议使用redis GEO 存储计算
 CREATE FUNCTION `lat_lng_distance` (lat1 FLOAT, lon1 FLOAT, lat2 FLOAT, lon2 FLOAT)
     RETURNS FLOAT
     DETERMINISTIC

@@ -91,10 +91,10 @@
             <artifactId>swagger-models</artifactId>
         </dependency>
         <!--jwt-->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-        </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>io.jsonwebtoken</groupId>-->
+        <!--    <artifactId>jjwt</artifactId>-->
+        <!--</dependency>-->
         <!-- 数据库 Begin -->
         <!-- 动态数据源  sharding-jdbc也不错-->
         <dependency>

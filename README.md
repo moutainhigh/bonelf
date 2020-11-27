@@ -44,9 +44,11 @@ rocketmq（应用订单服务通知商品修改销售数目、定时器发送消
 
 RocketMQ 实现 redis websocket发布订阅
 
-搜索服务elasticsearch
+点击量排序问题（需rocketmq）
 
-点击量排序问题
+销售量排序问题（需rocketmq）
+
+搜索服务elasticsearch
 
 微信支付宝 支付、退款、支付对账、分账
 
@@ -54,13 +56,17 @@ RocketMQ 实现 redis websocket发布订阅
 
 规格问题（下单）
 
-销售量排序问题
+经纬度排序问题
 
 二维码 验证码 图形验证码
 
-maven一键部署、使用docker部署（depoly）
-
 三方登录
+
+OAuth自动刷新token
+
+OAuth权限
+
+maven一键部署、使用docker部署（depoly）
 
 zipkin
 
@@ -72,10 +78,8 @@ seata
 
 sentired
 
-OAuth自动刷新token
-
 ## 已完成
-nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、shiro、消息转化器、异常处理advice、refreshToken机制、spring cache使用redis实现等）
+nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、消息转化器、异常处理advice、refreshToken机制、spring cache使用redis实现等）
 
 SpringBoot、Netty、redis发布订阅三者的websocket
 
@@ -109,3 +113,5 @@ string 替换文本注解
 
 ## 放弃
 CAS单点登录（使用OAuth2.0解决）
+
+shiro （不支持分布式，替换成OAuth2)
