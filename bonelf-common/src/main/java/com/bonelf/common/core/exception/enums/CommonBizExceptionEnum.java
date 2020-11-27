@@ -38,6 +38,7 @@ public enum CommonBizExceptionEnum implements AbstractBaseExceptionEnum {
 	SERVER_ERROR(500, "服务器异常:%s"),
 	THIRD_FAIL(500, "三方调用失败:%s"),
 	DECRYPT_ERROR(500, "解密失败"),
+	CRYPT_ERROR(500, "加密失败"),
 	REQ_NOT_FEIGN(500, "this request must be feign");
 	/**
 	 * 服务状态码 版本号+模块号+序号 类似10101

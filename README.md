@@ -40,19 +40,11 @@ Jeecg-boot、ruoyi-cloud、Guns、litemall、best-pay
 ## 开发计划
 继承Webserver是否可以替换springboot的web服务？
 
-string 替换文本注解
+rocketmq（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
 
-支持表情注解（valid）
-
-过滤表情 过滤HTML表情（XSS）注解方式实现
-
-加密传输注解
-
-枚举校验注解（valid clazz or enum value）
+RocketMQ 实现 redis websocket发布订阅
 
 搜索服务elasticsearch
-
-rocketmq（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
 
 点击量排序问题
 
@@ -80,8 +72,6 @@ seata
 
 sentired
 
-RocketMQ 实现 redis websocket发布订阅
-
 OAuth自动刷新token
 
 ## 已完成
@@ -106,6 +96,16 @@ swagger-ui 微服务下整合
 空字符串转null 注解（并没有实现注解，而是全局设置）
 
 OAuth2
+
+string 替换文本注解
+
+支持表情注解（valid）
+
+过滤表情 过滤HTML表情（XSS）注解方式实现
+
+加密传输注解
+
+枚举校验注解（valid clazz or enum value）
 
 ## 放弃
 CAS单点登录（使用OAuth2.0解决）

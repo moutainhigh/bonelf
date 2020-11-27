@@ -1,5 +1,14 @@
 package com.bonelf.testservice.domain.dto;
 
+import com.bonelf.common.constant.enums.FreezeEnum;
+import com.bonelf.common.core.serializer.CipherDecryptDeserializer;
+import com.bonelf.common.core.serializer.CipherEncryptSerializer;
+import com.bonelf.common.core.serializer.StrReplaceDeserializer;
+import com.bonelf.common.core.serializer.XssDeserializer;
+import com.bonelf.common.core.serializer.annotation.StrReplace;
+import com.bonelf.common.core.validator.annotation.EnumValid;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,9 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * example:{"cmdId":2,"message":"你好","data":{"hello":"你好","world","0"}}
- */
 @Data
 public class TestConverterDTO {
 	private Long var1;
@@ -30,4 +36,32 @@ public class TestConverterDTO {
 	private Set<TestDTO> var12;
 	private double var13;
 	private Double var14;
+	@StrReplace(from = "nihao", to = "caiguai")
+	@JsonDeserialize(using = StrReplaceDeserializer.class)
+	private String strReplace;
+	@StrReplace(from = "123", to = "456")
+	@JsonDeserialize(using = StrReplaceDeserializer.class)
+	private Integer strReplace2;
+	@StrReplace(from = "abc", to = "12.34")
+	@JsonDeserialize(using = StrReplaceDeserializer.class)
+	private Double strReplace3;
+	@StrReplace(from = "[^\\u0000-\\uFFFF]", to = " ")
+	@JsonDeserialize(using = StrReplaceDeserializer.class)
+	private String disableEmoji;
+	@JsonDeserialize(using = XssDeserializer.class)
+	private String xssFilter;
+	/**
+	 * 5253bcfe997b8727->nihao
+	 */
+	@JsonDeserialize(using = CipherDecryptDeserializer.class)
+	private String cipher;
+	@JsonSerialize(using = CipherEncryptSerializer.class)
+	private String cipherEn = "nihao";
+	@EnumValid(clazz = FreezeEnum.class, message = "效验失败")
+	private Integer status;
+
+	public static void main(String[] args) throws Exception {
+		System.out.println("46548\uD83D\uDE03\uD83D\uDE035858".replaceAll("[^\\u0000-\\uFFFF]", " "));
+		//System.out.println(CipherCryptUtil.encrypt("nihao", AuthConstant.FRONTEND_PASSWORD_CRYPTO, AuthConstant.FRONTEND_SALT_CRYPTO));
+	}
 }

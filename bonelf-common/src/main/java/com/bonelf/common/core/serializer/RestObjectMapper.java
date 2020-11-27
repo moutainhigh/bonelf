@@ -9,6 +9,7 @@
 package com.bonelf.common.core.serializer;
 
 import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
@@ -84,7 +85,7 @@ public class RestObjectMapper extends ObjectMapper {
 				Field field = gen.getCurrentValue().getClass().getDeclaredField(fieldName);
 				if (Objects.equals(field.getType(), String.class)) {
 					//字符串null返回空字符串
-					gen.writeString("");
+					gen.writeString(StrUtil.EMPTY);
 					return;
 				} else if (Objects.equals(field.getType(), Collection.class) || field.getType().isArray()) {
 					//List字段如果为null,输出为[],而非null
@@ -104,7 +105,7 @@ public class RestObjectMapper extends ObjectMapper {
 			} catch (NoSuchFieldException ignored) {
 			}
 			//默认返回""  (是否输出值为null的字段)
-			gen.writeString("");
+			gen.writeString(StrUtil.EMPTY);
 		}
 	}
 }

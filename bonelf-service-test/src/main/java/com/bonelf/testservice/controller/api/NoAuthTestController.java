@@ -1,6 +1,7 @@
 package com.bonelf.testservice.controller.api;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.util.BaseApiController;
 import com.bonelf.testservice.client.OrderFeignClient;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +25,7 @@ import java.util.Map;
 @Slf4j
 @Api(tags = {"测试接口"})
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/noAuth")
 //@DefaultProperties( threadPoolKey="xxx" )
 public class NoAuthTestController extends BaseApiController {
 	@Autowired
@@ -48,8 +50,9 @@ public class NoAuthTestController extends BaseApiController {
 
 	@ApiOperation(value = "testConverter")
 	@PostMapping("/testConverter")
-	public Result<TestConverterDTO> testConverterPost(@RequestBody TestConverterDTO testConverterDTO) {
-		return Result.ok(testConverterDTO);
+	public Result<TestConverterDTO> testConverterPost(@Validated @RequestBody TestConverterDTO testConverterDto) {
+		log.debug("\n" + JSON.toJSONString(testConverterDto, SerializerFeature.PrettyFormat));
+		return Result.ok(testConverterDto);
 	}
 
 	/**

@@ -10,6 +10,7 @@ package com.bonelf.testservice.client.fallback;
 
 import com.bonelf.common.domain.Result;
 import com.bonelf.testservice.client.UserFeignClient;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import java.util.Map;
  * @author bonelf
  * @since 2020/11/17 15:37
  */
+@Component("userFeignClientFallback")
 public class UserFeignClientFallback implements UserFeignClient {
 
 	@Override

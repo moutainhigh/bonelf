@@ -54,13 +54,17 @@ public interface AuthConstant {
 	 */
 	String REFRESH_CLAIM_FLAG = "refreshFlag";
 	/**
-	 * 前端MD5加密秘钥 8byte
+	 * 前端CRYPTO加密password
 	 */
-	String FRONTEND_SAIT_CRYPTO = "==cjFE==";
+	String FRONTEND_PASSWORD_CRYPTO = "bonelfpsw";
+	/**
+	 * 前端CRYPTO加密秘钥 8byte
+	 */
+	String FRONTEND_SALT_CRYPTO = "==!bnf==";
 	/**
 	 * 数据库数据MD5加密秘钥
 	 */
-	String DATABASE_SALT_MD5 = "=choujiangDB=";
+	String DATABASE_SALT_MD5 = "=bonelfDB=";
 
 	@Deprecated
 	List<String> EXCLUDE_URLS = CollectionUtil.newLinkedList(

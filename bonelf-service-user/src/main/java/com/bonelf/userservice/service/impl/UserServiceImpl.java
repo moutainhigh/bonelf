@@ -66,7 +66,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			//密码登录
 			String password;
 			try {
-				password = CipherCryptUtil.decrypt(dto.getPassword(), dto.getUsername(), AuthConstant.FRONTEND_SAIT_CRYPTO);
+				password = CipherCryptUtil.decrypt(dto.getPassword(), dto.getUsername(), AuthConstant.FRONTEND_SALT_CRYPTO);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new BonelfException(CommonBizExceptionEnum.DECRYPT_ERROR);
