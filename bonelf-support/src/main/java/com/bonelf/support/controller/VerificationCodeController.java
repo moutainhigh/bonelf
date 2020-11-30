@@ -6,6 +6,7 @@ import com.bonelf.support.constant.CacheConstant;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * 验证码接口
@@ -47,21 +47,22 @@ public class VerificationCodeController {
 	 */
 	@GetMapping("/getImage")
 	@ApiOperation(value = "获取验证码")
-	public void getImage(HttpServletResponse response, String bizType) throws Exception {
+	public void getImage(HttpServletResponse response,
+						 @ApiParam(value = "业务类型", required = true) @RequestParam String bizType,
+						 @ApiParam(value = "业务唯一编号，如账号", required = true) @RequestParam String bizCode) throws Exception {
 		// create the text for the image
 		String capText = producer.createText();
 		// store the text in the session
 		//session.setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
 		// create the image with the text
 		BufferedImage bi = producer.createImage(capText);
-		String verifyToken = UUID.randomUUID().toString().replaceAll("-", "");
+		//String verifyToken = UUID.randomUUID().toString().replaceAll("-", "");
 		// 缓存到Redis
-		redisUtil.set(String.format(CacheConstant.VERIFY_CODE, bizType, verifyToken), capText, 5 * 60);
-		response.setHeader("verifyKey", verifyToken);
+		redisUtil.set(String.format(CacheConstant.VERIFY_CODE, bizType, bizCode), capText, 5 * 60);
+		//response.setHeader("verifyKey", verifyToken);
 		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
 		response.setHeader("Pragma", "No-cache");
 		response.setHeader("Cache-Control", "no-cache");
-		response.setDateHeader("Expire", 0);
 		ServletOutputStream outputStream = response.getOutputStream();
 		ImageIO.write(bi, "jpeg", outputStream);
 	}
@@ -72,7 +73,9 @@ public class VerificationCodeController {
 	@GetMapping("/getBase64Image")
 	@ResponseBody
 	@ApiOperation(value = "获取图片Base64验证码")
-	public Result<Map<String, Object>> getCode(HttpServletResponse response, String bizType) throws Exception {
+	public Result<Map<String, Object>> getCode(HttpServletResponse response,
+											   @ApiParam(value = "业务类型", required = true) @RequestParam String bizType,
+											   @ApiParam(value = "业务唯一编号，如账号", required = true) @RequestParam String bizCode) throws Exception {
 		// create the text for the image
 		String capText = producer.createText();
 		// store the text in the session
@@ -84,12 +87,12 @@ public class VerificationCodeController {
 		// 将图片转换成base64字符串
 		String base64 = Base64.getEncoder().encodeToString(outputStream.toByteArray());
 		// 生成当前验证码会话token
-		String verifyToken = UUID.randomUUID().toString().replaceAll("-", "");
+		//String verifyToken = UUID.randomUUID().toString().replaceAll("-", "");
 		Map<String, Object> map = new HashMap<>(2);
 		map.put("image", "data:image/png;base64," + base64);
-		map.put("key", verifyToken);
+		//map.put("key", bizCode);
 		// 缓存到Redis
-		redisUtil.set(String.format(CacheConstant.VERIFY_CODE, bizType, verifyToken), capText, 5 * 60);
+		redisUtil.set(String.format(CacheConstant.VERIFY_CODE, bizType, bizCode), capText, 5 * 60);
 		return Result.ok(map);
 	}
 

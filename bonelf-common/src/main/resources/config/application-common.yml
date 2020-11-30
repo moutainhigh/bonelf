@@ -2,6 +2,11 @@ server:
   servlet:
     # 配置前请看 GateWay的GlobalAccessFilter
     context-path: /bonelf
+    encoding:
+      charset: utf-8
+#  tomcat:
+#    # 防止linux上传过时，目录被删除
+#    basedir: /home/tomcat/spring/temp
 
 spring:
   cloud:

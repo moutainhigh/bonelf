@@ -1,5 +1,5 @@
 bonelf:
-  base-url: localhost
+  base-url: http://localhost
   app-name: bonelf总结项目
   oauth2:
     jwt:
@@ -10,8 +10,10 @@ bonelf:
       password: =bonelf=
       alias: bonelf
     no-auth:
+      - /download.html
       - /noAuth/**
       - /verificationCode/**
+      - /qrcode/**
   mail:
     password: ccy297115649
     smtp: smtp.ym.163.com

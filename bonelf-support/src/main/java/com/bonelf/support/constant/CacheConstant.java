@@ -18,7 +18,7 @@ public interface CacheConstant {
 
 	/**
 	 * 验证码 businessType {phone、random uuid}
-	 * @see BizTypeEnum
+	 * @see com.bonelf.common.constant.enums.VerifyCodeTypeEnum
 	 */
 	String VERIFY_CODE = BonelfConstant.PROJECT_NAME + ":%s:%s";
 
@@ -31,4 +31,13 @@ public interface CacheConstant {
 	 * socket session hash 存储在线状态
 	 */
 	String WEB_SOCKET_SESSION_HASH = BonelfConstant.PROJECT_NAME + ":websocket:session";
+	/**
+	 * 时效二维码数据缓存 uniqueId
+	 */
+	String QR_CODE_PREFIX = BonelfConstant.PROJECT_NAME + ":qrcode:%s:%s";
+	/**
+	 * 时效二维码过期时间 s
+	 */
+	long QR_CODE_EXPIRE_TIME = 30 * 60L;
+	long QR_CODE_MAX_EXPIRE_TIME = 30 * 24 * 60 * 60L;
 }

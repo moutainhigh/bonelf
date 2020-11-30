@@ -24,6 +24,7 @@
     <properties>
         <aliyun-oss.version>2.8.3</aliyun-oss.version>
         <kaptcha.version>2.3.2</kaptcha.version>
+        <qrcode.version>3.3.0</qrcode.version>
     </properties>
 
     <dependencies>
@@ -53,6 +54,17 @@
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
             <version>${kaptcha.version}</version>
+        </dependency>
+        <!--二维码生成依赖-->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${qrcode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${qrcode.version}</version>
         </dependency>
     </dependencies>
 

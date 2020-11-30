@@ -11,7 +11,7 @@ public class BonelfProperty {
 	/**
 	 * 项目网址
 	 */
-	private String baseUrl = "undefined";
+	private String baseUrl = "http://localhost";
 
 	private String appName = "bonelf总结项目";
 
