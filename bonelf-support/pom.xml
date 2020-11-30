@@ -11,14 +11,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bonelf-websocket</artifactId>
+    <artifactId>bonelf-support</artifactId>
     <description>
         1.netty websocket
         spring-boot-starter-websocket 版本见test模块
         另Github和Gitee上已有不少较成熟的spring-boot集成netty的依赖，但没找到满意的，索性直接自己写了个
         2.quartz 定时器任务
-        3.第三方refreshToken接口
-        4.验证码、二维码、图形验证码等接口
+        3.验证码、二维码、图形验证码等接口
     </description>
 
     <properties>

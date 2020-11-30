@@ -1,109 +1,29 @@
 {
   "properties": [
     {
-      "name": "wechat.mini-appid",
-      "type": "java.lang.String",
-      "description": "Description"
-    },
-    {
-      "name": "ws.port",
-      "type": "java.lang.Integer",
-      "description": "Description for ws.port."
-    },
-    {
-      "name": "ws.host",
-      "type": "java.lang.String",
-      "description": "Description for ws.host."
-    },
-    {
-      "name": "ws.context-path",
-      "type": "java.lang.String",
-      "description": "Description for wss.context-path."
-    },
-    {
       "name": "swagger.enable",
       "type": "java.lang.Boolean",
       "description": "Description for swagger.enable."
     },
     {
-      "name": "wechat.secret",
+      "name": "rocketmq.consumer.topics",
       "type": "java.lang.String",
-      "description": "Description for wechat.secret."
+      "description": "Description for rocketmq.consumer.topics."
     },
     {
-      "name": "wechat.mch-id",
+      "name": "rocketmq.consumer.consume-thread-min",
       "type": "java.lang.String",
-      "description": "Description for wechat.mch-id."
+      "description": "Description for rocketmq.consumer.consume-thread-min."
     },
     {
-      "name": "wechat.mch-key",
+      "name": "rocketmq.consumer.consume-thread-max",
       "type": "java.lang.String",
-      "description": "Description for wechat.mch-key."
+      "description": "Description for rocketmq.consumer.consume-thread-max."
     },
     {
-      "name": "wechat.mini.appid",
+      "name": "rocketmq.consumer.consume-message-batch-max-size",
       "type": "java.lang.String",
-      "description": "Description for wechat.mini.appid."
-    },
-    {
-      "name": "wechat.app.appid",
-      "type": "java.lang.String",
-      "description": "Description for wechat.app.appid."
-    },
-    {
-      "name": "wechat.mp.appid",
-      "type": "java.lang.String",
-      "description": "Description for wechat.mp.appid."
-    },
-    {
-      "name": "ali.oss.access-key-id",
-      "type": "java.lang.String",
-      "description": "Description for ali.oss.access-key-id."
-    },
-    {
-      "name": "ali.oss.access-secret",
-      "type": "java.lang.String",
-      "description": "Description for ali.oss.access-secret."
-    },
-    {
-      "name": "ali.oss.bucket-name",
-      "type": "java.lang.String",
-      "description": "Description for ali.oss.bucket-name."
-    },
-    {
-      "name": "ali.oss.bucket-url",
-      "type": "java.lang.String",
-      "description": "Description for ali.oss.bucket-url."
-    },
-    {
-      "name": "ali.oss.endpoint",
-      "type": "java.lang.String",
-      "description": "Description for ali.oss.endpoint."
-    },
-    {
-      "name": "bonelf.oauth2.jwt.signing-key",
-      "type": "java.lang.String",
-      "description": "Description for bonelf.oauth2.jwt.signing-key."
-    },
-    {
-      "name": "bonelf.oauth2.jwt.keystore",
-      "type": "java.lang.String",
-      "description": "Description for bonelf.oauth2.jwt.keystore."
-    },
-    {
-      "name": "bonelf.oauth2.jwt.password",
-      "type": "java.lang.String",
-      "description": "Description for bonelf.oauth2.jwt.password."
-    },
-    {
-      "name": "bonelf.oauth2.jwt.alias",
-      "type": "java.lang.String",
-      "description": "Description for bonelf.oauth2.jwt.alias."
-    },
-    {
-      "name": "bonelf.oauth2.jwt.signing-key",
-      "type": "java.lang.String",
-      "description": "Description for bonelf.oauth2.jwt.signing-key."
+      "description": "Description for rocketmq.consumer.consume-message-batch-max-size."
     }
   ]
 }

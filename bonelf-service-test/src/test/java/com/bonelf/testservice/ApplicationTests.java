@@ -17,10 +17,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ApplicationTests {
+	private String test;
 
 	@Test
 	public void test() {
-		//dbDictUtil.test();
+		System.out.println(test);
 	}
 
 }

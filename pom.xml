@@ -53,6 +53,7 @@
         <swagger-modal.version>1.5.22</swagger-modal.version>
         <!--最新RELEASE 或 1.1.1.RELEASE 已过时-->
         <oauth-jwt.version>1.0.10.RELEASE</oauth-jwt.version>
+        <rocketmq.version>4.7.0</rocketmq.version>
     </properties>
 
     <dependencyManagement>
@@ -108,11 +109,11 @@
                 <version>${swagger2-bootstrap-ui.version}</version>
             </dependency>
             <!--jwt-->
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jwt.version}</version>
-            </dependency>
+            <!--<dependency>-->
+            <!--    <groupId>io.jsonwebtoken</groupId>-->
+            <!--    <artifactId>jjwt</artifactId>-->
+            <!--    <version>${jwt.version}</version>-->
+            <!--</dependency>-->
             <dependency>
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-core</artifactId>
@@ -132,6 +133,12 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-jwt</artifactId>
                 <version>${oauth-jwt.version}</version>
+            </dependency>
+            <!-- rocketmq -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-client</artifactId>
+                <version>${rocketmq.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

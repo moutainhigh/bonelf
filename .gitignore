@@ -38,11 +38,8 @@ bonelf-service-product/bonelf-service-product.iml
 bonelf-service-product/src/test/
 bonelf-service-product/target/
 bonelf-service-promotion/bonelf-service-promotion.iml
-bonelf-service-promotion/src/
 bonelf-service-search/bonelf-service-search.iml
-bonelf-service-search/src/
 bonelf-service-system/bonelf-service-system.iml
-bonelf-service-system/src/
 bonelf-service-test/bonelf-service-test.iml
 bonelf-service-test/src/main/java/com/bonelf/testservice/core/websocket/constant/
 bonelf-service-test/target/

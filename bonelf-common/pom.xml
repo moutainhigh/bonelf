@@ -181,6 +181,11 @@
             <artifactId>mail</artifactId>
             <version>${mail.version}</version>
         </dependency>
+        <!--rocketmq-->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
