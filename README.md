@@ -40,14 +40,6 @@ Jeecg-boot、ruoyi-cloud、Guns、litemall、best-pay
 ## 开发计划
 继承Webserver是否可以替换springboot的web服务？
 
-rocketmq（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
-
-RocketMQ 实现 redis websocket发布订阅
-
-点击量排序问题（需rocketmq）
-
-销售量排序问题（需rocketmq）
-
 搜索服务elasticsearch
 
 微信支付宝 支付、退款、支付对账、分账
@@ -58,9 +50,9 @@ RocketMQ 实现 redis websocket发布订阅
 
 经纬度排序问题
 
-二维码
-
 三方登录
+
+二维码登录
 
 OAuth自动刷新token
 
@@ -112,6 +104,16 @@ string 替换文本注解
 枚举校验注解（valid clazz or enum value）
 
 验证码 图形验证码
+
+二维码
+
+rocketmq（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
+
+RocketMQ 实现 redis websocket发布订阅
+
+点击量排序问题（需rocketmq）
+
+销售量排序问题（需rocketmq）
 
 ## 放弃
 CAS单点登录（使用OAuth2.0解决）

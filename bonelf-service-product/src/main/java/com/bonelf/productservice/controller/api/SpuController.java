@@ -5,12 +5,13 @@ import com.bonelf.common.domain.Result;
 import com.bonelf.common.util.BaseApiController;
 import com.bonelf.productservice.domain.vo.SkuApiVO;
 import com.bonelf.productservice.domain.vo.SkuKeyApiVO;
+import com.bonelf.productservice.domain.vo.SpuVO;
 import com.bonelf.productservice.service.SkuService;
+import com.bonelf.productservice.service.SpuService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,10 +23,19 @@ import java.util.List;
  * @date 2020/8/28 0028 9:45
  */
 @RestController
-@RequestMapping("/v1/api/spu")
+@RequestMapping("/api/spu")
 public class SpuController extends BaseApiController {
 	@Autowired
+	private SpuService spuService;
+	@Autowired
 	private SkuService skuService;
+
+	@GetMapping("/{spuId}")
+	@ApiOperation("详情")
+	public Result<SpuVO> detail(@ApiParam("编号") @PathVariable Long spuId) {
+		SpuVO spuVO = spuService.getDetail(spuId);
+		return Result.ok(spuVO);
+	}
 
 	/**
 	 * 给选中的 skuValueId 查询是否有合法的组合

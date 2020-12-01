@@ -22,7 +22,7 @@ rocketmq:
   consumer:
     # 消费者订阅的主题topic和tags（*标识订阅该主题下所有的tags），格式: topic~tag1||tag2||tags3;
 #    topics: Test_Topic~TestTag;Test_Topic~HelloTag||WorldTag;MyTopic~*
-    topics: Bnf_Promotion~ProductQueryTag
+    topics: BNF_promotion-service~ProductQueryTag
     # 消费者线程数据量
     consume-thread-min: 5
     consume-thread-max: 32

@@ -1,10 +1,13 @@
 package com.bonelf.productservice.bus;
 
+import com.bonelf.productservice.constant.MQRecvTag;
+import com.bonelf.productservice.service.SpuService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -19,6 +22,8 @@ import java.util.List;
 @Slf4j
 @Component
 public class MQConsumeMsgListenerProcessor implements MessageListenerConcurrently {
+	@Autowired
+	private SpuService spuService;
 
 	/**
 	 * 默认msg里只有一条消息，可以通过设置consumeMessageBatchMaxSize参数来批量接收消息
@@ -39,6 +44,11 @@ public class MQConsumeMsgListenerProcessor implements MessageListenerConcurrentl
 			String topic = messageExt.getTopic();
 			String tags = messageExt.getTags();
 			String body = new String(messageExt.getBody(), StandardCharsets.UTF_8);
+			if (MQRecvTag.SPU_STATISTIC_SUM.equals(tags)) {
+				spuService.sumStatistic();
+			} else if(MQRecvTag.PRODUCT_PAID_TAG.equals(tags)){
+				spuService.spuSoldOut(Long.parseLong(body));
+			}
 			log.info("MQ消息topic={}, tags={}, 消息内容={}", topic, tags, body);
 		} catch (Exception e) {
 			log.error("获取MQ消息内容异常", e);

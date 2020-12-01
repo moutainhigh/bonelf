@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * 服务提供 服务 feign
  */
-@FeignClient(contextId = "supportFeignClient", value = ServiceNameConstant.SUPPORT_SERVICE,
+@FeignClient(contextId = "supportFeignClient", value = ServiceNameConstant.SUPPORT,
 		configuration = FeignConfig.class, fallbackFactory = SupportFeignFallbackFactory.class)
 public interface SupportFeignClient {
 

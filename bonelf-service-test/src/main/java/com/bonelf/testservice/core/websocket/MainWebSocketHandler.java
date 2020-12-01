@@ -84,7 +84,7 @@ public class MainWebSocketHandler implements WebSocketHandler {
 	 */
 	private void sendMsg2AllChannel(String userId, SocketMessage<?> message) {
 		for (ChannelEnum value : ChannelEnum.values()) {
-			redisTemplate.convertAndSend(value.getChannelName(),
+			redisTemplate.convertAndSend(value.getTopicName(),
 					SocketRespMessage.builder()
 							.fromUid(userId)
 							.socketMessage(message)
@@ -148,7 +148,7 @@ public class MainWebSocketHandler implements WebSocketHandler {
 		for (MessageRecvCmdEnum value : MessageRecvCmdEnum.values()) {
 			if (value.getChannel() != null && value.getCode().equals(socketMessage.getCmdId())) {
 				for (ChannelEnum channelEnum : value.getChannel()) {
-					redisTemplate.convertAndSend(channelEnum.getChannelName(), respMessage);
+					redisTemplate.convertAndSend(channelEnum.getTopicName(), respMessage);
 				}
 				break;
 			}

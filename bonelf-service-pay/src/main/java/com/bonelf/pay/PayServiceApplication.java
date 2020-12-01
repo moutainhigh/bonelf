@@ -1,4 +1,4 @@
-package com.bonelf.system;
+package com.bonelf.pay;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.bonelf.cicada.util.IpUtil;
@@ -23,11 +23,11 @@ import org.springframework.core.env.Environment;
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.bonelf")
 @EnableCircuitBreaker
-@SpringBootApplication(scanBasePackages = {"com.bonelf.common", "com.bonelf.system"}, exclude = DruidDataSourceAutoConfigure.class)
-public class SearchServiceApplication {
+@SpringBootApplication(scanBasePackages = {"com.bonelf.common", "com.bonelf.pay"}, exclude = DruidDataSourceAutoConfigure.class)
+public class PayServiceApplication {
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext application = SpringApplication.run(SearchServiceApplication.class, args);
+		ConfigurableApplicationContext application = SpringApplication.run(PayServiceApplication.class, args);
 		Environment env = application.getEnvironment();
 		//String ip = InetAddress.getLocalHost().getHostAddress();
 		String ip = IpUtil.getWlanV4Ip();

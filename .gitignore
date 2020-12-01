@@ -33,7 +33,6 @@ bonelf-service-order/bonelf-service-order.iml
 bonelf-service-order/src/test/
 bonelf-service-order/target/
 bonelf-service-pay/bonelf-service-pay.iml
-bonelf-service-pay/src/
 bonelf-service-product/bonelf-service-product.iml
 bonelf-service-product/src/test/
 bonelf-service-product/target/

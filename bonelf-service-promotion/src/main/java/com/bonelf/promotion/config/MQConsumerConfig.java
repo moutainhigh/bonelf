@@ -10,6 +10,7 @@ import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,7 +44,7 @@ public class MQConsumerConfig {
 	 * @throws MQClientException
 	 */
 	@Bean
-	//@ConditionalOnProperty(prefix = "rocketmq.consumer", value = "isOnOff", havingValue = "on")
+	@ConditionalOnProperty(prefix = "rocketmq.consumer", value = "enable", havingValue = "true")
 	public DefaultMQPushConsumer defaultConsumer() throws MQClientException {
 		log.info("defaultConsumer 正在创建---------------------------------------");
 		if (rocketmqProperty.getGroupName() == null) {

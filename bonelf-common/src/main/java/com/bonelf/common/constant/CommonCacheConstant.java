@@ -38,6 +38,7 @@ public interface CommonCacheConstant {
 	/**
 	 * socket redis发布订阅 使用户ChannelEnum中的频道
 	 * 推荐使用mq，因为使用redis做发布订阅意味着所有的服务的缓存必须是一个库
+	 * @see MQTopic
 	 */
 	@Deprecated
 	String WEB_SOCKET_CHANNEL = BonelfConstant.PROJECT_NAME + ":websocket:channel:%s";

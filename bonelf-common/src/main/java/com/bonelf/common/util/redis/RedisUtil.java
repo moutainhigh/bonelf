@@ -301,6 +301,15 @@ public class RedisUtil {
 		return redisTemplate.opsForHash().increment(key, item, -by);
 	}
 
+
+	/**
+	 * Hash key
+	 * @param key
+	 * @return
+	 */
+	public <MK> Set<MK> hKeys(String key) {
+		return redisTemplate.<MK, Object>opsForHash().keys(key);
+	}
 	/*============================set=============================*/
 
 	/**

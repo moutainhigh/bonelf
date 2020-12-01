@@ -181,4 +181,8 @@ public class Spu  extends BaseEntity {
     @ApiModelProperty("排序值")
     @TableField("sort")
     private Integer sort;
+
+    @ApiModelProperty("点击量")
+    @TableField("click_count")
+    private Integer clickCount;
 }

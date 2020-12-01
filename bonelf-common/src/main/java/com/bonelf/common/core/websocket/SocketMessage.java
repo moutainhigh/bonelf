@@ -15,7 +15,9 @@ import lombok.NoArgsConstructor;
 public class SocketMessage<T> {
 	/**
 	 * 指令类型
+	 * 使用了MQ后这个用tag表示
 	 */
+	@Deprecated
 	private Integer cmdId;
 	/**
 	 * 秒时间戳

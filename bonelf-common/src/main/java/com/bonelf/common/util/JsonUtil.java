@@ -78,8 +78,8 @@ public class JsonUtil {
 			return getInstance().readValue(content, valueType);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
+			return null;
 		}
-		return null;
 	}
 
 	/**

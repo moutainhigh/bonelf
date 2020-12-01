@@ -9,8 +9,10 @@ import com.bonelf.common.core.websocket.constant.ChannelEnum;
 import com.bonelf.common.core.websocket.constant.MessageRecvCmdEnum;
 import com.bonelf.common.core.websocket.constant.MessageSendCmdEnum;
 import com.bonelf.common.core.websocket.constant.OnlineStatusEnum;
+import com.bonelf.common.service.MQService;
 import com.bonelf.common.util.redis.RedisUtil;
 import com.bonelf.support.constant.CacheConstant;
+import com.bonelf.support.constant.MQSendTag;
 import com.bonelf.support.service.impl.SocketMessageService;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
@@ -19,8 +21,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -38,18 +38,20 @@ import org.springframework.util.StringUtils;
 public class WebSocketServerHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
 	@Autowired
 	private RedisUtil redisUtil;
-	/**
-	 * 使用redis发布订阅收发消息
-	 */
-	@Autowired
-	@Deprecated
-	private StringRedisTemplate stringRedisTemplate;
-	@Autowired
-	private RedisTemplate<String, Object> redisTemplate;
 	@Autowired
 	private WebsocketMap websocketMap;
 	@Autowired
 	private SocketMessageService socketMessageService;
+	@Autowired
+	private MQService mqService;
+	/**
+	 * 使用redis发布订阅收发消息
+	 */
+	//@Autowired
+	//@Deprecated
+	//private StringRedisTemplate stringRedisTemplate;
+	//@Autowired
+	//private RedisTemplate<String, Object> redisTemplate;
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) throws Exception {
@@ -126,12 +128,18 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<WebSocke
 	 */
 	private void sendMsg2AllChannel(String userId, SocketMessage<?> message) {
 		for (ChannelEnum value : ChannelEnum.values()) {
-			redisTemplate.convertAndSend(value.getChannelName(),
+			mqService.send(value.getTopicName(), String.format(MQSendTag.WEBSOCKET, message.getCmdId()),
 					SocketRespMessage.builder()
 							.fromUid(userId)
 							.socketMessage(message)
 							.build()
 			);
+			//redisTemplate.convertAndSend(value.getChannelName(),
+			//		SocketRespMessage.builder()
+			//				.fromUid(userId)
+			//				.socketMessage(message)
+			//				.build()
+			//);
 		}
 	}
 
@@ -183,7 +191,8 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<WebSocke
 			if (value.getChannel() != null && value.getCode().equals(socketMessage.getCmdId())) {
 				for (ChannelEnum channelEnum : value.getChannel()) {
 					//stringRedisTemplate.convertAndSend(channelEnum.getChannelName(), JSON.toJSONString(respMessage));
-					redisTemplate.convertAndSend(channelEnum.getChannelName(), respMessage);
+					//redisTemplate.convertAndSend(channelEnum.getChannelName(), respMessage);
+					mqService.send(channelEnum.getTopicName(), String.format(MQSendTag.WEBSOCKET, respMessage.getSocketMessage().getCmdId()), respMessage);
 				}
 				break;
 			}

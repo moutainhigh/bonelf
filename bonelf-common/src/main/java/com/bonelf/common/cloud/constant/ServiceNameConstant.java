@@ -17,11 +17,26 @@ public interface ServiceNameConstant {
 	 */
 	String USER_SERVICE = "user-service";
 	/**
-	 * 系统服务
+	 * 工具服务
 	 */
-	String SUPPORT_SERVICE = "support";
+	String SUPPORT = "support";
+	/**
+	 * 测试服务
+	 */
+	String TEST_SERVICE = "test-service";
+
+	/**
+	 * 营销服务
+	 */
+	String PROMOTION = "promotion-service";
+
 	/**
 	 * 系统服务
 	 */
-	String TEST_SERVICE = "test-service";
+	String SYSTEM = "system-service";
+
+	/**
+	 * 系商品、产品服务
+	 */
+	String PRODUCT = "product-service";
 }

@@ -32,7 +32,7 @@ public class RedisSubscriptionConfig {
 		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		// 可以添加多个 messageListener，配置不同的交换机
-		container.addMessageListener(listenerAdapter, new PatternTopic(ChannelEnum.TEST.getChannelName()));
+		container.addMessageListener(listenerAdapter, new PatternTopic(ChannelEnum.TEST.getTopicName()));
 		return container;
 	}
 
