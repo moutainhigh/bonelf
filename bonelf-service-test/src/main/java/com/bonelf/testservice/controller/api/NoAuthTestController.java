@@ -67,9 +67,9 @@ public class NoAuthTestController extends BaseApiController {
 	public String restTemplateTest() {
 		Map<String, Object> params = new HashMap<>(1);
 		params.put("orderId", "123");
-		return restTemplate.getForObject("http://order-service/productOrder/getOrderById" + "?orderId={orderId}",
-				String.class,
-				params);
+		return (String)restTemplate.getForObject("http://order-service/productOrder/getOrderById" + "?orderId={orderId}",
+				Result.class,
+				params).getResult();
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class NoAuthTestController extends BaseApiController {
 	 */
 	@GetMapping("/orderFeign")
 	public String orderFeign() {
-		return orderFeignClient.getProductOrderById("123");
+		return (String)orderFeignClient.getProductOrderById("123").getResult();
 	}
 
 	@GetMapping("/userFeign")
@@ -113,7 +113,7 @@ public class NoAuthTestController extends BaseApiController {
 	@GetMapping("/orderFeignMethodFallback")
 	@HystrixCommand(fallbackMethod = "orderFeign2Back")
 	public String orderFeign2() {
-		return orderFeignClient.getProductOrderById("123");
+		return (String)orderFeignClient.getProductOrderById("123").getResult();
 	}
 
 	public String orderFeign2Back() {

@@ -8,9 +8,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * <p>
+ * 会员订单
+ * </p>
+ * @author Chenyuan
+ * @since 2020/12/1 14:23
+ */
 @RestController
-@RequestMapping("/productOrder")
-public class ProductOrderController {
+@RequestMapping("/vipOrder")
+public class VipOrderController {
 
 	@ApiOperation("创建订单")
 	@GetMapping("/createOrder")

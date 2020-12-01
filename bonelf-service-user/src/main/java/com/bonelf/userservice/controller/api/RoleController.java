@@ -1,6 +1,7 @@
 package com.bonelf.userservice.controller.api;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.util.BaseApiController;
 import io.swagger.annotations.Api;
@@ -25,6 +26,11 @@ public class RoleController extends BaseApiController {
 	@GetMapping(value = "/v1")
 	public Result<JSONArray> getUser(@RequestParam Long userId) {
 		JSONArray json = new JSONArray();
+		JSONObject temp = new JSONObject();
+		temp.put("code", "test:role");
+		temp.put("name", "testRole");
+		temp.put("description", "this is an example role");
+		json.add(temp);
 		return Result.ok(json);
 	}
 }

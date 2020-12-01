@@ -1,11 +1,14 @@
 package com.bonelf.productservice.controller.api;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.util.BaseApiController;
-import com.bonelf.productservice.domain.vo.SkuApiVO;
-import com.bonelf.productservice.domain.vo.SkuKeyApiVO;
-import com.bonelf.productservice.domain.vo.SpuVO;
+import com.bonelf.productservice.domain.dto.CalcPriceDTO;
+import com.bonelf.productservice.domain.dto.ConfirmOrderDTO;
+import com.bonelf.productservice.domain.query.CalcPriceQuery;
+import com.bonelf.productservice.domain.query.PriceInfo;
+import com.bonelf.productservice.domain.vo.*;
 import com.bonelf.productservice.service.SkuService;
 import com.bonelf.productservice.service.SpuService;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +32,32 @@ public class SpuController extends BaseApiController {
 	private SpuService spuService;
 	@Autowired
 	private SkuService skuService;
+
+	@PostMapping("/calcPrice")
+	@ApiOperation("价格计算 不是订单确认，是在点击购物车时选择计算价格")
+	public Result<?> calcPrice(@RequestBody CalcPriceDTO calcPriceDto) {
+		CalcPriceVO calcPriceInfo = new CalcPriceVO();
+		//计算价格的逻辑往往比计算价格接口逻辑更复杂，需要封装参数，并且公共方法用于调用
+		CalcPriceQuery calcPriceQuery = BeanUtil.copyProperties(calcPriceDto, CalcPriceQuery.class);
+		//中间产物接收接口，避免重复数据库查询获取数据
+		calcPriceQuery.setPriceInfo(new PriceInfo() {
+			@Override
+			public void getCoupon(UserCouponVO coupon) {
+				calcPriceInfo.setUserCoupon(coupon);
+			}
+		});
+		//然后根据 calcPriceQuery 计算价格就行
+		return Result.ok(calcPriceInfo);
+	}
+
+	@PostMapping("/confirmOrder")
+	@ApiOperation("订单确认")
+	public Result<?> confirmOrder(@RequestBody ConfirmOrderDTO confirmOrderDto) {
+		CalcPriceQuery calcPriceQuery = BeanUtil.copyProperties(confirmOrderDto, CalcPriceQuery.class);
+		calcPriceQuery.setAutoSelectCoupon(false);
+		//计算价格 返回地址信息、订单信息等
+		return Result.ok();
+	}
 
 	@GetMapping("/{spuId}")
 	@ApiOperation("详情")

@@ -2,10 +2,11 @@ package com.bonelf.userservice.client;
 
 import com.bonelf.common.cloud.constant.ServiceNameConstant;
 import com.bonelf.common.cloud.feign.FeignConfig;
+import com.bonelf.common.domain.Result;
 import com.bonelf.userservice.client.factory.OrderFeignFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * <p>
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 		fallbackFactory = OrderFeignFallbackFactory.class)
 public interface OrderFeignClient {
 	//定义要调用的方法的路径
-	@GetMapping("/bonelf/v1/productOrder/getOrderById")
-	String getProductOrderById(@RequestParam("orderId") String orderId);
+	@GetMapping("/bonelf/v1/productOrder/{orderId}")
+	Result<?> getProductOrderById(@PathVariable("orderId") String orderId);
 }
 

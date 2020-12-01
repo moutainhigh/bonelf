@@ -8,16 +8,15 @@
 | --- | --- | --- | --- |
 | `cicada` | 工具包 |  | |
 | `bonelf-common` | 公用模块 |  | |
-| `bonelf-gateway` | 网关 | HTTP 80 | |
-| `bonelf-quartz` | 定时器 | HTTP - | |
+| `bonelf-gateway` | 网关 | HTTP 9999 | |
 | `bonelf-support` | Netty Websocket服务、定时器等 | HTTP 8800 & WS 8802 | |
 | `bonelf-service-order` | 订单服务 | HTTP 8801 | [接口文档]() |
-| `bonelf-service-pay` | 支付服务 | HTTP - | [接口文档]() |
-| `bonelf-service-product` | 商品服务 | HTTP - | [接口文档]() |
-| `bonelf-service-promotion` | 营销服务 | HTTP - | [接口文档]() |
-| `bonelf-service-search` | 搜索服务 | HTTP - | [接口文档]() |
-| `bonelf-service-system` | 管理系统服务 | HTTP - | [接口文档]() |
-| `bonelf-service-user` | 用户服务 | HTTP 8802 | [接口文档]() |
+| `bonelf-service-pay` | 支付服务 | HTTP 8806 | [接口文档]() |
+| `bonelf-service-product` | 商品服务 | HTTP 8803 | [接口文档]() |
+| `bonelf-service-promotion` | 营销服务 | HTTP 8805 | [接口文档]() |
+| `bonelf-service-search` | 搜索服务 | HTTP 8807| [接口文档]() |
+| `bonelf-service-system` | 管理系统服务 | HTTP 8808 | [接口文档]() |
+| `bonelf-service-user` | 用户服务 | HTTP 8804 | [接口文档]() |
 | `bonelf-service-test` | 测试服务 | HTTP 8080 | [接口文档]() |
 
 ## Q&A
@@ -56,8 +55,6 @@ Jeecg-boot、ruoyi-cloud、Guns、litemall、best-pay
 
 OAuth自动刷新token
 
-OAuth权限
-
 maven一键部署、使用docker部署（depoly）
 
 zipkin
@@ -92,6 +89,8 @@ swagger-ui 微服务下整合
 空字符串转null 注解（并没有实现注解，而是全局设置）
 
 OAuth2
+
+OAuth权限
 
 string 替换文本注解
 

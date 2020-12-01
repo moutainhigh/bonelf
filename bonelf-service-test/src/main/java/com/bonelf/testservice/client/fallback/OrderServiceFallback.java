@@ -1,5 +1,6 @@
 package com.bonelf.testservice.client.fallback;
 
+import com.bonelf.common.domain.Result;
 import com.bonelf.testservice.client.OrderFeignClient;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class OrderServiceFallback implements OrderFeignClient {
     private Throwable cause;
 
     @Override
-    public String getProductOrderById(String orderId) {
-        return "feign fallback";
+    public Result<?> getProductOrderById(String orderId) {
+        return Result.error("feign fallback");
     }
 }

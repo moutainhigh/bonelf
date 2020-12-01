@@ -8,19 +8,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * <p>
+ * 退款记录
+ * </p>
+ * @author Chenyuan
+ * @since 2020/12/1 14:23
+ */
 @RestController
-@RequestMapping("/productOrder")
-public class ProductOrderController {
+@RequestMapping("/refund")
+public class RefundController {
 
-	@ApiOperation("创建订单")
-	@GetMapping("/createOrder")
+	@ApiOperation("退款原因列表选择")
+	@GetMapping("/refundReason")
+	public Result<?> refundReason() {
+		return Result.ok();
+	}
+
+	@ApiOperation("创建退款")
+	@GetMapping("/createRefund")
 	public Result<?> createOrder() {
 		return Result.ok();
 	}
 
 	@ApiOperation("创建详情")
-	@GetMapping("/{orderId}")
-	public Result<?> getOrderById(@ApiParam("订单编号") @PathVariable String orderId) {
+	@GetMapping("/{refundId}")
+	public Result<?> getRefundById(@ApiParam("订单编号") @PathVariable String refundId) {
 		return Result.ok();
 	}
 }
