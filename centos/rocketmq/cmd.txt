@@ -1,0 +1,101 @@
+apacherocketmq那套放弃了，broker还是启动不了 简直吐血
+使用foxiswho/docker-rocketmq
+https://github.com/foxiswho/docker-rocketmq
+
+修改时区问题
+docker run -e "JAVA_OPTS=-Drocketmq.namesrv.addr=172.16.189.129:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false \
+ -Duser.timezone='Asia/Shanghai'" -v /etc/localtime:/etc/localtime -p 9866:8080 -t styletang/rocketmq-console-ng
+
+ 照着安装步骤有几个需要改：
+ broker.conf->添加brokerIP1
+ 把docker-compose.yml的command,JAVA_OPTS里的rmqnamesrv:9876 改成 {你的私网地址}:9876 (给这个搞了两天，估计apacherocketmq装不上也是这个原因，估计因为这种写法指向了docker的内部ip，brokerIP1不是这个用途？)
+
+==========================================================================================
+docker image rm , docker rmi , docker rm , docker run, docker stop, docker ps -a, docker logs -f -t --tail 20 mqbroker-n0,
+docker exec -it 40c330755e61 /bin/bash, docker cp XXX XXX:XXX
+==========================================================================================
+
+装镜像：rocketmq-all-4.7.1
+https://github.com/apache/rocketmq-docker
+
+rocketmq-docker/image-build：sh build-image.sh 4.7.1 centos
+1.
+The command '/bin/sh -c yum install -y java-1.8.0-openjdk-devel.x86_64 unzip gettext nmap-ncat openssl, which gnupg, telnet  && yum clean all -y' returned a non-zero code: 1
+这两个已经安装：注释Docker-file-centos 前两行
+2.
+curl: (6) Could not resolve host: archive.apache.org; Unknown error
+指定网络模式为主机网络： 修改build.sh添加--network=host: docker build --network=host --no-cache -f Dockerfile-centos -t apacherocketmq/rocketmq:${ROCKETMQ_VERSION} --build-arg version=${ROCKETMQ_VERSION} .
+3.
+找不到unzip命令
+Docker-file-centos unzip命令前价格yum install -y unzip zip安装即可
+
+console:
+1)
+https://github.com/apache/rocketmq-externals/tree/master/rocketmq-console
+
+docker pull apacherocketmq/rocketmq-console:2.0.0
+
+https://github.com/apache/rocketmq-externals.git
+加速克隆地址
+git clone https://github.com.cnpmjs.org/apache/rocketmq-externals.git
+mvn clean package -U -Dmaven.test.skip=true docker:build
+
+2) √
+docker pull styletang/rocketmq-console-ng
+
+运行
+Name Server
+
+docker run -d --name mqnamesrv-0 \
+    -p 9876:9876 \
+    -v /root/rocketmq/mqnamesrv-0/logs:/home/rocketmq/logs \
+    -v /root/rocketmq/mqnamesrv-0/store:/home/rocketmq/store \
+    -v /usr/java/jdk1.8.0_121:/usr/java/jdk1.8.0_121 \
+    -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro \
+    apacherocketmq/rocketmq:4.7.1 sh mqnamesrv
+
+Broker Server
+
+docker run -d --name mqbroker \
+    --net=host \
+    -v /root/rocketmq/broker-n0/logs:/home/rocketmq/logs \
+    -v /root/rocketmq/broker-n0/store:/home/rocketmq/store \
+    -v /root/rocketmq/broker-n0/conf:/home/rocketmq/rocketmq-4.7.1/conf \
+    -v /usr/java/jdk1.8.0_121:/usr/java/jdk1.8.0_121 \
+    -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro \
+	apacherocketmq/rocketmq:4.7.1 sh mqbroker -c /home/rocketmq/rocketmq-4.7.1/conf/broker.conf
+
+docker run -d --name mqbroker-n0 \
+    --net=host \
+    -v /root/rocketmq/broker-n0/logs:/home/rocketmq/logs \
+    -v /root/rocketmq/broker-n0/store:/home/rocketmq/store \
+    -v /root/rocketmq/broker-n0/conf:/home/rocketmq/rocketmq-4.7.1/conf \
+    -v /usr/java/jdk1.8.0_121:/usr/java/jdk1.8.0_121 \
+    -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro \
+	apacherocketmq/rocketmq:4.7.1 sh mqbroker -c /home/rocketmq/rocketmq-4.7.1/conf/dledger/broker-n0.conf
+
+apacherocketmq/rocketmq:4.7.1 sh mqbroker -c /home/rocketmq/rocketmq-4.7.1/conf/broker-n0.conf
+origin:  apacherocketmq/rocketmq:4.7.1 sh mqbroker -c ../conf/dledger/broker-n0.conf
+
+4.
+ERROR: Please set the JAVA_HOME variable in your environment, We need java(x64)! !!]
+(1
+vim /etc/profile
+
+# 在尾部添加
+JAVA_HOME=/usr/java/jdk1.8.0_121
+CLASSPATH=.:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar~
+PATH=$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PATH
+export JAVA_HOME
+
+-> source /etc/profile
+(2
+删除openjdk docker image
+openjdk                           8-alpine            a3562aa0b991        18 months ago       105MB
+(3
+docker cp /root/rocketmq/runbroker.sh 88e5cece244f:/home/rocketmq/rocketmq-4.7.1/bin/runbroker.sh
+修改 runbroker.sh、runserver.sh 把JAVA_HOME改为/usr/java/jdk1.8.0_121
+添加 -v /usr/java/jdk1.8.0_121:/usr/java/jdk1.8.0_121 \   (前面你的jdk路径)
+
+docker run --name rocket_console -e "JAVA_OPTS=-Drocketmq.namesrv.addr=127.0.0.1:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false" -p 9866:8080 -t apacherocketmq/rocketmq-console:2.0.0
+↑：连不上9876错误

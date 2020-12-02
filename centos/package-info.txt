@@ -1,1 +1,4 @@
 centos 服务器相关配置信息
+工具：
+yum install git
+yum install unzip

@@ -1,0 +1,7 @@
+mysql -uroot -p　连接数据库
+
+root不允许外部ip访问，为了方便新建一个最高权限用户
+# 新建并授权ccy用户对所有数据库在任何ip都可以进行操作
+grant all on *.* to ccy@'%' identified by 'ccy297115649' with grant option;
+# 刷新数据库
+flush privileges;
