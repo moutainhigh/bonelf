@@ -1,1 +1,15 @@
 搜索服务
+如果需要为es和Kafka等创建网络
+docker network create esnet
+
+docker pull docker.elastic.co/elasticsearch/elasticsearch:7.9.3@sha256:9116cf5563a6360ed204cd59eb89049d7e2ac9171645dccdb1421b55dbae888b
+
+9200是供http访问端口，9300是供tcp访问的端口（ --network esnet 对照上面的创建网络，bdaab402b220，容器的镜像（docker images查看））
+docker run --name es  -p 9200:9200 -p 9300:9300  --network esnet -e "discovery.type=single-node" bdaab402b220
+
+安装分词
+docker exec -it es /bin/bash
+./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.10.0/elasticsearch-analysis-ik-7.10.0.zip
+(退出重启)
+exit
+docker restart es

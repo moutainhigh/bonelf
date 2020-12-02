@@ -8,6 +8,7 @@ docker run -e "JAVA_OPTS=-Drocketmq.namesrv.addr=172.16.189.129:9876 -Dcom.rocke
 
  照着安装步骤有几个需要改：
  broker.conf->添加brokerIP1
+ ===下面这个问题估计使用docker network create rmqnet 相关服务启动时加上 --network rmqnet 即可解决 使得使用一个网络即可解决
  把docker-compose.yml的command,JAVA_OPTS里的rmqnamesrv:9876 改成 {你的私网地址}:9876 (给这个搞了两天，估计apacherocketmq装不上也是这个原因，估计因为这种写法指向了docker的内部ip，brokerIP1不是这个用途？)
 
 ==========================================================================================

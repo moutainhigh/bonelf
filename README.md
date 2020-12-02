@@ -39,27 +39,27 @@ Jeecg-boot、ruoyi-cloud、Guns、litemall、best-pay
 ## 开发计划
 继承Webserver是否可以替换springboot的web服务？
 
-搜索服务elasticsearch
-
 三方登录
 
 二维码登录
 
 OAuth自动刷新token
 
+支付对账、分账
+
 maven一键部署、使用docker部署（depoly）
 
-zipkin
+zipkin 监控 压力测试
 
-grafana
+grafana 度量分析和可视化工具
 
-kibana
+kibana 日志分析的 Web 接口
 
-seata
+seata 分布式事务中间件
 
-sentired
+sentinel 流量控制
 
-支付对账、分账
+Kafka 分布式日志
 
 ## 已完成
 nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、消息转化器、异常处理advice、spring cache使用redis实现等）
@@ -108,7 +108,7 @@ RocketMQ 实现 redis websocket发布订阅
 
 销售量排序问题（需rocketmq）
 
-## 伪代码和注释实现
+## 开发到一半（点到为止）
 微信支付宝 支付、退款
 
 库存问题
@@ -116,6 +116,8 @@ RocketMQ 实现 redis websocket发布订阅
 规格问题（下单）
 
 经纬度排序问题
+
+搜索服务elasticsearch
 
 ## 放弃
 CAS单点登录（使用OAuth2.0解决）

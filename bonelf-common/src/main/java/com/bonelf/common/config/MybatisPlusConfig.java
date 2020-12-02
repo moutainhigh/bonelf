@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @author bonelf
  */
 @Configuration
-@MapperScan(value={"com.bonelf.**.mapper*"})
+@MapperScan(value={"com.bonelf.**.repository"})
 public class MybatisPlusConfig {
 
 	/**

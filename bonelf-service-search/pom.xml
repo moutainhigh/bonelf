@@ -23,6 +23,21 @@
             <artifactId>bonelf-common</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!--测试，在公共模块里管理测试Jar是不合适的，因为引入时，指定的scope范围是test,在某一模块，引入依赖包时，并不能成功引入测试依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
