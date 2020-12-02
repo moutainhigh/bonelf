@@ -19,4 +19,12 @@ public interface CacheConstant {
 	 * 商品售出缓存
 	 */
 	String SPU_SOLD_HASH = BonelfConstant.PROJECT_NAME + ":spuSold";
+	/**
+	 * 规格库存
+	 */
+	String SKU_STOCK_HASH = BonelfConstant.PROJECT_NAME + ":stock:sku";
+	/**
+	 * 商品库存
+	 */
+	String SPU_STOCK_HASH = BonelfConstant.PROJECT_NAME + ":stock:spu";
 }

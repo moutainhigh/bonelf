@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
  * <p>
  * 折线图表格
  * </p>
- * @author guaishou
+ * @author bonelf
  * @since 2020/10/23 15:15
  */
 @Data

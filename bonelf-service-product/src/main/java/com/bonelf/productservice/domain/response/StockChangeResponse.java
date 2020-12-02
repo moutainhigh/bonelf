@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2020. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
  * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
@@ -7,21 +6,16 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package com.bonelf.productservice.constant;
+package com.bonelf.productservice.domain.response;
 
-public interface MQRecvTag {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-	/**
-	 * 缓存点击量入库
-	 */
-	String SPU_STATISTIC_SUM = "SpuStatisticSumTag";
-	/**
-	 * 商品售出
-	 */
-	String PRODUCT_PAID_TAG = "ProductPaidTag";
-	/**
-	 * 库存变化
-	 */
-	String STOCK_SKU_TAG = "StockSkuTag";
-	String STOCK_SPU_TAG = "StockSpuTag";
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class StockChangeResponse {
+	private Long id;
+	private Integer count;
 }

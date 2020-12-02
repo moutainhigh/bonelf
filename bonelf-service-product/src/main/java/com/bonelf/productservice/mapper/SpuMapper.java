@@ -18,4 +18,6 @@ public interface SpuMapper extends BaseMapper<Spu> {
 	 * @param spuId
 	 */
 	int updateSpuBySku(Long spuId);
+
+	int updateSpuStockBySkuId(long skuId);
 }

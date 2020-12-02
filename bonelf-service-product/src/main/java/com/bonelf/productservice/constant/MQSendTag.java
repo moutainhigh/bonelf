@@ -13,4 +13,9 @@ public interface MQSendTag {
 	 * 缓存点击量增加
 	 */
 	String SPU_CLICK = "SpuClickTag";
+	/**
+	 * 库存变化
+	 */
+	String STOCK_SKU_TAG = "StockSkuTag";
+	String STOCK_SPU_TAG = "StockSpuTag";
 }

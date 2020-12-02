@@ -13,7 +13,7 @@ import lombok.Data;
  * <p>
  * 微信支付回显
  * </p>
- * @author guaishou
+ * @author bonelf
  * @since 2020/9/9 14:42
  */
 @Builder

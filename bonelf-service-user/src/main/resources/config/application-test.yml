@@ -12,3 +12,29 @@ spring:
     database: 0
     host: localhost
     port: 6379
+
+rocketmq:
+  # 发送同一类消息设置为同一个group，保证唯一默认不需要设置，rocketmq会使用ip@pid（pid代表jvm名字）作为唯一标识
+  group-name: ${spring.application.name}
+  # mq的nameserver地址
+  namesrv-addr: 47.114.165.253:9876
+
+  enable: false
+
+  consumer:
+    # 消费者订阅的主题topic和tags（*标识订阅该主题下所有的tags），格式: topic~tag1||tag2||tags3;
+    #    topics: Test_Topic~TestTag;Test_Topic~HelloTag||WorldTag;MyTopic~*
+    topics: BNF_support~SocketTag||DictTag
+    # 消费者线程数据量
+    consume-thread-min: 5
+    consume-thread-max: 32
+    # 设置一次消费信心的条数，默认1
+    consume-message-batch-max-size: 1
+
+  producer:
+    # 消息最大长度 默认 1024 * 4 (4M)
+    max-message-size: 4096
+    # 发送消息超时时间，默认 3000
+    send-msg-time-out: 3000
+    # 发送消息失败重试次数，默认2
+    retry-times-when-send-failed: 2

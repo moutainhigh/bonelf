@@ -33,4 +33,10 @@ public interface SpuService extends IService<Spu> {
 	 * @return
 	 */
 	void spuSoldOut(long spuId);
+
+	/**
+	 * 更新库存
+	 * @param skuId
+	 */
+	void updateStockBySkuId(long skuId);
 }

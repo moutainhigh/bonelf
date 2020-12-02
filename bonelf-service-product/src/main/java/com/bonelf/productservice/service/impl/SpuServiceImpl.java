@@ -52,6 +52,15 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 	}
 
 	/**
+	 * 更新库存
+	 * @param skuId
+	 */
+	@Override
+	public void updateStockBySkuId(long skuId) {
+		this.baseMapper.updateSpuStockBySkuId(skuId);
+	}
+
+	/**
 	 * 合计点击量
 	 * @return
 	 */

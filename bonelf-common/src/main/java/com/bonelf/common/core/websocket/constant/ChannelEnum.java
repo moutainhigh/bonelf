@@ -35,6 +35,8 @@ public enum ChannelEnum {
 
 	PROMOTION(String.format(MQTopic.MQ_WEB_SOCKET_CHANNEL, ServiceNameConstant.PROMOTION)),
 
+	SUPPORT(String.format(MQTopic.MQ_WEB_SOCKET_CHANNEL, ServiceNameConstant.SUPPORT)),
+
 	SYSTEM(String.format(MQTopic.MQ_WEB_SOCKET_CHANNEL, ServiceNameConstant.SYSTEM));
 	private String topicName;
 }

@@ -9,15 +9,21 @@
 package com.bonelf.pay.controller.api;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bonelf.common.core.websocket.constant.ChannelEnum;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.service.MQService;
 import com.bonelf.pay.constant.MQSendTag;
+import com.bonelf.pay.constant.enums.OrderTypeEnum;
+import com.bonelf.pay.constant.enums.PayTypeEnum;
 import com.bonelf.pay.domain.dto.PayDTO;
 import com.bonelf.pay.domain.vo.WxPayVO;
+import com.bonelf.pay.util.WxPayUtil;
+import com.lly835.bestpay.config.WxPayConfig;
 import com.lly835.bestpay.model.PayRequest;
 import com.lly835.bestpay.model.PayResponse;
 import com.lly835.bestpay.service.BestPayService;
+import com.lly835.bestpay.utils.XmlUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -34,6 +42,8 @@ public class PayController {
 	private BestPayService bestPayService;
 	@Autowired
 	private MQService mqService;
+	@Resource
+	private WxPayConfig wxPayConfig;
 
 	/**
 	 * WX:
@@ -50,12 +60,12 @@ public class PayController {
 	@ApiOperation(value = "支付", httpMethod = "POST")
 	@PostMapping("")
 	public Result<?> pay(@RequestBody PayDTO payDto) {
-		// FIXME: 2020/12/1
+		// FIXME: 2020/12/1 payDto->payRequest装参数
 		PayRequest payRequest = null;
 		log.info("\n【发起支付】request={}", JSON.toJSONString(payRequest));
 		PayResponse payResponse = bestPayService.pay(payRequest);
 		log.info("\n【发起支付】response={}", JSON.toJSONString(payResponse));
-		if ("ali".equals(payDto.getPayType())) {
+		if (PayTypeEnum.ALI.getCode().equals(payDto.getPayType())) {
 			log.info("\n【返回参数】resp={}", payResponse.getBody());
 			return Result.ok(payResponse.getBody());
 		} else {
@@ -74,20 +84,55 @@ public class PayController {
 	@ApiIgnore
 	@ApiOperation(value = "微信回调", notes = "退款和支付一个接口，微信退款可自定义回调接口，没有则是同一个")
 	@GetMapping("/notify/wx")
-	public String notifyWx() {
+	public String notifyWx(@RequestBody String notifyData) {
+		Map<String, String> resp = XmlUtil.toMap(notifyData);
+		if (resp.containsKey("out_refund_no")) {
+			//退款回调
+			//获取req_info解密后的out_refund_no(refundId)
+			//通知用户定金原路返回，订单关闭，通知供货订单状态关闭
+			log.info("\n【微信退款回调】respMap：" + JSON.toJSONString(resp));
+			//签名校验
+			String reqInfo;
+			try {
+				reqInfo = WxPayUtil.descrypt(resp.get("req_info"), wxPayConfig.getMchId());
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "<xml><return_code><![CDATA[FAIL]]</return_code><return_msg><![CDATA[error descrypt]]></return_msg></xml>";
+			}
+			Map<String, String> reqInfoMap = XmlUtil.toMap(reqInfo);
+		} else {
+			//支付回调
+			PayResponse response = bestPayService.asyncNotify(notifyData);
+			//通知订单支付成功
+			JSONObject json = JSONObject.parseObject(response.getAttach());
+			OrderTypeEnum orderType = Objects.requireNonNull(OrderTypeEnum.of(Integer.parseInt(json.getString("orderType"))));
+		}
 		Long orderId = 1L;
 		Long spuId = 1L;
+		//通知 助手服务 关闭订单超时定时任务
+		mqService.send(ChannelEnum.SUPPORT, MQSendTag.PRODUCT_PAID_TAG, orderId);
+		//通知 商品服务 成交数据增加 FIXME 列表 数量
 		mqService.send(ChannelEnum.PRODUCT, MQSendTag.PRODUCT_PAID_TAG, spuId);
 		return "<xml><return_code><![CDATA[SUCCESS]]</return_code><return_msg><![CDATA[OK]]></return_msg></xml>";
+		//return "<xml><return_code><![CDATA[FAIL]]</return_code><return_msg><![CDATA[error descrypt]]></return_msg></xml>";
 	}
 
 	@ApiIgnore
 	@ApiOperation(value = "阿里回调", notes = "退款和支付一个接口")
 	@GetMapping("/notify/ali")
-	public String notifyAli() {
-		Long orderId = 1L;
-		Long spuId = 1L;
-		mqService.send(ChannelEnum.PRODUCT, MQSendTag.PRODUCT_PAID_TAG, spuId);
-		return "success";
+	public String notifyAli(@RequestBody String notifyData) {
+		JSONObject json = JSON.parseObject(notifyData);
+		if (json.containsKey("refund_fee") && json.containsKey("gmt_refund")) {
+			//退款成功
+			//添加退款流水
+			return "success";
+		} else {
+			//支付回调
+			PayResponse response = bestPayService.asyncNotify(notifyData);
+			//通知订单支付成功
+			//添加支付流水
+			return "success";
+		}
+		//return "failure";
 	}
 }

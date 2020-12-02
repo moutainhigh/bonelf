@@ -10,10 +10,12 @@ import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@ConditionalOnProperty(prefix = "rocketmq", value = "enable", havingValue = "true")
 public class MQServiceImpl implements MQService {
 	@Autowired
 	private DefaultMQProducer defaultMQProducer;

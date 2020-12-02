@@ -16,6 +16,7 @@
 package com.bonelf.common.config;
 
 import com.bonelf.common.constant.CommonCacheConstant;
+import com.bonelf.common.core.serializer.RestObjectMapper;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -93,11 +94,12 @@ public class RedisAutoConfig extends CachingConfigurerSupport {
 	@Bean
 	public RedisSerializer<Object> jackson2JsonRedisSerializer() {
 		Jackson2JsonRedisSerializer<Object> j = new Jackson2JsonRedisSerializer<>(Object.class);
-		ObjectMapper om = new ObjectMapper();
+		//ObjectMapper om = new ObjectMapper();
+		ObjectMapper om = new RestObjectMapper();
+		j.setObjectMapper(om);
 		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 		om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,
 				ObjectMapper.DefaultTyping.NON_FINAL);
-		j.setObjectMapper(om);
 		return j;
 		//return new FastJson2JsonRedisSerializer<>(Object.class);
 	}

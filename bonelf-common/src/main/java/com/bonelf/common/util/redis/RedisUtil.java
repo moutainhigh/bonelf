@@ -1,16 +1,18 @@
 package com.bonelf.common.util.redis;
 
 import cn.hutool.core.collection.CollectionUtil;
+import io.lettuce.core.RedisCommandExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Point;
+import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,12 +27,11 @@ import java.util.concurrent.TimeUnit;
  * {@link this#sGet(String)} Set 唯一性
  * {@link this#lGet(String, long, long)}  List 存储列表数据并管理 (建议保存索引值方便操作)
  * {@link this#zAdd(String, String, double)}   zSet 按照点击量排序等使用的缓存技术
- * {@link this#gAdd(String, String, long, long)}   GEO 经纬度计算、按经纬度排序分页
+ * {@link this#gAdd(String, String, double, double)}   GEO 经纬度计算、按经纬度排序分页
  *
  * redis还有其他应用 如
  * 发布订阅：见test模块websocket RedisSubscriptionConfig；(opsForCluster)
  * 锁：RedisLock
- *
  * @author bonelf
  **/
 @Slf4j
@@ -648,7 +649,7 @@ public class RedisUtil {
 	 * @param end
 	 * @return
 	 */
-	public Set<ZSetOperations.TypedTuple<Object>> rangeWithScore(String key, long start, long end) {
+	public Set<ZSetOperations.TypedTuple<Object>> rangeWithScores(String key, long start, long end) {
 		return redisTemplate.opsForZSet().rangeWithScores(key, start, end);
 	}
 
@@ -686,9 +687,10 @@ public class RedisUtil {
 	 * @param lat
 	 * @return
 	 */
-	public Long gAdd(String key, String name, long lng, long lat) {
+	public Long gAdd(String key, String name, double lng, double lat) {
 		return redisTemplate.opsForGeo().add(key, new Point(lng, lat), name);
 	}
+
 	/**
 	 * 位置添加
 	 * @param key
@@ -697,6 +699,96 @@ public class RedisUtil {
 	 */
 	public Long gDel(String key, String... name) {
 		return redisTemplate.opsForGeo().remove(key, name);
+	}
+
+
+	/***
+	 * 分页获取最近附近的人地理位置
+	 * storedist() 函数的意义:使用距离排序
+	 * 请在外面通过hasKey判断缓存结果，
+	 * 还有通过修改距离控制数量调用redisTemplate.opsForGeo().radius
+	 * XXX 看上去临时Key这种做法可优化
+	 * @param page 第几页
+	 * @param limit 每页条数
+	 * @param key redis key "city",
+	 //* @param name 位置名称 "深圳",
+	 * @param lat 纬度,
+	 * @param lng 经度,
+	 * @param distance 距离 "8000",
+	 * 以下可设置默认值
+	 * @param distanceUnit 距离单位 "km",
+	 * @param sort 排序 "asc",
+	 * @param nearDataKey 新的redis key "shenzhennewkey"
+	 * @throws RedisCommandExecutionException ERR could not decode requested zset member ：元素不存在 检查 name
+	 */
+	public Set<ZSetOperations.TypedTuple<Object>> gPage(int page, int limit,
+														String key, double lat, double lng,
+														double distance, Metrics distanceUnit,
+														String sort, String nearDataKey) throws RedisCommandExecutionException {
+		//将附近的人存储到一个key里
+		//'bonelf:shopGeo' 'shopName1' '1000' 'km' 'asc' 'storedist' 'shopName1SearBy'
+		Object execute = execute("return redis.call('georadius',KEYS[1],KEYS[2],KEYS[3],KEYS[4],KEYS[5],KEYS[6],'storedist',KEYS[7])",
+				key, String.valueOf(lng), String.valueOf(lat), String.valueOf(distance), distanceUnit.getAbbreviation(), sort, nearDataKey);
+		//RedisGeoCommands.GeoRadiusCommandArgs geoRadiusCommandArgs = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs();
+		//redisTemplate.opsForGeo().radius(key, new Circle(new Point(lat, lng), new Distance(distance, distanceUnit)), "asc".equals(sort) ? geoRadiusCommandArgs.sortAscending() : geoRadiusCommandArgs.sortDescending()));
+		//给新key设置失效时间 反正这里需要删除
+		redisTemplate.expire(nearDataKey, 1, TimeUnit.HOURS);
+		//开始条数
+		int startPage = (page - 1) * limit;
+		//结束条数
+		int endPage = page * limit - 1;
+		//获取分页信息
+		Set<ZSetOperations.TypedTuple<Object>> result = rangeWithScores(nearDataKey, startPage, endPage);
+		// 删除临时Key
+		del(nearDataKey);
+		return result;
+	}
+	public Set<ZSetOperations.TypedTuple<Object>> gPage(int page, int limit,
+														String key, String id,
+														double distance, Metrics distanceUnit,
+														String sort, String nearDataKey, long nearDataKeyExpireHours) throws RedisCommandExecutionException {
+		//将附近的人存储到一个key里
+		//'bonelf:shopGeo' 'shopName1' '1000' 'km' 'asc' 'storedist' 'shopName1SearBy'
+		Object execute = execute("return redis.call('georadiusbymember',KEYS[1],KEYS[2],KEYS[3],KEYS[4],KEYS[5],KEYS[6],'storedist',KEYS[7])",
+				key, id, String.valueOf(distance), distanceUnit.getAbbreviation(), sort, nearDataKey);
+		//RedisGeoCommands.GeoRadiusCommandArgs geoRadiusCommandArgs = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs();
+		//redisTemplate.opsForGeo().radius(key, new Circle(new Point(lat, lng), new Distance(distance, distanceUnit)), "asc".equals(sort) ? geoRadiusCommandArgs.sortAscending() : geoRadiusCommandArgs.sortDescending()));
+		//给新key设置失效时间
+		redisTemplate.expire(nearDataKey, nearDataKeyExpireHours, TimeUnit.HOURS);
+		//删除自己
+		redisTemplate.opsForGeo().remove(nearDataKey, id);
+		//开始条数
+		int startPage = (page - 1) * limit;
+		//结束条数
+		int endPage = page * limit - 1;
+		//获取分页信息
+		Set<ZSetOperations.TypedTuple<Object>> result = rangeWithScores(nearDataKey, startPage, endPage);
+		//如果是通过点位id(比如门店经纬度：固定经纬度)则缓存一段时间(6Hour，建议外部传递常量)，如果其他点位变动小时间长，否则短，可考虑使用@Cacheable
+		return result;
+	}
+
+
+	/**
+	 * page:页数 limit:第一次的半径->每次增加 limit²π的面积
+	 * 分页可以把距离（半径）改为Math.pow(page, -2)*limit返回所有结果；Math.pow(page-1, -2)*limit是上一页的
+	 * range:Distance.between(new Distance(Math.pow(page, -2)*limit, distanceUnit), new Distance(Math.pow(page-1, -2)*limit, distanceUnit))
+	 * 但是radius好像不能搜索一个圆环内的信息-_-
+	 * 可以考虑MongoDB
+	 * 记得排除自己
+	 * @param key
+	 * @param lat
+	 * @param lng
+	 * @param distance
+	 * @param distanceUnit 单位
+	 * @param sort "asc"/"desc"
+	 * @return
+	 * @throws RedisCommandExecutionException ERR could not decode requested zset member ：元素不存在 检查 name（如果radius是按名查）
+	 */
+	public GeoResults<RedisGeoCommands.GeoLocation<Object>> gRadius(String key, double lat, double lng,
+																	double distance, Metrics distanceUnit,
+																	String sort) throws RedisCommandExecutionException {
+		RedisGeoCommands.GeoRadiusCommandArgs geoRadiusCommandArgs = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs();
+		return redisTemplate.opsForGeo().radius(key, new Circle(new Point(lat, lng), new Distance(distance, distanceUnit)), "asc".equals(sort) ? geoRadiusCommandArgs.sortAscending() : geoRadiusCommandArgs.sortDescending());
 	}
 
 	/**
@@ -708,5 +800,22 @@ public class RedisUtil {
 	 */
 	public Distance gDistance(String key, String name1, String name2) {
 		return redisTemplate.opsForGeo().distance(key, name1, name2, RedisGeoCommands.DistanceUnit.METERS);
+	}
+
+	/**
+	 * 执行lua脚本
+	 * @param text lua 脚本
+	 * @param str lua脚本的参数
+	 */
+	private Object execute(String text, String... str) {
+		//参数处理
+		List<String> params = Arrays.asList(str);
+		DefaultRedisScript<Long> defaultRedisScript = new DefaultRedisScript<>();
+		//设置返回值
+		defaultRedisScript.setResultType(Long.class);
+		//设置脚本
+		defaultRedisScript.setScriptText(text);
+		//执行命令
+		return redisTemplate.execute(defaultRedisScript, params);
 	}
 }

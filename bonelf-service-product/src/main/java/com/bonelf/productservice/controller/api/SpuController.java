@@ -59,6 +59,27 @@ public class SpuController extends BaseApiController {
 		return Result.ok();
 	}
 
+	@PostMapping("")
+	@ApiOperation("添加")
+	public Result<?> add() {
+
+		return Result.ok();
+	}
+
+	@PutMapping("/{spuId}")
+	@ApiOperation("修改")
+	public Result<?> edit() {
+
+		return Result.ok();
+	}
+
+	@GetMapping("")
+	@ApiOperation("分页查询")
+	public Result<?> list() {
+
+		return Result.ok();
+	}
+
 	@GetMapping("/{spuId}")
 	@ApiOperation("详情")
 	public Result<SpuVO> detail(@ApiParam("编号") @PathVariable Long spuId) {

@@ -41,14 +41,6 @@ Jeecg-boot、ruoyi-cloud、Guns、litemall、best-pay
 
 搜索服务elasticsearch
 
-微信支付宝 支付、退款、支付对账、分账
-
-库存问题
-
-规格问题（下单）
-
-经纬度排序问题
-
 三方登录
 
 二维码登录
@@ -66,6 +58,8 @@ kibana
 seata
 
 sentired
+
+支付对账、分账
 
 ## 已完成
 nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、消息转化器、异常处理advice、spring cache使用redis实现等）
@@ -113,6 +107,15 @@ RocketMQ 实现 redis websocket发布订阅
 点击量排序问题（需rocketmq）
 
 销售量排序问题（需rocketmq）
+
+## 伪代码和注释实现
+微信支付宝 支付、退款
+
+库存问题
+
+规格问题（下单）
+
+经纬度排序问题
 
 ## 放弃
 CAS单点登录（使用OAuth2.0解决）

@@ -65,6 +65,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 					return head != null && head.startsWith(AuthFeignConstant.FEIGN_REQ_FLAG_PREFIX);
 				}).permitAll()
 				.mvcMatchers(oauth2Property.getNoAuth()).permitAll()
+				// FIXME: 2020/12/1
+				.mvcMatchers("/*").permitAll()
 				.anyRequest().authenticated();
 	}
 

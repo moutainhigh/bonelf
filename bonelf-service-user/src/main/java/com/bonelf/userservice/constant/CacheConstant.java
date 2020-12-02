@@ -17,4 +17,5 @@ public interface CacheConstant {
 	 */
 	@Deprecated
 	String LOGIN_VERIFY_CODE = BonelfConstant.PROJECT_NAME + ":%s:%s";
+	String SHOP_GEO =  BonelfConstant.PROJECT_NAME + ":shopGeo";
 }
