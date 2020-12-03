@@ -2,7 +2,9 @@ package com.bonelf.productservice.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bonelf.productservice.domain.bo.CalcPriceBO;
 import com.bonelf.productservice.domain.entity.Spu;
+import com.bonelf.productservice.domain.query.CalcPriceQuery;
 import com.bonelf.productservice.domain.vo.SpuVO;
 
 /**
@@ -39,4 +41,11 @@ public interface SpuService extends IService<Spu> {
 	 * @param skuId
 	 */
 	void updateStockBySkuId(long skuId);
+
+	/**
+	 * 计算价格
+	 * @param calcPriceQuery
+	 * @return
+	 */
+	CalcPriceBO calcPrice(CalcPriceQuery calcPriceQuery);
 }

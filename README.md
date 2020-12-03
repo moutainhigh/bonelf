@@ -59,7 +59,7 @@ seata 分布式事务中间件
 
 sentinel 流量控制
 
-Kafka 分布式日志
+Kafka 分布式日志(MQ)
 
 ## 已完成
 nacos基本微服务框架功能配置（swagger、多数据源、druid、hystrix、feign、redis、mybatisplus、消息转化器、异常处理advice、spring cache使用redis实现等）
@@ -84,8 +84,6 @@ swagger-ui 微服务下整合
 
 OAuth2
 
-OAuth权限
-
 string 替换文本注解
 
 支持表情注解（valid）
@@ -100,7 +98,7 @@ string 替换文本注解
 
 二维码
 
-rocketmq（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
+RocketMQ（应用订单服务通知商品修改销售数目、定时器发送消息，其他服务处理）
 
 RocketMQ 实现 redis websocket发布订阅
 

@@ -8,7 +8,9 @@ import com.bonelf.common.service.MQService;
 import com.bonelf.common.util.redis.RedisUtil;
 import com.bonelf.productservice.constant.CacheConstant;
 import com.bonelf.productservice.constant.MQSendTag;
+import com.bonelf.productservice.domain.bo.CalcPriceBO;
 import com.bonelf.productservice.domain.entity.Spu;
+import com.bonelf.productservice.domain.query.CalcPriceQuery;
 import com.bonelf.productservice.domain.request.SpuClickRequest;
 import com.bonelf.productservice.domain.vo.SpuVO;
 import com.bonelf.productservice.mapper.SpuMapper;
@@ -58,6 +60,16 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 	@Override
 	public void updateStockBySkuId(long skuId) {
 		this.baseMapper.updateSpuStockBySkuId(skuId);
+	}
+
+	/**
+	 * 计算价格
+	 * @param calcPriceQuery
+	 * @return
+	 */
+	@Override
+	public CalcPriceBO calcPrice(CalcPriceQuery calcPriceQuery) {
+		return null;
 	}
 
 	/**

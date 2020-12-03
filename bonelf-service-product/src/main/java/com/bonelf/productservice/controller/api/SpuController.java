@@ -4,6 +4,7 @@ package com.bonelf.productservice.controller.api;
 import cn.hutool.core.bean.BeanUtil;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.util.BaseApiController;
+import com.bonelf.productservice.domain.bo.CalcPriceBO;
 import com.bonelf.productservice.domain.dto.CalcPriceDTO;
 import com.bonelf.productservice.domain.dto.ConfirmOrderDTO;
 import com.bonelf.productservice.domain.query.CalcPriceQuery;
@@ -46,7 +47,8 @@ public class SpuController extends BaseApiController {
 				calcPriceInfo.setUserCoupon(coupon);
 			}
 		});
-		//然后根据 calcPriceQuery 计算价格就行
+		//然后根据 calcPriceQuery 计算价格CalcPriceBO(没有userCoupon参数，只有价格相关参数)，再装配CalcPriceVO
+		CalcPriceBO calcPriceBo = spuService.calcPrice(calcPriceQuery);
 		return Result.ok(calcPriceInfo);
 	}
 

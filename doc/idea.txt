@@ -1,3 +1,12 @@
+idea必要设置：
+1注释格式修改：
+setting->editor->code style->java->code generation->右下角 comment code;取消勾选 Line comment at first line 勾选 Add a space at comment start
+                                 ->spaces->other->取消勾选after type cast
+                                 ->tabs and indents->勾选use type character
+2文件格式修改
+editor->file encoding->所有GBK改成UTF-8
+      ->SSH Terminal 同上
+
 idea解决Command line is too long. Shorten command line for ServiceStarter or also for Application报错
 找到 .idea\workspace.xml；如果找不到.idea是就更好显示目录，就能找到。
 找到<component name="PropertiesComponent">，在里面添加<property name="dynamic.classpath" value="true" />即可
