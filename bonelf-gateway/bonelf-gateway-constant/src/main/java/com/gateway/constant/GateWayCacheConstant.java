@@ -7,5 +7,5 @@ package com.gateway.constant;
  * @author bonelf
  * @since 2020/11/17 10:42
  */
-public interface CacheConstant {
+public interface GateWayCacheConstant {
 }
