@@ -4,11 +4,11 @@ package com.bonelf.productservice.controller.api;
 import cn.hutool.core.bean.BeanUtil;
 import com.bonelf.common.domain.Result;
 import com.bonelf.common.util.BaseApiController;
+import com.bonelf.productservice.domain.ao.CalcPriceAO;
 import com.bonelf.productservice.domain.bo.CalcPriceBO;
+import com.bonelf.productservice.domain.bo.PriceInfo;
 import com.bonelf.productservice.domain.dto.CalcPriceDTO;
 import com.bonelf.productservice.domain.dto.ConfirmOrderDTO;
-import com.bonelf.productservice.domain.query.CalcPriceQuery;
-import com.bonelf.productservice.domain.query.PriceInfo;
 import com.bonelf.productservice.domain.vo.*;
 import com.bonelf.productservice.service.SkuService;
 import com.bonelf.productservice.service.SpuService;
@@ -39,24 +39,24 @@ public class SpuController extends BaseApiController {
 	public Result<?> calcPrice(@RequestBody CalcPriceDTO calcPriceDto) {
 		CalcPriceVO calcPriceInfo = new CalcPriceVO();
 		//计算价格的逻辑往往比计算价格接口逻辑更复杂，需要封装参数，并且公共方法用于调用
-		CalcPriceQuery calcPriceQuery = BeanUtil.copyProperties(calcPriceDto, CalcPriceQuery.class);
+		CalcPriceBO calcPriceBo = BeanUtil.copyProperties(calcPriceDto, CalcPriceBO.class);
 		//中间产物接收接口，避免重复数据库查询获取数据
-		calcPriceQuery.setPriceInfo(new PriceInfo() {
+		calcPriceBo.setPriceInfo(new PriceInfo() {
 			@Override
 			public void getCoupon(UserCouponVO coupon) {
 				calcPriceInfo.setUserCoupon(coupon);
 			}
 		});
-		//然后根据 calcPriceQuery 计算价格CalcPriceBO(没有userCoupon参数，只有价格相关参数)，再装配CalcPriceVO
-		CalcPriceBO calcPriceBo = spuService.calcPrice(calcPriceQuery);
+		//然后根据 calcPriceBo 计算价格CalcPriceAO(没有userCoupon参数，只有价格相关参数)，再装配CalcPriceVO
+		CalcPriceAO calcPriceAo = spuService.calcPrice(calcPriceBo);
 		return Result.ok(calcPriceInfo);
 	}
 
 	@PostMapping("/confirmOrder")
 	@ApiOperation("订单确认")
 	public Result<?> confirmOrder(@RequestBody ConfirmOrderDTO confirmOrderDto) {
-		CalcPriceQuery calcPriceQuery = BeanUtil.copyProperties(confirmOrderDto, CalcPriceQuery.class);
-		calcPriceQuery.setAutoSelectCoupon(false);
+		CalcPriceBO calcPriceBo = BeanUtil.copyProperties(confirmOrderDto, CalcPriceBO.class);
+		calcPriceBo.setAutoSelectCoupon(false);
 		//计算价格 返回地址信息、订单信息等
 		return Result.ok();
 	}

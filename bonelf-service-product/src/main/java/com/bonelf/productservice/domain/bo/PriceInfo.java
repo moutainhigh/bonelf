@@ -2,7 +2,7 @@
  * Copyright (c) 2020. Bonelf.
  */
 
-package com.bonelf.productservice.domain.query;
+package com.bonelf.productservice.domain.bo;
 
 import com.bonelf.productservice.domain.vo.UserCouponVO;
 
