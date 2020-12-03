@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +39,6 @@ public class MQProducerConfig {
 	 * @throws MQClientException
 	 */
 	@Bean
-	@ConditionalOnProperty(prefix = "rocketmq", value = "enable", havingValue = "true")
 	public DefaultMQProducer defaultProducer() throws MQClientException {
 		log.info("defaultProducer 正在创建---------------------------------------");
 		DefaultMQProducer producer = new DefaultMQProducer(rocketmqProperty.getGroupName());

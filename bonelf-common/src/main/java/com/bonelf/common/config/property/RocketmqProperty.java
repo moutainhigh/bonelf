@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "rocketmq")
 public class RocketmqProperty {
 
+	private Boolean enable = true;
+
 	private String groupName;
 
 	private String namesrvAddr;
