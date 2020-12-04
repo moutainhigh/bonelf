@@ -34,7 +34,7 @@ public class AuthExceptionHandler extends OAuth2AccessDeniedHandler {
 		log.error("AUTH ERROR:{}, EXP:{}", JSON.toJSONString(result.getBody()), authException.getMessage());
 		if (authException instanceof OAuth2Exception) {
 			OAuth2Exception oAuth2Exception = (OAuth2Exception)authException;
-			resp = Result.error(40005, "无效token");
+			resp = Result.error("40005", "无效token");
 			responseEntity = ResponseEntity.status(oAuth2Exception.getHttpErrorCode())
 					.body(resp);
 		} else {

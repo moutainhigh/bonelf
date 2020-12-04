@@ -1,6 +1,7 @@
 package com.bonelf.common.core.advice;
 
 import cn.hutool.core.util.StrUtil;
+import com.bonelf.common.constant.BizConstants;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import com.bonelf.common.domain.Result;
@@ -106,7 +107,7 @@ public class GlobalExceptionHandler {
 	public Result<?> httpMessageNotReadableException(MethodArgumentTypeMismatchException e, HttpServletRequest request) {
 		log.debug("接口参数传递类型错误：" + request.getRequestURI());
 		e.printStackTrace();//便于调试
-		return Result.error(400, e.getMessage());
+		return Result.error(BizConstants.REQ_ERR_CODE, e.getMessage());
 	}
 
 	@ExceptionHandler(value = MaxUploadSizeExceededException.class)

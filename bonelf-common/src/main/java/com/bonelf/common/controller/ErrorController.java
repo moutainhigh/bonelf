@@ -22,7 +22,7 @@ public class ErrorController {
 	@ApiOperation("401")
 	@GetMapping(value = "/401")
 	public Result<String> err401(@RequestParam(required = false) String errMsg) {
-		return Result.error(401, StrUtil.nullToDefault(errMsg, "please try login again"));
+		return Result.error("401", StrUtil.nullToDefault(errMsg, "please try login again"));
 	}
 
 }
