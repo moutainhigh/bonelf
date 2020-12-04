@@ -14,12 +14,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserExceptionEnum implements AbstractBaseExceptionEnum {
-	FREEZE_USER(40001, "账号已被锁定"),
-	ALREADY_REGISTER(40002, "此账号已注册");
+	FREEZE_USER("A0202", "账号已被锁定"),
+	ALREADY_REGISTER("A0001", "此账号已注册");
 	/**
 	 * 服务状态码 版本号+模块号+序号 类似10101
 	 */
-	private Integer status;
+	private String status;
 	/**
 	 * 异常信息
 	 */

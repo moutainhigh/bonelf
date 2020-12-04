@@ -14,11 +14,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ProductExceptionEnum implements AbstractBaseExceptionEnum {
-	STOCK_ERROR(30001, "库存不足");
+	STOCK_ERROR("C0001", "库存不足");
 	/**
 	 * 服务状态码 版本号+模块号+序号 类似10101
 	 */
-	private Integer status;
+	private String status;
 	/**
 	 * 异常信息
 	 */

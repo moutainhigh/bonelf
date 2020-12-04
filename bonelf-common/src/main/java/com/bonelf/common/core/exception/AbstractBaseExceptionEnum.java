@@ -8,7 +8,7 @@ package com.bonelf.common.core.exception;
  * @since 2020/10/11 17:35
  */
 public interface AbstractBaseExceptionEnum {
-	Integer getStatus();
+	String getStatus();
 
 	String getMessage();
 }

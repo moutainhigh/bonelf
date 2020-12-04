@@ -14,12 +14,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum SupportExceptionEnum implements AbstractBaseExceptionEnum {
-	VERIFY_CODE_EXPIRE(90001, "验证码不存在或已过期"),
-	QRCODE_EXPIRE(90101, "二维码已过期");
+	VERIFY_CODE_EXPIRE("A0130", "验证码不存在或已过期"),
+	QRCODE_EXPIRE("B0001", "二维码已过期");
 	/**
 	 * 服务状态码 版本号+模块号+序号 类似10101
 	 */
-	private Integer status;
+	private String status;
 	/**
 	 * 异常信息
 	 */
