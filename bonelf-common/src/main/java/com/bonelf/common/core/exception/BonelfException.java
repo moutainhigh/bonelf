@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class BonelfException extends RuntimeException {
-	private Integer code;
+	private String code;
 	private String errorMessage;
 
 

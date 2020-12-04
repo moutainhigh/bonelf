@@ -39,7 +39,7 @@ public class Result<T> implements Serializable {
 	 * 返回代码
 	 */
 	@ApiModelProperty(value = "返回状态码")
-	private Integer code;
+	private String code;
 
 	/**
 	 * 返回数据对象 data
@@ -56,10 +56,7 @@ public class Result<T> implements Serializable {
 
 	/*===========================构造器===========================*/
 
-	public Result<T> success(Integer code, String message) {
-		if (code >= 300 || code < BizConstants.CODE_200) {
-			throw new RuntimeException("成功请求不应该返回非200-300的状态码");
-		}
+	public Result<T> success(String code, String message) {
 		this.message = message;
 		this.code = code;
 		this.success = true;
@@ -137,7 +134,7 @@ public class Result<T> implements Serializable {
 		return error(BizConstants.CODE_500, "fail");
 	}
 
-	public static <T> Result<T> error(int code, String msg) {
+	public static <T> Result<T> error(String code, String msg) {
 		Result<T> r = new Result<T>();
 		r.setCode(code);
 		r.setMessage(msg);

@@ -1,8 +1,8 @@
 package com.bonelf.common.constant;
 
 public interface BizConstants {
-	int CODE_500 = 500;
-	int CODE_200 = 200;
+	String CODE_500 = "500";
+	String CODE_200 = "200";
 
 
 }

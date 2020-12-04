@@ -289,7 +289,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 		List<Sku> skuSaveBatch = new ArrayList<>();
 		for (Sku sku : skuDto.getSkus()) {
 			if (sku.getSkuValueIds() == null) {
-				throw new BonelfException(500, "数据异常");
+				throw new BonelfException("500", "数据异常");
 			}
 			//新家的id确定不了 得分开接口
 			sku.setSpecs(skuValueMapper.selectSpecsBySkuValueIds(StrUtil.splitToLong(sku.getSkuValueIds(), StrUtil.COMMA)));
