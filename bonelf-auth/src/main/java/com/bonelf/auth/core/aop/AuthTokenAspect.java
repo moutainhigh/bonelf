@@ -8,7 +8,6 @@
 
 package com.bonelf.auth.core.aop;
 
-import com.bonelf.common.constant.BizConstants;
 import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import com.bonelf.common.domain.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +15,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Component;
@@ -61,7 +61,7 @@ public class AuthTokenAspect {
 			response = Result.error();
 		}
 		return ResponseEntity
-				.status(BizConstants.CODE_200)
+				.status(HttpStatus.OK)
 				.body(response);
 	}
 }

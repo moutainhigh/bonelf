@@ -8,6 +8,7 @@
 
 package com.bonelf.auth.core.exception;
 
+import com.bonelf.common.constant.BizConstants;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.domain.Result;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -41,7 +42,7 @@ class CustomOauthException extends OAuth2Exception {
 			BonelfException bonelfException = (BonelfException)b.getCause();
 			this.result = Result.error(bonelfException.getCode(), b.getMessage());
 		} else {
-			this.result = Result.error(500, b.getMessage());
+			this.result = Result.error(BizConstants.CODE_500, b.getMessage());
 		}
 	}
 }

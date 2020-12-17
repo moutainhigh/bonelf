@@ -2,3 +2,9 @@ centos 服务器相关配置信息
 工具：
 yum install git
 yum install unzip
+
+ps -ef|grep XXX 查进程
+nohup java -jar XXX -xmsXXX ~~~ -> XXX.out & 启动jar包
+tail -f XXX.out
+top -p XXX 查看占用内存 cpu...
+netstat -a 列出端口、路由
