@@ -9,9 +9,7 @@
 package com.bonelf.auth.core.oauth2.service;
 
 import com.bonelf.auth.domain.entity.User;
-import com.bonelf.auth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +21,6 @@ import org.springframework.stereotype.Service;
 @Service("openidUserDetailsService")
 public class OpenIdUserDetailsService extends CustomUserDetailsService {
 
-	@Autowired
-	private UserService userService;
-
 	/**
 	 * 调用/auth/token 调用这个方法校验
 	 * @param uniqueId openId
@@ -34,7 +29,7 @@ public class OpenIdUserDetailsService extends CustomUserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String uniqueId) {
-		User user = userService.getByUniqueId(uniqueId).getResult();
+		User user = userService.getByUniqueId(uniqueId);
 		// FIXME: 2020/11/19 错误和NPE处理
 		log.info("load user by openId:{}", user.toString());
 		// 如果为openId模式，从短信服务中获取验证码（动态密码）

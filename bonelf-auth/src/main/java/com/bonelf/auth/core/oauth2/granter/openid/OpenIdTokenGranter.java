@@ -18,12 +18,10 @@ import com.bonelf.auth.domain.request.RegisterUserRequest;
 import com.bonelf.auth.service.UserService;
 import com.bonelf.common.core.exception.BonelfException;
 import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
-import com.bonelf.common.domain.Result;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
@@ -105,10 +103,6 @@ public class OpenIdTokenGranter extends BaseApiTokenGranter {
 				.province(wxMaUserInfo.getProvince())
 				.unionId(wxMaUserInfo.getUnionId())
 				.build();
-		Result<User> userResult = userService.registerByOpenId(registerUser);
-		if (!userResult.getSuccess()) {
-			//注册失败
-			throw new InvalidGrantException(exp.getMessage());
-		}
+		User userResult = userService.registerByOpenId(registerUser);
 	}
 }

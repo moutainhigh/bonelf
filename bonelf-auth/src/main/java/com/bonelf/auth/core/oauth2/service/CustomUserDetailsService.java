@@ -12,6 +12,7 @@ import com.bonelf.auth.domain.entity.Role;
 import com.bonelf.auth.domain.entity.User;
 import com.bonelf.auth.service.RoleService;
 import com.bonelf.auth.service.UserService;
+import com.bonelf.common.client.SupportFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,9 +36,11 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserService userService;
+    protected SupportFeignClient supportFeignClient;
     @Autowired
-    private RoleService roleService;
+    protected UserService userService;
+    @Autowired
+    protected RoleService roleService;
 
     /**
      * 调用/auth/token 调用这个方法校验
@@ -46,7 +49,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String uniqueId) {
-        User user = userService.getByUniqueId(uniqueId).getResult();
+        User user = userService.getByUniqueId(uniqueId);
         // FIXME: 2020/11/19 错误和NPE处理
         log.info("load user by username :{}", user.toString());
         return new org.springframework.security.core.userdetails.User(

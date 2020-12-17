@@ -9,9 +9,9 @@
 package com.bonelf.auth.core.oauth2.service;
 
 import com.bonelf.auth.domain.entity.User;
-import com.bonelf.auth.service.UserService;
+import com.bonelf.common.constant.enums.VerifyCodeTypeEnum;
+import com.bonelf.common.domain.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,9 +24,6 @@ import org.springframework.stereotype.Service;
 @Service("mailUserDetailsService")
 public class MailUserDetailsService extends CustomUserDetailsService {
 
-	@Autowired
-	private UserService userService;
-
 	/**
 	 * 调用/auth/token 调用这个方法校验
 	 * @param uniqueId mail
@@ -35,10 +32,14 @@ public class MailUserDetailsService extends CustomUserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String uniqueId) {
-		User user = userService.getByUniqueId(uniqueId).getResult();
+		User user = userService.getByUniqueId(uniqueId);
 		if (user == null) {
 			// 验证码正确 但是用户不存在注册
 			user = userService.registerByMail(uniqueId);
+		}
+		Result<String> codeResult = supportFeignClient.getVerify(user.getPhone(), VerifyCodeTypeEnum.LOGIN.getCode());
+		if (codeResult.getSuccess()) {
+			user.setVerifyCode(codeResult.getResult());
 		}
 		log.debug("load user by mail:{}", user.toString());
 		// 如果为mail模式，从短信服务中获取验证码（动态密码） 其实可以去了加密

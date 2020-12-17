@@ -36,8 +36,6 @@ public class UserResponse implements Serializable, CommonUser {
 
 	private String unionId;
 
-	private String verifyCode;
-
 	private String openId;
 
 	/**
@@ -74,37 +72,4 @@ public class UserResponse implements Serializable, CommonUser {
 	 * status
 	 */
 	private Integer status;
-	/**
-	 * 是否可用
-	 */
-	private Boolean enabled;
-
-	/**
-	 * 账户是否没过期
-	 */
-	private Boolean accountNonExpired;
-
-	/**
-	 * 密码是否没过期
-	 */
-	private Boolean credentialsNonExpired;
-
-	/**
-	 * 账户是否没冻结
-	 */
-	private Boolean accountNonLocked;
-
-	@Override
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	@Override
-	public String getUsername() {
-		return phone;
-	}
 }

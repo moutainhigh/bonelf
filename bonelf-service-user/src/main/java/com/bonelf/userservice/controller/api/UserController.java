@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.bonelf.common.client.SupportFeignClient;
 import com.bonelf.common.config.property.BonelfProperty;
 import com.bonelf.common.constant.BonelfConstant;
-import com.bonelf.common.constant.enums.VerifyCodeTypeEnum;
-import com.bonelf.common.constant.enums.YesOrNotEnum;
 import com.bonelf.common.core.aop.annotation.MustFeignRequest;
 import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import com.bonelf.common.domain.Result;
@@ -81,14 +79,6 @@ public class UserController extends BaseApiController {
 			return Result.error(CommonBizExceptionEnum.DB_RESOURCE_NULL, "用户");
 		}
 		UserResponse resp = BeanUtil.copyProperties(user, UserResponse.class);
-		resp.setEnabled(YesOrNotEnum.N.getCode().equals(user.getStatus()));
-		resp.setAccountNonExpired(true);
-		resp.setCredentialsNonExpired(true);
-		resp.setAccountNonLocked(YesOrNotEnum.N.getCode().equals(user.getStatus()));
-		Result<String> codeResult = supportFeignClient.getVerify(user.getPhone(), VerifyCodeTypeEnum.LOGIN.getCode());
-		if (codeResult.getSuccess()) {
-			resp.setVerifyCode(codeResult.getResult());
-		}
 		return Result.ok(resp);
 	}
 
@@ -122,7 +112,7 @@ public class UserController extends BaseApiController {
 		user.setMail(mail);
 		user.setLastLoginTime(LocalDateTime.now());
 		userService.save(user);
-		userService.update(Wrappers.<User>lambdaUpdate().set(User::getNickname, "手机用户").eq(User::getUserId, user.getUserId()).last("limit 1"));
+		userService.update(Wrappers.<User>lambdaUpdate().set(User::getNickname, "邮箱用户").eq(User::getUserId, user.getUserId()).last("limit 1"));
 		return Result.ok(user);
 	}
 

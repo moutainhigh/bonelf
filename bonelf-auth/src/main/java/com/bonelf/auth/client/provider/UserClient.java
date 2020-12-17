@@ -1,8 +1,8 @@
 package com.bonelf.auth.client.provider;
 
 import com.bonelf.auth.domain.entity.Role;
-import com.bonelf.auth.domain.entity.User;
 import com.bonelf.auth.domain.request.RegisterUserRequest;
+import com.bonelf.auth.domain.response.UserResponse;
 import com.bonelf.common.cloud.constant.ServiceNameConstant;
 import com.bonelf.common.cloud.feign.FeignConfig;
 import com.bonelf.common.domain.Result;
@@ -30,7 +30,7 @@ public interface UserClient {
      * @return
      */
     @GetMapping(value = "/bonelf/user/v1/getUser")
-    Result<User> getUserByUniqueId(@RequestParam("uniqueId") String uniqueId);
+    Result<UserResponse> getUserByUniqueId(@RequestParam("uniqueId") String uniqueId);
 
     /**
      * 用户角色
@@ -46,7 +46,7 @@ public interface UserClient {
      * @return
      */
     @PostMapping(value = "/bonelf/user/v1/registerByPhone")
-    Result<User> registerByPhone(@RequestParam("phone") String phone);
+    Result<UserResponse> registerByPhone(@RequestParam("phone") String phone);
 
     /**
      * 微信注册
@@ -54,8 +54,8 @@ public interface UserClient {
      * @return
      */
     @PostMapping(value = "/bonelf/user/v1/registerByOpenId")
-    Result<User> registerByOpenId(@RequestBody RegisterUserRequest registerUser);
+    Result<UserResponse> registerByOpenId(@RequestBody RegisterUserRequest registerUser);
 
     @PostMapping(value = "/bonelf/user/v1/registerByMail")
-    Result<User> registerByMail(@RequestParam("mail") String mail);
+    Result<UserResponse> registerByMail(@RequestParam("mail") String mail);
 }

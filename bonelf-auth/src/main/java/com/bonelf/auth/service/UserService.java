@@ -2,7 +2,6 @@ package com.bonelf.auth.service;
 
 import com.bonelf.auth.domain.entity.User;
 import com.bonelf.auth.domain.request.RegisterUserRequest;
-import com.bonelf.common.domain.Result;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +19,7 @@ public interface UserService {
      * @param uniqueId
      * @return
      */
-	Result<User> getByUniqueId(String uniqueId);
+	User getByUniqueId(String uniqueId);
 
 	/**
 	 * 注册
@@ -40,5 +39,5 @@ public interface UserService {
 	 * @param registerUser
 	 * @return
 	 */
-	Result<User> registerByOpenId(RegisterUserRequest registerUser);
+	User registerByOpenId(RegisterUserRequest registerUser);
 }

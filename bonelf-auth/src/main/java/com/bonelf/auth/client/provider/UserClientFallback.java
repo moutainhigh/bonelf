@@ -1,8 +1,8 @@
 package com.bonelf.auth.client.provider;
 
 import com.bonelf.auth.domain.entity.Role;
-import com.bonelf.auth.domain.entity.User;
 import com.bonelf.auth.domain.request.RegisterUserRequest;
+import com.bonelf.auth.domain.response.UserResponse;
 import com.bonelf.common.domain.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +23,7 @@ public class UserClientFallback implements UserClient {
 	PasswordEncoder passwordEncoder;
 
 	@Override
-	public Result<User> getUserByUniqueId(String uniqueId) {
+	public Result<UserResponse> getUserByUniqueId(String uniqueId) {
 		// FIXME: 2020/11/19 超时报错返回error
 		//User user = new User();
 		//user.setEnabled(true);
@@ -48,17 +48,17 @@ public class UserClientFallback implements UserClient {
 	}
 
 	@Override
-	public Result<User> registerByPhone(String phone) {
+	public Result<UserResponse> registerByPhone(String phone) {
 		return Result.error();
 	}
 
 	@Override
-	public Result<User> registerByMail(String mail) {
+	public Result<UserResponse> registerByMail(String mail) {
 		return Result.error();
 	}
 
 	@Override
-	public Result<User> registerByOpenId(RegisterUserRequest registerUser) {
+	public Result<UserResponse> registerByOpenId(RegisterUserRequest registerUser) {
 		return Result.error();
 	}
 }
