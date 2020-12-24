@@ -37,6 +37,12 @@ Windows启动：切换到/bin目录 -> .\startup.cmd -m standalone
 Jeecg-boot、ruoyi-cloud、Guns、litemall、best-pay
 
 ## 开发计划
+更换为标准的Aibaba架构
+
+seata 分布式事务中间件
+
+sentinel 流量控制
+
 继承Webserver是否可以替换springboot的web服务？
 
 三方登录
@@ -54,10 +60,6 @@ zipkin 监控 压力测试
 grafana 度量分析和可视化工具
 
 kibana 日志分析的 Web 接口
-
-seata 分布式事务中间件
-
-sentinel 流量控制
 
 Kafka 分布式日志(MQ)
 
