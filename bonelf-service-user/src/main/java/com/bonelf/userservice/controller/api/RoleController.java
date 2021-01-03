@@ -2,8 +2,9 @@ package com.bonelf.userservice.controller.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.bonelf.common.controller.base.BaseApiController;
 import com.bonelf.common.domain.Result;
-import com.bonelf.common.util.BaseApiController;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,5 +33,14 @@ public class RoleController extends BaseApiController {
 		temp.put("description", "this is an example role");
 		json.add(temp);
 		return Result.ok(json);
+	}
+
+	/**
+	 * 留待子类实现
+	 * @return
+	 */
+	@Override
+	protected IService getCrudService() {
+		return null;
 	}
 }

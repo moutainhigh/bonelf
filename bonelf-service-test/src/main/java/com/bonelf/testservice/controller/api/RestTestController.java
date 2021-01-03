@@ -1,8 +1,9 @@
 package com.bonelf.testservice.controller.api;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.bonelf.common.controller.base.BaseApiController;
 import com.bonelf.common.domain.Result;
-import com.bonelf.common.util.BaseApiController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -34,5 +35,14 @@ public class RestTestController extends BaseApiController {
 		log.info("\ntokenInfo:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication().getDetails()));
 		log.info("\npermission:" + JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
 		return Result.ok();
+	}
+
+	/**
+	 * 留待子类实现
+	 * @return
+	 */
+	@Override
+	protected IService getCrudService() {
+		return null;
 	}
 }

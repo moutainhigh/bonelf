@@ -37,11 +37,13 @@ Windows启动：切换到/bin目录 -> .\startup.cmd -m standalone
 Jeecg-boot、ruoyi-cloud、Guns、litemall、best-pay
 
 ## 开发计划
-更换为标准的Aibaba架构
+更换为标准的Aibaba架构，备份后改用Dubbo、sentinel
 
-seata 分布式事务中间件
+完善开发到一半的功能
 
 sentinel 流量控制
+
+seata 分布式事务中间件
 
 继承Webserver是否可以替换springboot的web服务？
 

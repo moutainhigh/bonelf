@@ -2,13 +2,14 @@ package com.bonelf.userservice.controller.api;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.bonelf.common.client.SupportFeignClient;
 import com.bonelf.common.config.property.BonelfProperty;
 import com.bonelf.common.constant.BonelfConstant;
+import com.bonelf.common.controller.base.BaseApiController;
 import com.bonelf.common.core.aop.annotation.MustFeignRequest;
 import com.bonelf.common.core.exception.enums.CommonBizExceptionEnum;
 import com.bonelf.common.domain.Result;
-import com.bonelf.common.util.BaseApiController;
 import com.bonelf.common.util.redis.RedisUtil;
 import com.bonelf.userservice.constant.enums.UserStatusEnum;
 import com.bonelf.userservice.core.exception.UserExceptionEnum;
@@ -152,5 +153,14 @@ public class UserController extends BaseApiController {
 	@PostMapping(value = "/v1/getPermission")
 	public Result<Map<String, Set<String>>> getPermission(@RequestParam Long userId) {
 		return Result.ok(userService.getApiUserRolesAndPermission(userId));
+	}
+
+	/**
+	 * 留待子类实现
+	 * @return
+	 */
+	@Override
+	protected IService<User> getCrudService() {
+		return userService;
 	}
 }

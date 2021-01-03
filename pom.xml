@@ -34,6 +34,7 @@
         <module>bonelf-service-test</module>
         <module>bonelf-support</module>
         <module>bonelf-auth</module>
+        <module>bonelf-service-stock</module>
     </modules>
 
     <properties>

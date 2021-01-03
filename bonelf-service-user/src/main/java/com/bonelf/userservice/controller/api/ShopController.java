@@ -1,7 +1,8 @@
 package com.bonelf.userservice.controller.api;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.bonelf.common.controller.base.BaseApiController;
 import com.bonelf.common.domain.Result;
-import com.bonelf.common.util.BaseApiController;
 import com.bonelf.common.util.redis.RedisUtil;
 import com.bonelf.userservice.constant.CacheConstant;
 import com.bonelf.userservice.domain.dto.ShopDTO;
@@ -41,5 +42,14 @@ public class ShopController extends BaseApiController {
 		// FIXME: 2020/12/1 ShopId
 		//return Result.ok(redisUtil.gRadius(CacheConstant.SHOP_GEO, lat, lng, 1000000D, Metrics.NEUTRAL, "desc"));
 		return Result.ok(redisUtil.gPage(1, 10, CacheConstant.SHOP_GEO, lat, lng, 1000D, Metrics.KILOMETERS, "desc", "NearBy1000"));
+	}
+
+	/**
+	 * 留待子类实现
+	 * @return
+	 */
+	@Override
+	protected IService getCrudService() {
+		return null;
 	}
 }

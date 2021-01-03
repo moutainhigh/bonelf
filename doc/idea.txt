@@ -3,6 +3,8 @@ idea必要设置：
 setting->editor->code style->java->code generation->右下角 comment code;取消勾选 Line comment at first line 勾选 Add a space at comment start
                                  ->spaces->other->取消勾选after type cast
                                  ->tabs and indents->勾选use type character
+
+                                 ->JavaDoc->Blank lines-> 取消勾选 After Description
 2 文件格式修改
 editor->file encoding->所有GBK改成UTF-8
       ->SSH Terminal 同上
@@ -48,10 +50,17 @@ Statistic
 Ini
 
 camelCase(type)
+
 -)
 snakeCase(substringBefore(fileName(), ".java"));
 groovyScript("_1.toUpperCase()",snakeCase(substringBefore(fileName(), ".java")));
 groovyScript("Math.abs(new Random().nextLong())");
+
+5 setting->editor->File And Code Template->Includes->File Header  可以新建类自动加注释：
+/**
+ * @author ccy
+ * @date ${DATE} ${TIME}
+ */
 
 Q:
 idea解决Command line is too long. Shorten command line for ServiceStarter or also for Application报错

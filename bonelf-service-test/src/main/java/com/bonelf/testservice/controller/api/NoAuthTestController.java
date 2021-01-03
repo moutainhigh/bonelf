@@ -2,8 +2,10 @@ package com.bonelf.testservice.controller.api;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.bonelf.common.cloud.constant.ServiceNameConstant;
+import com.bonelf.common.controller.base.BaseApiController;
 import com.bonelf.common.domain.Result;
-import com.bonelf.common.util.BaseApiController;
 import com.bonelf.testservice.client.OrderFeignClient;
 import com.bonelf.testservice.client.UserFeignClient;
 import com.bonelf.testservice.domain.dto.TestConverterDTO;
@@ -14,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,7 @@ public class NoAuthTestController extends BaseApiController {
 	private RestTemplate restTemplate;
 	@Autowired
 	private OrderFeignClient orderFeignClient;
+	@Qualifier(ServiceNameConstant.USER_SERVICE)
 	@Autowired
 	private UserFeignClient userFeignClient;
 
@@ -120,4 +124,12 @@ public class NoAuthTestController extends BaseApiController {
 		return "orderFeign2Back";
 	}
 
+	/**
+	 * 留待子类实现
+	 * @return
+	 */
+	@Override
+	protected IService getCrudService() {
+		return null;
+	}
 }

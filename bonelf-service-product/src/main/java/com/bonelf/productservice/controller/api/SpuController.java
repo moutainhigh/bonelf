@@ -2,13 +2,15 @@ package com.bonelf.productservice.controller.api;
 
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.bonelf.common.controller.base.BaseApiController;
 import com.bonelf.common.domain.Result;
-import com.bonelf.common.util.BaseApiController;
 import com.bonelf.productservice.domain.ao.CalcPriceAO;
 import com.bonelf.productservice.domain.bo.CalcPriceBO;
 import com.bonelf.productservice.domain.bo.PriceInfo;
 import com.bonelf.productservice.domain.dto.CalcPriceDTO;
 import com.bonelf.productservice.domain.dto.ConfirmOrderDTO;
+import com.bonelf.productservice.domain.entity.Spu;
 import com.bonelf.productservice.domain.vo.*;
 import com.bonelf.productservice.service.SkuService;
 import com.bonelf.productservice.service.SpuService;
@@ -109,5 +111,14 @@ public class SpuController extends BaseApiController {
 	public Result<?> getSkuInfoList(@RequestParam(required = false) Long[] skuValueIds) {
 		SkuApiVO skuVO = skuService.getSkuInfoList(skuValueIds);
 		return Result.ok(skuVO);
+	}
+
+	/**
+	 * 留待子类实现
+	 * @return
+	 */
+	@Override
+	protected IService<Spu> getCrudService() {
+		return spuService;
 	}
 }
